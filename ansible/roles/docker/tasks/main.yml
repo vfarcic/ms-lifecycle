@@ -1,0 +1,34 @@
+- name: Add Docker repository and update apt cache
+  apt_repository:
+    repo: deb https://get.docker.com/ubuntu docker main
+    update_cache: yes
+    state: present
+  tags: [docker]
+
+- name: Docker is present
+  apt:
+    name: lxc-docker
+    state: latest
+    update_cache: yes
+    force: yes
+  tags: [docker]
+
+- name: Python-pip is present
+  apt: name=python-pip state=present
+  tags: [docker]
+
+- name: Docker-py is present
+  pip: name=docker-py version=0.4.0 state=present
+  tags: [docker]
+
+- name: Docker Compose is present
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.3.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+  tags: [docker]
+
+- name: Docker Compose permissions are set
+  file:
+    path: /usr/local/bin/docker-compose
+    mode: 0755
+  tags: [docker]
