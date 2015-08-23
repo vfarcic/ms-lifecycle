@@ -32,3 +32,17 @@
     path: /usr/local/bin/docker-compose
     mode: 0755
   tags: [docker]
+
+- name: Files are present
+  copy:
+    src: docker
+    dest: /etc/default/docker
+  register: copy_result
+  tags: [docker]
+
+- name: Docker service is restarted
+  service:
+    name: docker
+    state: restarted
+  when: copy_result|changed
+  tags: [docker]
