@@ -18,8 +18,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "prod" do |d|
     d.vm.hostname = "prod"
     d.vm.network "private_network", ip: "10.100.198.201"
-    d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
-    d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/prod.yml -c local -v"
   end
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
