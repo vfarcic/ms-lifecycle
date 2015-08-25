@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: all
   remote_user: vagrant
   sudo: yes
   roles:

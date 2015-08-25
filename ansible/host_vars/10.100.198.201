@@ -1,2 +1,2 @@
-hostname: cd
+hostname: prod
 ansible_ssh_private_key_file: /vagrant/.vagrant/machines/{{ hostname }}/virtualbox/private_key
