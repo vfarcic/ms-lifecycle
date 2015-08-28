@@ -1,0 +1,8 @@
+ansible_ssh_private_key_file: /vagrant/.vagrant/machines/{{ ansible_nodename }}/virtualbox/private_key
+cluster_token: serv-disc-cluster
+cluster_node_01: 10.100.197.201
+cluster_node_01_name: serv-disc-01
+cluster_node_02: 10.100.197.202
+cluster_node_02_name: serv-disc-02
+cluster_node_03: 10.100.197.203
+cluster_node_03_name: serv-disc-03

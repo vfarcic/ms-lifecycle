@@ -1,0 +1,25 @@
+- name: Directories are created
+  file:
+    path: "{{ item }}"
+    state: directory
+  with: directories
+  tags: [etcd]
+
+- name: Files are copied
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  with: files
+  tags: [etcd]
+
+- name: Is running
+  shell: "nohup etcd -name {{ hostname }} \
+    -initial-advertise-peer-urls http://{{ facter_ipaddress_eth1 }}:2380 \
+    -listen-peer-urls http://{{ facter_ipaddress_eth1 }}:2380 \
+    -listen-client-urls http://{{ facter_ipaddress_eth1 }}:2379,http://127.0.0.1:2379 \
+    -advertise-client-urls http://{{ facter_ipaddress_eth1 }}:2379 \
+    -initial-cluster-token {{ cluster_token }} \
+    -initial-cluster {{ cluster_node_01_name }}=http://{{ cluster_node_01 }}:2380,{{ cluster_node_02_name }}=http://{{ cluster_node_02 }}:2380,{{ cluster_node_03_name }}=http://{{ cluster_node_03 }}:2380 \
+    -initial-cluster-state new >/data/logs/etcd/etcd.log 2>&1 &"
+  tags: [etcd]

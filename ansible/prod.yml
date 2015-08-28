@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: prod
   remote_user: vagrant
   sudo: yes
   roles:

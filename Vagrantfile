@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..3).each do |i|
     config.vm.define "serv-disc-0#{i}" do |d|
       d.vm.hostname = "serv-disc-0#{i}"
-      d.vm.network "private_network", ip: "10.100.197.201"
+      d.vm.network "private_network", ip: "10.100.197.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
       end

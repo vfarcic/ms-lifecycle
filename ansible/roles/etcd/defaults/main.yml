@@ -1,0 +1,7 @@
+directories:
+  - /data/logs/etcd/
+
+files: [
+  {src: 'etcd', dest: '/usr/local/bin/etcd'},
+  {src: 'etcdctl', dest: '/usr/local/bin/etcdctl'}
+]
