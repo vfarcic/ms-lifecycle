@@ -1,7 +1,12 @@
-directories:
-  - /data/logs/etcd/
-
 files: [
   {src: 'etcd', dest: '/usr/local/bin/etcd'},
   {src: 'etcdctl', dest: '/usr/local/bin/etcdctl'}
 ]
+
+cluster_token: serv-disc-cluster
+cluster_node_01: 10.100.197.201
+cluster_node_01_name: serv-disc-01
+cluster_node_02: 10.100.197.202
+cluster_node_02_name: serv-disc-02
+cluster_node_03: 10.100.197.203
+cluster_node_03_name: serv-disc-03
