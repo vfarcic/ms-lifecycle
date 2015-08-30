@@ -9,7 +9,6 @@
   apt:
     name: lxc-docker
     state: latest
-    update_cache: yes
     force: yes
   tags: [docker]
 

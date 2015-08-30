@@ -2,6 +2,8 @@
   remote_user: vagrant
   serial: 1
   sudo: yes
+  vars:
+    - protocol: etcd
   roles:
     - docker
-    - etcd
+    - registrator
