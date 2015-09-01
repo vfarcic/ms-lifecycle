@@ -16,7 +16,7 @@
     http://{{ ip }}:2379,http://127.0.0.1:2379 \
     -advertise-client-urls \
     http://{{ ip }}:2379 \
-    -initial-cluster-token {{ cluster_token }} \
+    -initial-cluster-token {{ cl_token }} \
     -initial-cluster \
     {{ cl_node_01 }},{{ cl_node_02 }},{{ cl_node_03 }} \
     -initial-cluster-state new \
