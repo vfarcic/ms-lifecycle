@@ -13,4 +13,3 @@ cl_node_02: "{{ cl_node_02_name }}={{ cl_node_02_addr }}"
 cl_node_03_addr: http://10.100.197.203:2380
 cl_node_03_name: serv-disc-03
 cl_node_03: "{{ cl_node_03_name }}={{ cl_node_03_addr }}"
-ip: "{{ facter_ipaddress_eth1 }}"
