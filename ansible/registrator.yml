@@ -3,7 +3,8 @@
   serial: 1
   sudo: yes
   vars:
-    - protocol: etcd
+    - registrator_name: registrator-consul
   roles:
     - docker
+    - consul
     - registrator

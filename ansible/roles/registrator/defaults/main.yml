@@ -1,1 +1,2 @@
-protocol: etcd
+registrator_protocol: consul
+registrator_port: 8500

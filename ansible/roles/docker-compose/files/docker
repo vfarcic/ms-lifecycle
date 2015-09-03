@@ -1,1 +1,0 @@
-DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 10.100.198.200:5000"

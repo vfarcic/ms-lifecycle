@@ -1,9 +1,9 @@
 - name: Container is running
   docker:
-    name: registrator
+    name: "{{ registrator_name }}"
     image: gliderlabs/registrator
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     hostname: "{{ ansible_hostname }}"
-    command: -ip {{ facter_ipaddress_eth1 }} {{ protocol }}://{{ facter_ipaddress_eth1 }}:2379
+    command: -ip {{ facter_ipaddress_eth1 }} {{ registrator_protocol }}://{{ facter_ipaddress_eth1 }}:{{ registrator_port }}
   tags: [etcd]
