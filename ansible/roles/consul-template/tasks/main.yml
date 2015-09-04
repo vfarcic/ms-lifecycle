@@ -1,0 +1,12 @@
+- name: Directories are created
+  file:
+    path: /data/consul-template
+    state: directory
+  tags: [consul-template]
+
+- name: Files are copied
+  copy:
+    src: consul-template
+    dest: /usr/local/bin/consul-template
+    mode: 0755
+  tags: [consul-template]
