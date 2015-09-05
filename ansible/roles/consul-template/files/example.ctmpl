@@ -1,0 +1,3 @@
+{{range service "nginx"}}
+The address is {{.Address}}:{{.Port}}
+{{end}}

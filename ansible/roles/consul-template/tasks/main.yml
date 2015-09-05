@@ -10,3 +10,10 @@
     dest: /usr/local/bin/consul-template
     mode: 0755
   tags: [consul-template]
+
+- name: Example template is copied
+  copy:
+    src: example.ctmpl
+    dest: /data/consul-template/example.ctmpl
+    mode: 0644
+  tags: [consul-template]
