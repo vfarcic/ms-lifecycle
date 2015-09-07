@@ -5,4 +5,7 @@
   roles:
     - docker
     - docker-compose
+    - consul
+    - registrator
+    - consul-template
     - nginx
