@@ -31,6 +31,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
+  config.vm.define "proxy" do |d|
+    d.vm.hostname = "proxy"
+    d.vm.network "private_network", ip: "10.100.196.200"
+    d.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+    end
+  end
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
   end

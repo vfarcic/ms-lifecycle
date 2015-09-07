@@ -1,0 +1,28 @@
+- name: Directories are present
+  file:
+    dest: "{{ item }}"
+    state: directory
+  with_items: directories
+  tags: [nginx]
+
+- name: Container is running
+  docker:
+    image: nginx
+    name: nginx
+    state: running
+    ports: "{{ ports }}"
+    volumes: "{{ volumes }}"
+  tags: [nginx]
+
+- name: Files are present
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: files
+  register: result
+  tags: [nginx]
+
+- name: Container is restarted
+  shell: docker kill -s HUP nginx
+  when: result|changed
+  tags: [nginx]

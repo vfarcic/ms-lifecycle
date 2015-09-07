@@ -1,0 +1,18 @@
+ports:
+  - '80:80'
+
+directories:
+  - /data/nginx/conf.d
+  - /data/nginx/includes
+  - /data/nginx/logs
+  - /data/nginx/upstreams
+  - /data/nginx/templates
+
+files: [
+  {src: 'services.conf', dest: '/data/nginx/conf.d/services.conf'}
+]
+
+volumes:
+  - /data/nginx/conf.d:/etc/nginx/conf.d
+  - /data/nginx/includes:/etc/nginx/includes
+  - /data/nginx/upstreams:/etc/nginx/upstreams

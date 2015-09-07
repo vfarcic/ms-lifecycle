@@ -1,0 +1,8 @@
+- hosts: all
+  remote_user: vagrant
+  serial: 1
+  sudo: yes
+  roles:
+    - docker
+    - docker-compose
+    - nginx

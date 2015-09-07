@@ -1,9 +1,3 @@
-- name: Directory is present
-  file:
-    path: /data/registry
-    state: directory
-  tags: [registry]
-
 - name: Container is running
   docker:
     name=registry
