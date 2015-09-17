@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
     d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -v"
     d.vm.provider "virtualbox" do |v|
-      v.memory = 1024
+      v.memory = 1536
     end
   end
   config.vm.define "prod" do |d|
