@@ -2,3 +2,4 @@
 
 docker pull gliderlabs/registrator
 docker pull nginx
+docker pull mongo
