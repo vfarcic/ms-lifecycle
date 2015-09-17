@@ -1,6 +1,17 @@
+- name: Directories are present
+  files:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /data
+    - /data/registry
+  tags: [registry]
+
 - name: Container is running
   docker:
-    name=registry
-    image=registry
-    ports=5000:5000
+    name: registry
+    image: registry
+    ports: 5000:5000
+    volumes:
+      - /data/registry:/tmp/registry-dev
   tags: [registry]
