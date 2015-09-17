@@ -1,5 +1,5 @@
 - name: Directories are present
-  files:
+  file:
     path: "{{ item }}"
     state: directory
   with_items:
