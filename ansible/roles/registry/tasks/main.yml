@@ -13,5 +13,5 @@
     image: registry
     ports: 5000:5000
     volumes:
-      - /data/registry:/tmp/registry-dev
+      - /data/registry:/tmp/registry
   tags: [registry]
