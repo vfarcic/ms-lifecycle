@@ -6,6 +6,6 @@
     - docker
     - docker-compose
     - consul
-    - consul-template
     - registrator
+    - consul-template
     - nginx
