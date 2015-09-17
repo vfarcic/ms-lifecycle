@@ -4,7 +4,7 @@
     -f Dockerfile.test \
     .
   args:
-    chdir: "{{ repo_dir }}/{{ service_name }}"
+    chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
   tags: [service]
 
@@ -13,6 +13,6 @@
     -f docker-compose-dev.yml \
     run --rm tests
   args:
-    chdir: "{{ repo_dir }}/{{ service_name }}"
+    chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
   tags: [service]
