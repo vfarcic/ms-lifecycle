@@ -1,0 +1,11 @@
+- hosts: prod
+  serial: 1
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - docker
+    - docker-compose
+    - consul
+    - consul-template
+    - registrator
+    - nginx
