@@ -16,3 +16,49 @@
     chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
   tags: [service]
+
+- name: Container is built
+  shell: docker build \
+    -t 10.100.198.200:5000/{{ service_name }} \
+    .
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service]
+
+- name: Container is pushed
+  shell: docker push \
+    10.100.198.200:5000/{{ service_name }}
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service]
+
+#- name: Directories are created
+#  file:
+#    path: /data/{{ service_name }}
+#    recurse: yes
+#    state: directory
+#  tags: [service]
+#
+#- name: Files are copied
+#  copy:
+#    src: "{{ repo_dir }}/docker-compose.yml"
+#    dest: /data/{{ service_name }}/docker-compose.yml
+#  tags: [service]
+#
+#- name: Container is run
+#  shell: sudo docker push \
+#    10.100.198.200:5000/{{ service_name }}
+#  args:
+#    chdir: "{{ repo_dir }}"
+#  delegate_to: 127.0.0.1
+#  tags: [service]
+
+- name: Tests container is pushed
+  shell: docker push \
+    10.100.198.200:5000/{{ service_name }}-tests
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service]
