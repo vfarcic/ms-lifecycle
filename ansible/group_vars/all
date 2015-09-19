@@ -1,2 +1,3 @@
 ip: "{{ facter_ipaddress_eth1 }}"
 consul_extra: ""
+proxy_url: http://{{ facter_ipaddress_eth1 }}
