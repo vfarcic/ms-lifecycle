@@ -1,3 +1,3 @@
 ansible_ssh_private_key_file: /vagrant/.vagrant/machines/prod/virtualbox/private_key
 consul_extra: -server -bootstrap-expect 1
-proxy_url: http://10.100.198.201
+proxy_url: http://{{ facter_ipaddress_eth1 }}
