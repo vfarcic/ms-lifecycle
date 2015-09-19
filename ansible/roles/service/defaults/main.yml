@@ -1,0 +1,16 @@
+files: [
+  {
+    src: "{{ repo_dir }}/docker-compose.yml",
+    dest: "/data/{{ service_name }}/docker-compose.yml"
+  }, {
+    src: "{{ repo_dir }}/nginx-includes.conf",
+    dest: "/data/nginx/includes/{{ service_name }}.conf"
+  }, {
+    src: "{{ repo_dir }}/nginx-upstreams.ctmpl",
+    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl"
+  }
+]
+
+ct_src: /data/nginx/upstreams/{{ service_name }}.ctmpl
+ct_dest: /data/nginx/upstreams/{{ service_name }}.conf
+ct_cmd: docker kill -s HUP nginx
