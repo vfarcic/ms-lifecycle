@@ -3,5 +3,6 @@
   serial: 1
   sudo: yes
   roles:
+    - common
     - docker
     - consul

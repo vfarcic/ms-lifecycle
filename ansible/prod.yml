@@ -3,5 +3,6 @@
   remote_user: vagrant
   sudo: yes
   roles:
+    - common
     - docker
     - docker-compose

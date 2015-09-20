@@ -5,6 +5,7 @@
   vars:
     - registrator_name: registrator-consul
   roles:
+    - common
     - docker
     - consul
     - registrator
