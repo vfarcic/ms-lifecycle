@@ -1,0 +1,99 @@
+- name: Tests container is built
+  shell: docker build \
+    -t 10.100.198.200:5000/{{ service_name }}-tests \
+    -f Dockerfile.test \
+    .
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Pre-deployment tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm tests
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Container is built
+  shell: docker build \
+    -t 10.100.198.200:5000/{{ service_name }} \
+    .
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service]
+
+- name: Container is pushed
+  shell: docker push \
+    10.100.198.200:5000/{{ service_name }}
+  delegate_to: 127.0.0.1
+  tags: [service]
+
+- name: Directories are created
+  file:
+    path: /data/{{ service_name }}
+    recurse: yes
+    state: directory
+  tags: [service]
+
+- name: Files are copied
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: files
+  tags: [service]
+
+- name: Templates are copied
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: templates
+  tags: [service, discovery]
+
+- name: Next color is retrieved
+  shell: /data/{{ service_name }}/get-color.sh
+  register: next_color
+  tags: [service, discovery]
+
+- debug: var=next_color.stdout
+  tags: [service, discovery]
+
+- name: Containers are pulled
+  shell: docker-compose pull app
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
+
+- name: Containers are running
+  shell: docker-compose up -d app
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  tags: [service]
+
+- name: Post-deployment tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Tests container is pushed
+  shell: docker push \
+    10.100.198.200:5000/{{ service_name }}-tests
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
