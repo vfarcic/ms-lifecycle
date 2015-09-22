@@ -37,42 +37,69 @@
     path: /data/{{ service_name }}
     recurse: yes
     state: directory
-  tags: [service]
+  tags: [service, discovery]
 
+# New files are added
 - name: Files are copied
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items: files
-  tags: [service]
-
-- name: Templates are copied
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-  with_items: templates
   tags: [service, discovery]
 
+# New
 - name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh
+  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
   register: next_color
   tags: [service, discovery]
 
-- debug: var=next_color.stdout
+# New
+- name: App target is updated
+  replace:
+    dest: /data/{{ service_name }}/docker-compose.yml
+    regexp: "app:"
+    replace: "app-{{ next_color.stdout }}:"
   tags: [service, discovery]
 
+# New
+- name: Service name is updated
+  replace:
+    dest: /data/{{ service_name }}/docker-compose.yml
+    regexp: "SERVICE_NAME: {{ service_name }}"
+    replace: "SERVICE_NAME: {{ service_name }}-{{ next_color.stdout }}"
+  tags: [service, discovery]
+
+# Target is updated
 - name: Containers are pulled
-  shell: docker-compose pull app
+  shell: docker-compose pull app-{{ next_color.stdout }}
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
 
+# Target is updated
 - name: Containers are running
-  shell: docker-compose up -d app
+  shell: docker-compose up -d app-{{ next_color.stdout }}
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
+
+# New
+- name: Next port is retrieved
+  shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
+  register: next_port
+  tags: [service, discovery]
+
+# Copy of post-deployment tests
+- name: Pre-integration tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }}:{{ next_port.stdout }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
 
 - name: Proxy is configured
   shell: consul-template \
@@ -81,7 +108,8 @@
     -once
   tags: [service]
 
-- name: Post-deployment tests are run
+# Name has been changed to post-integration
+- name: Post-integration tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
     run --rm \
