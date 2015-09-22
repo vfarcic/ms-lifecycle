@@ -37,7 +37,7 @@
     path: /data/{{ service_name }}
     recurse: yes
     state: directory
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # New files are added
 - name: Files are copied
@@ -45,13 +45,13 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items: files
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # New
 - name: Next color is retrieved
   shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
   register: next_color
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # New
 - name: App target is updated
@@ -59,7 +59,7 @@
     dest: /data/{{ service_name }}/docker-compose.yml
     regexp: "app:"
     replace: "app-{{ next_color.stdout }}:"
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # New
 - name: Service name is updated
@@ -67,7 +67,7 @@
     dest: /data/{{ service_name }}/docker-compose.yml
     regexp: "SERVICE_NAME: {{ service_name }}"
     replace: "SERVICE_NAME: {{ service_name }}-{{ next_color.stdout }}"
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # Target is updated
 - name: Containers are pulled
@@ -87,7 +87,7 @@
 - name: Next port is retrieved
   shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
   register: next_port
-  tags: [service, discovery]
+  tags: [service, tests]
 
 # Copy of post-deployment tests
 - name: Pre-integration tests are run
