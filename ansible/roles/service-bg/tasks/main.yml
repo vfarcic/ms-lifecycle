@@ -39,7 +39,6 @@
     state: directory
   tags: [service, tests]
 
-# New files are added
 - name: Files are copied
   copy:
     src: "{{ item.src }}"
@@ -47,13 +46,11 @@
   with_items: files
   tags: [service, tests]
 
-# New
 - name: Next color is retrieved
   shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
   register: next_color
   tags: [service, tests]
 
-# New
 - name: App target is updated
   replace:
     dest: /data/{{ service_name }}/docker-compose.yml
@@ -61,7 +58,6 @@
     replace: "app-{{ next_color.stdout }}:"
   tags: [service, tests]
 
-# New
 - name: Service name is updated
   replace:
     dest: /data/{{ service_name }}/docker-compose.yml
@@ -69,27 +65,23 @@
     replace: "SERVICE_NAME: {{ service_name }}-{{ next_color.stdout }}"
   tags: [service, tests]
 
-# Target is updated
 - name: Containers are pulled
   shell: docker-compose pull app-{{ next_color.stdout }}
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
 
-# Target is updated
 - name: Containers are running
   shell: docker-compose up -d app-{{ next_color.stdout }}
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
 
-# New
 - name: Next port is retrieved
   shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
   register: next_port
   tags: [service, tests]
 
-# Copy of post-deployment tests
 - name: Pre-integration tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
@@ -98,17 +90,26 @@
     integ
   args:
     chdir: "{{ repo_dir }}"
+  register: pre_integ_result
+  ignore_errors: yes
   delegate_to: 127.0.0.1
   tags: [service, tests]
+
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  when: pre_integ_result|failed or not pre_integ_result is defined
+  tags: [service]
 
 - name: Proxy is configured
   shell: consul-template \
     -consul localhost:8500 \
     -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
     -once
+  when: pre_integ_result|success or not pre_integ_result is defined
   tags: [service]
 
-# Name has been changed to post-integration
 - name: Post-integration tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
@@ -117,6 +118,9 @@
     integ
   args:
     chdir: "{{ repo_dir }}"
+  when: pre_integ_result|success
+  register: post_integ_result
+  ignore_errors: yes
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
@@ -124,4 +128,9 @@
   shell: docker push \
     10.100.198.200:5000/{{ service_name }}-tests
   delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Pipeline failed
+  fail: msg="Some of the tests failed"
+  when: pre_integ_result|failed or post_integ_result|failed
   tags: [service, tests]
