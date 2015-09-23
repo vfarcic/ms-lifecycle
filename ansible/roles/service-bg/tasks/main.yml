@@ -118,6 +118,7 @@
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
+# TODO: Uncomment
 #- name: Container is stopped
 #  shell: docker-compose stop app-{{ next_color.stdout }}
 #  args:
@@ -125,13 +126,13 @@
 #  when: pre_integ_result|failed or post_integ_result|failed
 #  tags: [service]
 
+- name: Pipeline failed
+  fail: msg="Some of the tests failed"
+  when: pre_integ_result|failed or post_integ_result|failed
+  tags: [service, tests]
+
 - name: Tests container is pushed
   shell: docker push \
     10.100.198.200:5000/{{ service_name }}-tests
   delegate_to: 127.0.0.1
-  tags: [service, tests]
-
-- name: Pipeline failed
-  fail: msg="Some of the tests failed"
-  when: pre_integ_result|failed or post_integ_result|failed
   tags: [service, tests]
