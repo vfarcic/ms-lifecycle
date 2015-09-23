@@ -1,0 +1,40 @@
+- name: Next color is retrieved
+  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
+  register: next_color
+  when: post_integ_result|failed
+  tags: [service, tests]
+
+- name: Proxy config is copied
+  copy:
+    src: "{{ repo_dir }}/nginx-upstreams.ctmpl"
+    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl"
+  when: post_integ_result|success
+  tags: [service, tests]
+
+- name: Proxy config is updated
+  replace:
+    dest: /data/nginx/upstreams/{{ service_name }}.ctmpl
+    regexp: "range service \"{{ service_name }}\""
+    replace: "range service \"{{ service_name }}-{{ next_color.stdout }}\""
+  when: post_integ_result|success
+  tags: [service, tests]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  when: post_integ_result|success
+  tags: [service]
+
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  when: pre_integ_result|failed or post_integ_result|failed
+  tags: [service]
+
+- name: Tests failed
+  fail: msg="Some of the tests failed"
+  when: pre_integ_result|failed or post_integ_result|failed
+  tags: [service, tests]

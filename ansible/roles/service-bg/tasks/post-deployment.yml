@@ -1,0 +1,34 @@
+- name: Pre-integration tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }}:{{ next_port.stdout }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  register: pre_integ_result
+  ignore_errors: yes
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  when: pre_integ_result|success
+  tags: [service]
+
+- name: Post-integration tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  when: pre_integ_result|success
+  register: post_integ_result
+  ignore_errors: yes
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
