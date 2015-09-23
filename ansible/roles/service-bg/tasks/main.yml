@@ -95,19 +95,12 @@
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
-- name: Container is stopped
-  shell: docker-compose stop app-{{ next_color.stdout }}
-  args:
-    chdir: /data/{{ service_name }}
-  when: pre_integ_result|failed or not pre_integ_result is defined
-  tags: [service]
-
 - name: Proxy is configured
   shell: consul-template \
     -consul localhost:8500 \
     -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
     -once
-  when: pre_integ_result|success or not pre_integ_result is defined
+  when: pre_integ_result|success
   tags: [service]
 
 - name: Post-integration tests are run
@@ -123,6 +116,13 @@
   ignore_errors: yes
   delegate_to: 127.0.0.1
   tags: [service, tests]
+
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  when: pre_integ_result|failed or post_integ_result|failed
+  tags: [service]
 
 - name: Tests container is pushed
   shell: docker push \
