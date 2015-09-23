@@ -51,11 +51,12 @@
   register: next_color
   tags: [service, tests]
 
-- name: App target is updated
+- name: Configs are updated
   replace:
-    dest: /data/{{ service_name }}/docker-compose.yml
-    regexp: "app:"
-    replace: "app-{{ next_color.stdout }}:"
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items: replace
   tags: [service, tests]
 
 - name: Service name is updated
@@ -117,12 +118,12 @@
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
-- name: Container is stopped
-  shell: docker-compose stop app-{{ next_color.stdout }}
-  args:
-    chdir: /data/{{ service_name }}
-  when: pre_integ_result|failed or post_integ_result|failed
-  tags: [service]
+#- name: Container is stopped
+#  shell: docker-compose stop app-{{ next_color.stdout }}
+#  args:
+#    chdir: /data/{{ service_name }}
+#  when: pre_integ_result|failed or post_integ_result|failed
+#  tags: [service]
 
 - name: Tests container is pushed
   shell: docker push \
