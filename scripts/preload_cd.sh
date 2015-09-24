@@ -10,3 +10,6 @@ docker push 10.100.198.200:5000/registrator
 docker pull nginx
 docker tag nginx 10.100.198.200:5000/nginx
 docker push 10.100.198.200:5000/nginx
+docker pull mongo
+docker tag mongo 10.100.198.200:5000/mongo
+docker push 10.100.198.200:5000/mongo
