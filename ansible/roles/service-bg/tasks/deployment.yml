@@ -5,6 +5,11 @@
     state: directory
   tags: [service, tests]
 
+- name: Next color is retrieved
+  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
+  register: next_color
+  tags: [service, tests]
+
 - include: copy.yml
 
 - name: Containers are pulled
@@ -18,8 +23,3 @@
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
-
-- name: Next port is retrieved
-  shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
-  register: next_port
-  tags: [service, tests]

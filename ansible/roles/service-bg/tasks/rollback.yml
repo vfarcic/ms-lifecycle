@@ -1,20 +1,13 @@
-- name: Proxy config is updated
-  replace:
-    dest: /data/nginx/upstreams/{{ service_name }}.ctmpl
-    regexp: "range service \"{{ service_name }}\""
-    replace: "range service \"{{ service_name }}-{{ next_color.stdout }}\""
-  when: post_integ_result|failed
+- name: Current color is retrieved
+  shell: curl http://localhost:8500/v1/kv/{{ service_name }}/color?raw
+  register: next_color
   tags: [service, tests]
+
+- include: copy.yml
 
 - name: Proxy is configured
   shell: consul-template \
     -consul localhost:8500 \
     -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
     -once
-  when: post_integ_result|failed
   tags: [service]
-
-- name: Tests failed
-  fail: msg="Some of the tests failed"
-  when: pre_integ_result|failed or post_integ_result|failed
-  tags: [service, tests]

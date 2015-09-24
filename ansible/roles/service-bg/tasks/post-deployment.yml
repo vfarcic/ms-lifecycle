@@ -1,3 +1,8 @@
+- name: Next port is retrieved
+  shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
+  register: next_port
+  tags: [service, tests]
+
 - name: Pre-integration tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
@@ -23,7 +28,7 @@
   shell: docker-compose \
     -f docker-compose-dev.yml \
     run --rm \
-    -e DOMAIN={{ proxy_url }} \
+    -e DOMAIN={{ proxy_url }}xxx \
     integ
   args:
     chdir: "{{ repo_dir }}"
@@ -36,9 +41,18 @@
 - name: Next color is put
   shell: curl -X PUT -d {{ next_color.stdout }} \
     localhost:8500/v1/kv/{{ service_name }}/color
-  when: post_integ_result|success
+  when: pre_integ_result|success and post_integ_result|success
+  tags: [service, tests]
+
+- name: Next color is retrieved
+  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
+  register: next_color
   tags: [service, tests]
 
 - include: copy.yml
-  when: post_integ_result|success
 
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]

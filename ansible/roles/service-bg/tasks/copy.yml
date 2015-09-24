@@ -6,11 +6,6 @@
   with_items: files
   tags: [service, tests]
 
-- name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
-  register: next_color
-  tags: [service, tests]
-
 - name: Configs are updated
   replace:
     dest: "{{ item.dest }}"

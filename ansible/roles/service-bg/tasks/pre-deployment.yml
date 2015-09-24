@@ -1,3 +1,8 @@
+#- name: Pre-deployment tests failed
+#  fail: msg="Simulation of pre-deployment tests failure"
+#  delegate_to: 127.0.0.1
+#  tags: [service, tests]
+
 - name: Tests container is built
   shell: docker build \
     -t 10.100.198.200:5000/{{ service_name }}-tests \
