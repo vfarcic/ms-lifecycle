@@ -28,7 +28,7 @@
   shell: docker-compose \
     -f docker-compose-dev.yml \
     run --rm \
-    -e DOMAIN={{ proxy_url }}xxx \
+    -e DOMAIN={{ proxy_url }} \
     integ
   args:
     chdir: "{{ repo_dir }}"
