@@ -32,3 +32,13 @@
   ignore_errors: yes
   delegate_to: 127.0.0.1
   tags: [service, tests]
+
+- name: Next color is put
+  shell: curl -X PUT -d {{ next_color.stdout }} \
+    localhost:8500/v1/kv/{{ service_name }}/color
+  when: post_integ_result|success
+  tags: [service, tests]
+
+- include: copy.yml
+  when: post_integ_result|success
+

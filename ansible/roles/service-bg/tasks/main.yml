@@ -6,6 +6,12 @@
 
 - include: rollback.yml
 
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
+
 - name: Tests container is pushed
   shell: docker push \
     10.100.198.200:5000/{{ service_name }}-tests

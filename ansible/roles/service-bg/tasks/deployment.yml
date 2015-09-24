@@ -5,26 +5,7 @@
     state: directory
   tags: [service, tests]
 
-- name: Files are copied
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-  with_items: files
-  tags: [service, tests]
-
-- name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
-  register: next_color
-  tags: [service, tests]
-
-- name: Configs are updated
-  replace:
-    dest: "{{ item.dest }}"
-    regexp: "{{ item.regexp }}"
-    replace: "{{ item.replace }}"
-  with_items: replace
-  tags: [service, tests]
+- include: copy.yml
 
 - name: Containers are pulled
   shell: docker-compose pull app-{{ next_color.stdout }}
