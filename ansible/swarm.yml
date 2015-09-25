@@ -1,0 +1,12 @@
+- hosts: swarm
+  serial: 1
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - common
+    - consul
+    - swarm
+    - registrator
+#    - consul-template
+#    - nginx
+#    - service-swarm
