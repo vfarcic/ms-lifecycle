@@ -13,7 +13,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -vv"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1536
-#      v.gui = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   config.vm.define "prod" do |d|
