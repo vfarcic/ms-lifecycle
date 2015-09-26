@@ -29,10 +29,9 @@
 
 - name: Configuration is present
   copy:
-    src: docker
+    src: "{{ swarm_docker_cfg }}"
     dest: /etc/default/docker
   register: config_result
-  when: not swarm_master is defined
   tags: [swarm]
 
 - name: Service is restarted
@@ -45,8 +44,7 @@
 - name: Swarm node is running
   docker:
     name: swarm-node
-    image: swarm
-#    command: join --addr={{ ip }}:2375 token://{{ swarm_cluster_id }}
+    image: "{{ registry_url }}swarm"
     command: join --advertise={{ ip }}:2375 consul://{{ ip }}:8500/swarm
     env:
       SERVICE_NAME: swarm-master
@@ -56,9 +54,8 @@
 - name: Swarm master is running
   docker:
     name: swarm-master
-    image: swarm
+    image: "{{ registry_url }}swarm"
     ports: 2375:2375
-#    command: manage token://{{ swarm_cluster_id }}
     command: manage consul://{{ ip }}:8500/swarm
     env:
       SERVICE_NAME: swarm-master

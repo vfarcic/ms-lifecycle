@@ -5,7 +5,7 @@
 
 - name: Tests container is built
   shell: docker build \
-    -t 10.100.198.200:5000/{{ service_name }}-tests \
+    -t {{ registry_url }}{{ service_name }}-tests \
     -f Dockerfile.test \
     .
   args:
@@ -24,7 +24,7 @@
 
 - name: Container is built
   shell: docker build \
-    -t 10.100.198.200:5000/{{ service_name }} \
+    -t {{ registry_url }}{{ service_name }} \
     .
   args:
     chdir: "{{ repo_dir }}"
@@ -33,6 +33,6 @@
 
 - name: Container is pushed
   shell: docker push \
-    10.100.198.200:5000/{{ service_name }}
+    {{ registry_url }}{{ service_name }}
   delegate_to: 127.0.0.1
   tags: [service]
