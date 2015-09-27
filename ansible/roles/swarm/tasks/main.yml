@@ -44,7 +44,7 @@
 - name: Swarm node is running
   docker:
     name: swarm-node
-    image: "{{ registry_url }}swarm"
+    image: swarm
     command: join --advertise={{ ip }}:2375 consul://{{ ip }}:8500/swarm
     env:
       SERVICE_NAME: swarm-master
@@ -54,7 +54,7 @@
 - name: Swarm master is running
   docker:
     name: swarm-master
-    image: "{{ registry_url }}swarm"
+    image: swarm
     ports: 2375:2375
     command: manage consul://{{ ip }}:8500/swarm
     env:

@@ -7,7 +7,7 @@
 
 - name: Container is running
   docker:
-    image: "{{ registry_url }}nginx"
+    image: nginx
     name: nginx
     state: running
     ports: "{{ ports }}"

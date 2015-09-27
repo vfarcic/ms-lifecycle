@@ -1,7 +1,7 @@
 - name: Container is running
   docker:
     name: "{{ registrator_name }}"
-    image: "{{ registry_url }}registrator"
+    image: gliderlabs/registrator
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     hostname: "{{ ansible_hostname }}"
