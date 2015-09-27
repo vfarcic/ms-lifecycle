@@ -1,0 +1,19 @@
+- include: pre-deployment.yml
+
+- include: deployment.yml
+
+- include: post-deployment.yml
+
+- include: rollback.yml
+  when: post_integ_result|failed
+
+- name: Tests failed
+  fail: msg="Some of the tests failed"
+  when: pre_integ_result|failed or post_integ_result|failed
+  tags: [service, tests]
+
+- name: Tests container is pushed
+  shell: docker push \
+    {{ registry_url }}{{ service_name }}-tests
+  delegate_to: 127.0.0.1
+  tags: [service, tests]

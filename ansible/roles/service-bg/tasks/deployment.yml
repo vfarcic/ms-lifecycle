@@ -5,11 +5,6 @@
     state: directory
   tags: [service, tests]
 
-- name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
-  register: next_color
-  tags: [service, tests]
-
 - include: copy.yml
 
 - name: Containers are pulled

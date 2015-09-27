@@ -1,0 +1,57 @@
+- name: Domain is retrieved
+  shell: /data/{{ service_name }}/get-domain.sh {{ next_color.stdout }}
+  register: service_domain
+  tags: [service, tests]
+
+- name: Pre-integration tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN=http://{{ service_domain.stdout }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  register: pre_integ_result
+  ignore_errors: yes
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  when: pre_integ_result|success
+  tags: [service]
+
+- name: Post-integration tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  when: pre_integ_result|success
+  register: post_integ_result
+  ignore_errors: yes
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Next color is put
+  shell: curl -X PUT -d {{ next_color.stdout }} \
+    localhost:8500/v1/kv/{{ service_name }}/color
+  when: pre_integ_result|success and post_integ_result|success
+  tags: [service, tests]
+
+- include: copy.yml
+
+- include: configure-compose.yml
+
+- name: Container is stopped
+  shell: docker-compose stop app-{{ next_color.stdout }}
+  environment:
+    DOCKER_HOST: tcp://10.100.195.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]

@@ -1,9 +1,12 @@
-- hosts: swarm
+- hosts: swarm-master
   serial: 1
   remote_user: vagrant
   sudo: yes
   roles:
     - common
+    - docker-compose
     - consul
-    - swarm
     - registrator
+    - consul-template
+    - nginx
+    - service-swarm
