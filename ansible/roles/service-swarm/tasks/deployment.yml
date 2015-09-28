@@ -16,7 +16,7 @@
     DOCKER_HOST: tcp://10.100.195.200:2375
   args:
     chdir: /data/{{ service_name }}
-  tags: [service]
+  tags: [service, pull]
 
 - name: DB container is running
   shell: docker-compose up -d db

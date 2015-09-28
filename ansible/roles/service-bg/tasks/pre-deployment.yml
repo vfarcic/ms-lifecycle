@@ -1,8 +1,3 @@
-#- name: Pre-deployment tests failed
-#  fail: msg="Simulation of pre-deployment tests failure"
-#  delegate_to: 127.0.0.1
-#  tags: [service, tests]
-
 - name: Tests container is built
   shell: docker build \
     -t {{ registry_url }}{{ service_name }}-tests \
@@ -12,6 +7,11 @@
     chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
   tags: [service, tests]
+
+#- name: Pre-deployment tests failed
+#  fail: msg="Simulation of pre-deployment tests failure"
+#  delegate_to: 127.0.0.1
+#  tags: [service, tests]
 
 - name: Pre-deployment tests are run
   shell: docker-compose \
