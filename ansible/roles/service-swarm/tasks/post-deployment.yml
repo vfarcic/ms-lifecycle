@@ -7,7 +7,7 @@
   shell: docker-compose \
     -f docker-compose-dev.yml \
     run --rm \
-    -e DOMAIN=http://{{ service_domain.stdout }}xxx \
+    -e DOMAIN=http://{{ service_domain.stdout }} \
     integ
   args:
     chdir: "{{ repo_dir }}"
