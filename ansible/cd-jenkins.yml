@@ -1,0 +1,12 @@
+- hosts: localhost
+  remote_user: vagrant
+  serial: 1
+  sudo: yes
+  roles:
+    - common
+    - java
+    - docker
+    - docker-compose
+    - registry
+    - consul-template
+    - jenkins

@@ -27,6 +27,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
+  config.vm.define "cd-jenkins" do |d|
+    d.vm.box = "ubuntu/trusty64"
+    d.vm.hostname = "cd"
+    d.vm.network "private_network", ip: "10.100.198.202"
+    d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
+    d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd-jenkins.yml -c local -vv"
+    d.vm.provider "virtualbox" do |v|
+      v.memory = 1536
+#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+  end
   (1..3).each do |i|
     config.vm.define "serv-disc-0#{i}" do |d|
       d.vm.box = "ubuntu/trusty64"
