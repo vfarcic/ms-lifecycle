@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#git clone https://github.com/vfarcic/books-ms.git
+git clone https://github.com/vfarcic/books-ms.git
 
 cd books-ms
 
