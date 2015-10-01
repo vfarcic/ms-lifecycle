@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 
-git clone https://github.com/vfarcic/books-ms.git
-docker pull vfarcic/books-ms-tests
-docker pull vfarcic/books-ms
+#git clone https://github.com/vfarcic/books-ms.git
+
+cd books-ms
+
+docker build \
+	-f Dockerfile.test \
+	-t 10.100.198.200:5000/books-ms-tests \
+	.
+
+docker push 10.100.198.200:5000/books-ms-tests
+
+docker-compose \
+	-f docker-compose-dev.yml \
+	run --rm tests
+
+docker build \
+	-f Dockerfile \
+	-t 10.100.198.200:5000/books-ms \
+	.
+
+docker push 10.100.198.200:5000/books-ms
+
 docker pull mongo

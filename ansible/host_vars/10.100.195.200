@@ -1,0 +1,4 @@
+ansible_ssh_private_key_file: /vagrant/.vagrant/machines/swarm-master/virtualbox/private_key
+consul_extra: -server -bootstrap-expect 1
+swarm_master: true
+swarm_docker_cfg: docker-swarm-master

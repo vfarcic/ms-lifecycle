@@ -1,13 +1,13 @@
-- name: Next port is retrieved
-  shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
-  register: next_port
+- name: Domain is retrieved
+  shell: /data/{{ service_name }}/get-domain.sh {{ next_color.stdout }}
+  register: service_domain
   tags: [service, tests]
 
 - name: Pre-integration tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
     run --rm \
-    -e DOMAIN={{ proxy_url }}:{{ next_port.stdout }} \
+    -e DOMAIN=http://{{ service_domain.stdout }} \
     integ
   args:
     chdir: "{{ repo_dir }}"
@@ -44,15 +44,14 @@
   when: pre_integ_result|success and post_integ_result|success
   tags: [service, tests]
 
-- name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
-  register: next_color
-  tags: [service, tests]
-
 - include: copy.yml
+
+- include: configure-compose.yml
 
 - name: Container is stopped
   shell: docker-compose stop app-{{ next_color.stdout }}
+  environment:
+    DOCKER_HOST: tcp://10.100.195.200:2375
   args:
     chdir: /data/{{ service_name }}
   tags: [service]

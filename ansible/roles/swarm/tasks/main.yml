@@ -1,0 +1,63 @@
+- name: Add Docker repository and update apt cache
+  apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    update_cache: yes
+    state: present
+  tags: [docker]
+
+- name: Old Docker is absent
+  apt:
+    name: lxc-docker
+    purge: yes
+    state: absent
+  tags: [docker]
+
+- name: Docker is present
+  apt:
+    name: docker-engine
+    state: latest
+    force: yes
+  tags: [docker]
+
+- name: Python-pip is present
+  apt: name=python-pip state=present
+  tags: [docker]
+
+- name: Docker-py is present
+  pip: name=docker-py version=0.4.0 state=present
+  tags: [docker]
+
+- name: Configuration is present
+  copy:
+    src: "{{ swarm_docker_cfg }}"
+    dest: /etc/default/docker
+  register: config_result
+  tags: [swarm]
+
+- name: Service is restarted
+  service:
+    name: docker
+    state: restarted
+  when: config_result|changed
+  tags: [swarm]
+
+- name: Swarm node is running
+  docker:
+    name: swarm-node
+    image: swarm
+    command: join --advertise={{ ip }}:2375 consul://{{ ip }}:8500/swarm
+    env:
+      SERVICE_NAME: swarm-master
+  when: not swarm_master is defined
+  tags: [swarm]
+
+- name: Swarm master is running
+  docker:
+    name: swarm-master
+    image: swarm
+    ports: 2375:2375
+    command: manage consul://{{ ip }}:8500/swarm
+    env:
+      SERVICE_NAME: swarm-master
+  when: swarm_master is defined
+  tags: [swarm]

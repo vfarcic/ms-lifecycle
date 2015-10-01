@@ -1,0 +1,37 @@
+- name: Directories are created
+  file:
+    path: /data/{{ service_name }}
+    recurse: yes
+    state: directory
+  with_items: directories
+  tags: [service, tests]
+
+- include: copy.yml
+
+- include: configure-compose.yml
+
+- name: Containers are pulled
+  shell: docker-compose pull app-{{ next_color.stdout }}
+  environment:
+    DOCKER_HOST: tcp://10.100.195.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service, pull]
+
+- name: DB container is running
+  shell: docker-compose up -d db
+  environment:
+    DOCKER_HOST: tcp://10.100.195.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
+
+- include: configure-compose.yml
+
+- name: App container is running
+  shell: docker-compose scale app-{{ next_color.stdout }}={{ scale_service }}
+  environment:
+    DOCKER_HOST: tcp://10.100.195.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
