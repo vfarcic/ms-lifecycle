@@ -1,0 +1,16 @@
+- name: Post-deployment tests are run
+  shell: docker-compose \
+    -f docker-compose-dev.yml \
+    run --rm \
+    -e DOMAIN={{ proxy_url }} \
+    integ
+  args:
+    chdir: "{{ repo_dir }}"
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Tests container is pushed
+  shell: docker push \
+    {{ registry_url }}{{ service_name }}-tests
+  delegate_to: 127.0.0.1
+  tags: [service, tests]
