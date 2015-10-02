@@ -8,10 +8,6 @@ files: [
     dest: "/data/nginx/includes/{{ service_name }}.conf",
     mode: "0644"
   }, {
-    src: "{{ repo_dir }}/nginx-upstreams.ctmpl",
-    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl",
-    mode: "0644"
-  }, {
     src: "get-color.sh",
     dest: "/data/{{ service_name }}/get-color.sh",
     mode: "0755"
@@ -31,10 +27,6 @@ replace: [
     dest: "/data/{{ service_name }}/docker-compose.yml",
     regexp: "SERVICE_NAME={{ service_name }}",
     replace: "SERVICE_NAME={{ service_name }}-{{ next_color.stdout }}"
-  }, {
-    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl",
-    regexp: "range service \"{{ service_name }}\"",
-    replace: "range service \"{{ service_name }}-{{ next_color.stdout }}\""
   }
 ]
 

@@ -16,13 +16,7 @@
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
-- name: Proxy is configured
-  shell: consul-template \
-    -consul localhost:8500 \
-    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
-    -once
-  when: pre_integ_result|success
-  tags: [service]
+- include: nginx.yml
 
 - name: Post-integration tests are run
   shell: docker-compose \
@@ -42,11 +36,6 @@
   shell: curl -X PUT -d {{ next_color.stdout }} \
     localhost:8500/v1/kv/{{ service_name }}/color
   when: pre_integ_result|success and post_integ_result|success
-  tags: [service, tests]
-
-- name: Next color is retrieved
-  shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
-  register: next_color
   tags: [service, tests]
 
 - include: copy.yml

@@ -3,7 +3,6 @@
     path: /data/{{ service_name }}
     recurse: yes
     state: directory
-  with_items: directories
   tags: [service, tests]
 
 - include: copy.yml
