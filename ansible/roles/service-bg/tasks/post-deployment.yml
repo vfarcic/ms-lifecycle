@@ -17,6 +17,7 @@
   tags: [service, tests]
 
 - include: nginx.yml
+  when: pre_integ_result|success
 
 - name: Post-integration tests are run
   shell: docker-compose \
