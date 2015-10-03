@@ -16,13 +16,8 @@
   delegate_to: 127.0.0.1
   tags: [service, tests]
 
-- name: Proxy is configured
-  shell: consul-template \
-    -consul localhost:8500 \
-    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
-    -once
+- include: nginx.yml
   when: pre_integ_result|success
-  tags: [service]
 
 - name: Post-integration tests are run
   shell: docker-compose \

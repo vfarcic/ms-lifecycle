@@ -11,7 +11,7 @@
   shell: docker-compose pull app-{{ next_color.stdout }}
   args:
     chdir: /data/{{ service_name }}
-  tags: [service]
+  tags: [service, pull]
 
 - name: Containers are running
   shell: docker-compose up -d app-{{ next_color.stdout }}

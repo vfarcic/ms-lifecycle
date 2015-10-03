@@ -6,7 +6,7 @@
   args:
     chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
-  tags: [service, tests]
+  tags: [service, tests, build]
 
 #- name: Pre-deployment tests failed
 #  fail: msg="Simulation of pre-deployment tests failure"
@@ -29,7 +29,7 @@
   args:
     chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
-  tags: [service]
+  tags: [service, build]
 
 - name: Container is pushed
   shell: docker push \

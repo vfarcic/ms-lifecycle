@@ -11,11 +11,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.hostname = "cd"
     d.vm.network "private_network", ip: "10.100.198.200"
     d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
-    d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -vv"
+    d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -vvvv"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1536
-#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   config.vm.define "prod" do |d|
@@ -24,8 +24,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.198.201"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   config.vm.define "cd-jenkins" do |d|
@@ -36,8 +36,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd-jenkins.yml -c local -vv"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1536
-#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   (1..3).each do |i|
@@ -47,8 +47,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.vm.network "private_network", ip: "10.100.197.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
-#        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
     end
   end
@@ -58,8 +58,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.196.200"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   config.vm.define "swarm-master" do |d|
@@ -68,8 +68,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.195.200"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-#      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
   end
   (1..2).each do |i|
@@ -79,8 +79,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.vm.network "private_network", ip: "10.100.195.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
-#        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-#        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
     end
   end

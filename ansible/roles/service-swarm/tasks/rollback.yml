@@ -1,6 +1,6 @@
-- name: Proxy is configured
-  shell: consul-template \
-    -consul localhost:8500 \
-    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
-    -once
+- name: Current color is retrieved
+  shell: curl http://localhost:8500/v1/kv/{{ service_name }}/color?raw
+  register: next_color
   tags: [service]
+
+- include: nginx.yml
