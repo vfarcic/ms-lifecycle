@@ -1,0 +1,4 @@
+directories: [
+  { path: '/data/jenkins', owner: 'root', mode: '0777' },
+  { path: '/data/jenkins_slaves', owner: 'vagrant', mode: '0744' }
+]

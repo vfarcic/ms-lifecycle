@@ -1,0 +1,17 @@
+{
+    "checks": [
+        {
+            "id": "mem",
+            "name": "Memory utilization",
+            "notes": "Critical 95% util, warning 85% util",
+            "script": "/data/consul/scripts/mem.sh",
+            "interval": "10s"
+        }, {
+           "id": "disk",
+           "name": "Disk utilization",
+           "notes": "Critical 95% util, warning 80% util",
+           "script": "/data/consul/scripts/disk.sh",
+           "interval": "10s"
+       }
+    ]
+}

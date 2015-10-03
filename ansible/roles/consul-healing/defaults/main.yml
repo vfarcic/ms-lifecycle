@@ -1,0 +1,24 @@
+logs_dir: /data/consul/logs
+config_dir: /data/consul/config
+data_dir: /data/consul/data
+scripts_dir: /data/consul/scripts
+
+directories:
+  - "{{ data_dir }}"
+  - "{{ config_dir }}"
+  - "{{ scripts_dir }}"
+  - "{{ logs_dir }}"
+
+files: [
+  { src: 'consul', dest: '/usr/local/bin/consul', mode: '0755' },
+  { src: 'ui', dest: '/data/consul', mode: '0644' },
+  { src: 'consul_check.json', dest: '{{ config_dir }}/consul_check.json', mode: '0644' },
+  { src: 'mem.sh', dest: '{{ scripts_dir }}/mem.sh', mode: '0755' },
+  { src: 'disk.sh', dest: '{{ scripts_dir }}/disk.sh', mode: '0755' }
+]
+
+templates: [
+  { src: 'watchers.json', dest: '{{ config_dir }}/watchers.json', mode: '0644'},
+  { src: 'manage_critical.sh', dest: '{{ scripts_dir }}/manage_critical.sh', mode: '0755' },
+  { src: 'manage_warning.sh', dest: '{{ scripts_dir }}/manage_warning.sh', mode: '0755' }
+]

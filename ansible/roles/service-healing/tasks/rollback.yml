@@ -1,0 +1,6 @@
+- name: Current color is retrieved
+  shell: curl http://localhost:8500/v1/kv/{{ service_name }}/color?raw
+  register: next_color
+  tags: [service]
+
+- include: nginx.yml

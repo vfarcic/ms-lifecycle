@@ -4,9 +4,9 @@
   sudo: yes
   roles:
     - common
-    - java
     - docker
     - docker-compose
-    - registry
     - consul-template
+    - registry
+    - java
     - jenkins

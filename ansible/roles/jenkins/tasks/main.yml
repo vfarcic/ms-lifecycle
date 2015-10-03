@@ -1,3 +1,12 @@
+- name: Directories are created
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items: directories
+  tags: [jenkins]
+
 - name: Container is running
   docker:
     name: jenkins

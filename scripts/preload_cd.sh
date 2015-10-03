@@ -23,3 +23,5 @@ docker build \
 docker push 10.100.198.200:5000/books-ms
 
 docker pull mongo
+
+docker pull jenkins

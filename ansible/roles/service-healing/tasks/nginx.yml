@@ -1,0 +1,20 @@
+- name: nginx template is copied
+  copy:
+    src: "{{ repo_dir }}/nginx-upstreams.ctmpl"
+    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl"
+    mode: "0644"
+  tags: [service]
+
+- name: nginx config is updated
+  replace:
+    dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl"
+    regexp: "range service \"{{ service_name }}\""
+    replace: "range service \"{{ service_name }}-{{ next_color.stdout }}\""
+  tags: [service]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  tags: [service]

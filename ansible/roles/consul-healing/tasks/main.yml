@@ -1,0 +1,44 @@
+- name: Directories are created
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items: directories
+  tags: [consul]
+
+- name: Files are copied
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: files
+  register: result
+  tags: [consul]
+
+- name: Templates are present
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: templates
+  tags: [consul]
+
+- name: Is running
+  shell: "nohup consul agent {{ consul_extra }} \
+    -ui-dir /data/consul/ui \
+    -data-dir {{ data_dir }} \
+    -config-dir {{ config_dir }} \
+    -node={{ ansible_hostname }} \
+    -bind={{ ip }} \
+    -client=0.0.0.0 \
+    >{{ logs_dir }}/consul.log 2>&1 &"
+  tags: [consul]
+
+- name: Has joined
+  shell: consul join {{ consul_server_ip }}
+  when: consul_server_ip is defined
+  tags: [consul]
+
+- name: Consul is restarted
+  shell: killall -HUP consul
+  when: result|changed
+  tags: [consul]

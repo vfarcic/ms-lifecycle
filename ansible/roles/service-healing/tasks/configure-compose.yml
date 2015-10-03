@@ -1,0 +1,6 @@
+- name: Compose is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_compose_src }}:{{ ct_compose_dest }}" \
+    -once
+  tags: [service]

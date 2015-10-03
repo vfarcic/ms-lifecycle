@@ -1,0 +1,14 @@
+{
+  "service": {
+    "name": "{{ service_name }}",
+    "tags": ["service"],
+    "port": 80,
+    "address": "{{ ip }}",
+    "checks": [{
+      "id": "api",
+      "name": "HTTP on port 80",
+      "http": "http://{{ proxy_url }}{{ ping_address }}",
+      "interval": "10s"
+    }]
+  }
+}
