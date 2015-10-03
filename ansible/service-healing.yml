@@ -9,4 +9,5 @@
     - registrator
     - consul-template
     - nginx
+    - swarm
     - service-healing
