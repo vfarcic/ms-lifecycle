@@ -55,5 +55,3 @@
   ignore_errors: yes
   tags: [jenkins]
 
-# TODO: Service jobs
-# TODO: Restart
