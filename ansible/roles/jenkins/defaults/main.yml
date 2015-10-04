@@ -2,7 +2,6 @@ home: /data/jenkins
 
 directories: [
   { path: '{{ home }}', owner: 'root', mode: '0777' },
-  { path: '{{ home }}/jobs/service-redeploy', owner: 'root', mode: '0777' },
   { path: '/data/jenkins_slaves', owner: 'vagrant', mode: '0744' }
 ]
 

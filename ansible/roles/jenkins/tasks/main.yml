@@ -21,6 +21,7 @@
   file:
     path: "{{ home }}/jobs/{{ item }}"
     state: directory
+    mode: "0777"
   with_items: jobs
   tags: [jenkins]
 
@@ -36,6 +37,7 @@
   file:
     path: "{{ home }}/jobs/{{ item.service_name }}"
     state: directory
+    mode: "0777"
   with_items: service_jobs
   tags: [jenkins]
 
