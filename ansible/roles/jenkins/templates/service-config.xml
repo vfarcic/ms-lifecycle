@@ -9,12 +9,12 @@
         <hudson.model.StringParameterDefinition>
           <name>SERVICE_NAME</name>
           <description></description>
-          <defaultValue>books-ms</defaultValue>
+          <defaultValue>{{ item.service_name }}</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>PING_ADDRESS</name>
           <description></description>
-          <defaultValue>/api/v1/books</defaultValue>
+          <defaultValue>{{ item.ping_address }}</defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

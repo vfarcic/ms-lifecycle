@@ -1,4 +1,15 @@
+home: /data/jenkins
+
 directories: [
-  { path: '/data/jenkins', owner: 'root', mode: '0777' },
+  { path: '{{ home }}', owner: 'root', mode: '0777' },
+  { path: '{{ home }}/jobs/service-redeploy', owner: 'root', mode: '0777' },
   { path: '/data/jenkins_slaves', owner: 'vagrant', mode: '0744' }
+]
+
+jobs:
+  - service-redeploy
+  - ms-lifecycle
+
+service_jobs: [
+  { service_name: 'books-ms', ping_address: '/api/v1/books' }
 ]

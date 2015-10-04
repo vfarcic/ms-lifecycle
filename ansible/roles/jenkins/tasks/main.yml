@@ -3,6 +3,7 @@
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
     mode: "{{ item.mode }}"
+    recurse: yes
     state: directory
   with_items: directories
   tags: [jenkins]
@@ -15,3 +16,44 @@
     volumes:
       - /data/jenkins:/var/jenkins_home
   tags: [jenkins]
+
+- name: Job directories are present
+  file:
+    path: "{{ home }}/jobs/{{ item }}"
+    state: directory
+  with_items: jobs
+  tags: [jenkins]
+
+- name: Jobs are present
+  copy:
+    src: "{{ item }}.xml"
+    dest: "{{ home }}/jobs/{{ item }}/config.xml"
+  register: jobs_result
+  with_items: jobs
+  tags: [jenkins]
+
+- name: Service job directories are present
+  file:
+    path: "{{ home }}/jobs/{{ item.service_name }}"
+    state: directory
+  with_items: service_jobs
+  tags: [jenkins]
+
+- name: Service jobs are present
+  template:
+    src: "service-config.xml"
+    dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
+  with_items: service_jobs
+  register: service_jobs_result
+  tags: [jenkins]
+
+- name: Jenkins is reloaded
+  uri:
+    url: http://{{ ip }}:8080/reload
+    method: POST
+  when: jobs_result|changed or service_jobs_result|changed
+  ignore_errors: yes
+  tags: [jenkins]
+
+# TODO: Service jobs
+# TODO: Restart
