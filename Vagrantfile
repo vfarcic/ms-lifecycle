@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 1536
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "prod" do |d|
@@ -26,6 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 1024
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "cd-jenkins" do |d|
@@ -38,6 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 1536
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   (1..3).each do |i|
@@ -49,6 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.memory = 1024
         #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
       end
     end
   end
@@ -60,6 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 1024
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "swarm-master" do |d|
@@ -70,6 +75,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 1024
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   (1..2).each do |i|
@@ -81,6 +87,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.memory = 1024
         #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
       end
     end
   end
