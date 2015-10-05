@@ -84,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
-  if Vagrant.has_plugin?("vagrant-cachier")
-    config.cache.scope = :box
-  end
+#  if Vagrant.has_plugin?("vagrant-cachier")
+#    config.cache.scope = :box
+#  end
 end
