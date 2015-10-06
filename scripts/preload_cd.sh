@@ -25,3 +25,5 @@ docker push 10.100.198.200:5000/books-ms
 docker pull mongo
 
 docker pull jenkins
+
+apt-get install -y openjdk-7-jdk
