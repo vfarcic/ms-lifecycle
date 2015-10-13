@@ -2,6 +2,8 @@
 
 git clone https://github.com/vfarcic/books-ms.git
 
+set -e
+
 cd books-ms
 
 docker build \
