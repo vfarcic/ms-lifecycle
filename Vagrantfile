@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "serv-disc-0#{i}" do |d|
       d.vm.box = "ubuntu/trusty64"
       d.vm.hostname = "serv-disc-0#{i}"
-      d.vm.network "private_network", ip: "10.100.197.20#{i}"
+      d.vm.network "private_network", ip: "10.100.194.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
         #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
