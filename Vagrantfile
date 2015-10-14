@@ -59,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "proxy" do |d|
     d.vm.box = "ubuntu/trusty64"
     d.vm.hostname = "proxy"
-    d.vm.network "private_network", ip: "10.100.196.200"
+    d.vm.network "private_network", ip: "10.100.193.200"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
       #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
