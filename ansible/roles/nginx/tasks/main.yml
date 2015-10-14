@@ -22,7 +22,7 @@
   register: result
   tags: [nginx]
 
-- name: Container is restarted
+- name: Container is reloaded
   shell: docker kill -s HUP nginx
   when: result|changed
   tags: [nginx]
