@@ -1,0 +1,13 @@
+ports:
+  - '80:80'
+
+directories:
+  - /data/haproxy/config
+
+files: [
+  {src: 'haproxy.conf.orig', dest: '/data/haproxy/config/haproxy.cfg.orig'}
+]
+
+templates: [
+  {src: 'haproxy.conf', dest: '/data/haproxy/config/haproxy.cfg'}
+]
