@@ -1,4 +1,28 @@
+- name: Directories are present
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+    recurse: yes
+  with_items: directories
+  tags: [common]
+
+- name: Files are copied
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: files
+  tags: [common]
+
+- name: Repositories are present
+  apt_repository:
+    repo: "{{ item }}"
+    update_cache: yes
+  with_items: repositories
+  tags: [common]
+
 - name: Package is present
   apt:
-    name: jq
+    name: "{{ item }}"
+  with_items: packages
   tags: [common]

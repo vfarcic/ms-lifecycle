@@ -13,13 +13,6 @@
   register: result
   tags: [haproxy]
 
-- name: Templates are present
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  with_items: templates
-  tags: [consul]
-
 - name: Container is running
   docker:
     image: million12/haproxy

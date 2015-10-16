@@ -5,9 +5,10 @@ directories:
   - /data/haproxy/config
 
 files: [
-  {src: 'haproxy.conf.orig', dest: '/data/haproxy/config/haproxy.cfg.orig'}
+  {src: 'haproxy.cfg.orig', dest: '/data/haproxy/config/haproxy.cfg.orig'}
 ]
 
 templates: [
-  {src: 'haproxy.conf', dest: '/data/haproxy/config/haproxy.cfg'}
+  {src: 'haproxy.cfg', dest: '/data/haproxy/config/haproxy.cfg', force: 'no'}
 ]
+
