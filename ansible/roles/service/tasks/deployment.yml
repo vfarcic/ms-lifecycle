@@ -1,4 +1,4 @@
-- name: Directories are created
+- name: Directory is created
   file:
     path: /data/{{ service_name }}
     recurse: yes
