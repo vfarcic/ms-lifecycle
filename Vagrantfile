@@ -14,9 +14,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -vv"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1536
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "prod" do |d|
@@ -25,9 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.198.201"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "cd-jenkins" do |d|
@@ -38,9 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd-jenkins.yml -c local -vv"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1536
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   (1..3).each do |i|
@@ -50,9 +41,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.vm.network "private_network", ip: "10.100.194.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
-        #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-        #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
       end
     end
   end
@@ -62,9 +50,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.193.200"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   config.vm.define "swarm-master" do |d|
@@ -73,9 +58,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.network "private_network", ip: "10.100.192.200"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
   end
   (1..2).each do |i|
@@ -85,13 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.vm.network "private_network", ip: "10.100.192.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1024
-        #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-        #v.customize ["modifyvm", :id, "--nictype1", "virtio"]
       end
     end
   end
-#  if Vagrant.has_plugin?("vagrant-cachier")
-#    config.cache.scope = :box
-#  end
 end
