@@ -1,0 +1,9 @@
+- hosts: logging
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - common
+    - docker
+    - elasticsearch
+    - logstash
+    - kibana

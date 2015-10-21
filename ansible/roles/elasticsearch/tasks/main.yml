@@ -1,0 +1,17 @@
+- name: Directory is present
+  file:
+    path: /data/elasticsearch
+    recurse: yes
+    state: directory
+  tags: [elasticsearch]
+
+- name: Container is running
+  docker:
+    name: elasticsearch
+    image: elasticsearch
+    state: running
+    ports:
+      - 9200:9200
+    volumes:
+      /data/elasticsearch:/usr/share/elasticsearch/data
+  tags: [elasticsearch]

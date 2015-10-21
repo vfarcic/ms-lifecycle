@@ -1,0 +1,29 @@
+- name: Directory is present
+  file:
+    path: /data/logstash/conf
+    recurse: yes
+    state: directory
+  tags: [logstash]
+
+- name: File is copied
+  copy:
+    src: syslog.conf
+    dest: /data/logstash/conf/syslog.conf
+  tags: [logstash]
+
+- name: Container is running
+  docker:
+    name: logstash
+    image: logstash
+    state: running
+    expose:
+      - 25826
+    ports:
+      - 25826:25826
+      - 25826:25826/udp
+    volumes:
+      - /data/logstash/conf:/conf
+    links:
+      - elasticsearch:db
+    command: logstash -f /conf/syslog.conf
+  tags: [logstash]

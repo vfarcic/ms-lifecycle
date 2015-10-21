@@ -1,14 +1,2 @@
-directories: [
-  { path: "/home/vagrant/.config/fish/functions", owner: "vagrant" }
-]
-
-files: [
-  { src: "export.fish", dest: "/home/vagrant/.config/fish/functions/export.fish" }
-]
-
-repositories:
-  - ppa:fish-shell/release-2
-
 packages:
   - jq
-  - fish
