@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-COLOR=$1
+SERVICE_NAME=$1
 
-NEXT_PORT=`curl \
-    localhost:8500/v1/catalog/service/books-ms-$COLOR \
+COLOR=$2
+
+echo `curl \
+    localhost:8500/v1/catalog/service/$SERVICE_NAME-$COLOR \
     | jq '.[0].ServicePort'`
-
-echo $NEXT_PORT

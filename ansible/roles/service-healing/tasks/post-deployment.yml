@@ -1,5 +1,5 @@
 - name: Domain is retrieved
-  shell: /data/{{ service_name }}/get-domain.sh {{ next_color.stdout }}
+  shell: /data/{{ service_name }}/get-domain.sh {{ service_name }} {{ next_color.stdout }}
   register: service_domain
   tags: [service]
 

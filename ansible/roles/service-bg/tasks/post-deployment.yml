@@ -1,5 +1,5 @@
 - name: Next port is retrieved
-  shell: /data/{{ service_name }}/get-port.sh {{ next_color.stdout }}
+  shell: /data/{{ service_name }}/get-port.sh {{ service_name }} {{ next_color.stdout }}
   register: next_port
   tags: [service, tests]
 
