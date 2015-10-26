@@ -35,4 +35,4 @@
   shell: docker push \
     {{ registry_url }}{{ service_name }}
   delegate_to: 127.0.0.1
-  tags: [service]
+  tags: [service, push]
