@@ -1,0 +1,8 @@
+- hosts: swarm
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - common
+    - docker
+    - bridge-utils
+    - etcd

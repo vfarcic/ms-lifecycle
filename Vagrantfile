@@ -70,4 +70,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
+  config.vm.define "kube-master" do |d|
+    d.vm.box = "ubuntu/trusty64"
+    d.vm.hostname = "kube-master"
+    d.vm.network "private_network", ip: "10.100.199.200"
+    d.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+    end
+  end
+  (1..2).each do |i|
+    config.vm.define "kube-node-#{i}" do |d|
+      d.vm.box = "ubuntu/trusty64"
+      d.vm.hostname = "kube-node-#{i}"
+      d.vm.network "private_network", ip: "10.100.199.20#{i}"
+      d.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+      end
+    end
+  end
 end
