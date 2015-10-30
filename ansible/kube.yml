@@ -1,8 +1,5 @@
-- hosts: swarm
+- hosts: kube-master
   remote_user: vagrant
   sudo: yes
   roles:
-    - common
-    - docker
-    - bridge-utils
-    - etcd
+    - kube

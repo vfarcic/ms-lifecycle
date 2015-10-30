@@ -1,0 +1,5 @@
+- name: Package is present
+  apt:
+    name: bridge-utils
+    state: present
+  tags: [bridge-utils]

@@ -1,0 +1,29 @@
+- name: Repository is cloned
+  git:
+    repo: https://github.com/kubernetes/kubernetes.git
+    dest: /opt/kubernetes
+    update: no
+  tags: [kube]
+
+- name: Owner is changed
+  file:
+    path: /opt/kubernetes
+    owner: vagrant
+    recurse: yes
+  tags: [kube]
+
+- name: Config is updated
+  lineinfile:
+    dest: /opt/kubernetes/cluster/ubuntu/config-default.sh
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items: lines
+  tags: [kube]
+
+- name: Script is run
+  shell: KUBERNETES_PROVIDER=ubuntu ./kube-up.sh
+  args:
+    chdir: /opt/kubernetes/cluster/
+  sudo: no
+  ignore_errors: yes
+  tags: [kube]
