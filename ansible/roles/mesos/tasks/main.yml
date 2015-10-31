@@ -24,6 +24,12 @@
 - include: node.yml
   when: not mesos_master is defined
 
+- name: Containerizers are copied
+  copy:
+    src: containerizers
+    dest: /etc/mesos-slave/containerizers
+  tags: [mesos]
+
 - name: Services are started
   service:
     name: "{{ item }}"

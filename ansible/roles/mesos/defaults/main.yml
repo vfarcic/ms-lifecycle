@@ -4,13 +4,14 @@ repos:
 
 packages:
   - mesos
+  - device-mapper-event-libs
+  - git
 
 master_packages:
   - marathon
   - zookeeper
   - zookeeper-server
   - golang
-  - git
   - bind-utils
   - chronos
 
