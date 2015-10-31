@@ -18,7 +18,7 @@
 
 [mesos]
 10.100.197.201 mesos_master=true
-10.100.197.202
+10.100.197.20[2:3]
 
 [mesos:vars]
 mesos_master_ip=10.100.197.201

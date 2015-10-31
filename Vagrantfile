@@ -88,7 +88,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
-  (1..2).each do |i|
+  (1..3).each do |i|
     config.vm.define "mesos-#{i}" do |d|
       d.vm.box = "bento/centos-7.1"
       d.vm.hostname = "mesos-#{i}"

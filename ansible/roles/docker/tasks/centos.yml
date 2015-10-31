@@ -1,0 +1,19 @@
+- name: CentOS repository is added
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: centos_files
+  tags: [docker]
+
+- name: CentOS package is installed
+  yum:
+    name: docker-engine
+    state: present
+  tags: [docker]
+
+- name: CentOS service is running
+  service:
+    name: docker
+    state: running
+  tags: [docker]
+

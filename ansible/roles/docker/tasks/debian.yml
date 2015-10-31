@@ -1,0 +1,35 @@
+- name: Debian add Docker repository and update apt cache
+  apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    update_cache: yes
+    state: present
+  tags: [docker]
+
+- name: Debian Docker is present
+  apt:
+    name: docker-engine
+    state: latest
+    force: yes
+  tags: [docker]
+
+- name: Debian python-pip is present
+  apt: name=python-pip state=present
+  tags: [docker]
+
+- name: Debian docker-py is present
+  pip: name=docker-py version=0.4.0 state=present
+  tags: [docker]
+
+- name: Debian files are present
+  copy:
+    src: docker
+    dest: /etc/default/docker
+  register: copy_result
+  tags: [docker]
+
+- name: Debian Docker service is restarted
+  service:
+    name: docker
+    state: restarted
+  when: copy_result|changed
+  tags: [docker]

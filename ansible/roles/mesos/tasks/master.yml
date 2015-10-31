@@ -26,7 +26,7 @@
     mode: 0755
   tags: [mesos]
 
-- name: Mesos DNS script is run
+- name: Mesos DNS built
   shell: /opt/install-dns.sh
   args:
     creates: /opt/go/src/github.com/mesosphere/mesos-dns/mesos-dns
