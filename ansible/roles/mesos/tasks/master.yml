@@ -1,0 +1,40 @@
+- name: Master packages are installed
+  yum:
+    pkg: "{{ item }}"
+    state: present
+  with_items: master_packages
+  tags: [mesos]
+
+- name: Master Zookeeper is configured
+  shell: zookeeper-server-initialize --myid=1
+  args:
+    creates: /var/lib/zookeeper/myid
+  become_user: zookeeper
+  tags: [mesos]
+
+- name: Master services are started
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items: master_services
+  tags: [mesos]
+
+- name: Mesos DNS script is present
+  copy:
+    src: install-dns.sh
+    dest: /opt/install-dns.sh
+    mode: 0755
+  tags: [mesos]
+
+- name: Mesos DNS script is run
+  shell: /opt/install-dns.sh
+  args:
+    creates: /opt/go/src/github.com/mesosphere/mesos-dns/mesos-dns
+  tags: [mesos]
+
+- name: Templates are applied
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: master_templates
+  tags: [mesos]

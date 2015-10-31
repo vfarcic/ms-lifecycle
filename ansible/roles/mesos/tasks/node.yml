@@ -1,0 +1,13 @@
+- name: ZK is configured
+  template:
+    src: zk
+    dest: /etc/mesos/zk
+  tags: [mesos]
+
+- name: Master services are disabled
+  service:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  with_items: master_services
+  tags: [mesos]

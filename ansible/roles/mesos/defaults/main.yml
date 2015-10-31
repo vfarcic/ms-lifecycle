@@ -1,0 +1,34 @@
+repos:
+  - http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+  - http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm
+
+packages:
+  - mesos
+
+master_packages:
+  - marathon
+  - zookeeper
+  - zookeeper-server
+  - golang
+  - git
+  - bind-utils
+  - chronos
+
+services:
+  - mesos-slave
+
+master_services:
+  - zookeeper-server
+  - mesos-master
+  - marathon
+  - chronos
+
+master_templates: [
+  {
+    src: "resolv.conf",
+    dest: "/etc/resolv.conf"
+  }, {
+    src: "config.json",
+    dest: "/opt/go/src/github.com/mesosphere/mesos-dns/config.json"
+  }
+]

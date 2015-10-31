@@ -88,4 +88,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
   end
+  (1..2).each do |i|
+    config.vm.define "mesos-#{i}" do |d|
+      d.vm.box = "bento/centos-7.1"
+      d.vm.hostname = "mesos-#{i}"
+      d.vm.network "private_network", ip: "10.100.197.20#{i}"
+      d.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+      end
+    end
+  end
+  config.vm.provision :hosts
 end

@@ -1,0 +1,5 @@
+- hosts: mesos
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - mesos

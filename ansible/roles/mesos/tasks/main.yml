@@ -1,0 +1,32 @@
+- name: Update hosts file
+  template:
+    src: hosts
+    dest: /etc/hosts
+  tags: [mesos]
+
+- name: Repos are present
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: repos
+  tags: [mesos]
+
+- name: Packages are installed
+  yum:
+    pkg: "{{ item }}"
+    state: present
+  with_items: packages
+  tags: [mesos]
+
+- include: master.yml
+  when: mesos_master is defined
+
+- include: node.yml
+  when: not mesos_master is defined
+
+- name: Services are started
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items: services
+  tags: [mesos]

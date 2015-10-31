@@ -1,0 +1,23 @@
+{
+  "zk": "zk://{{ mesos_master_ip }}:2181/mesos",
+  "masters": ["{{ mesos_master_ip }}:5050"],
+  "refreshSeconds": 60,
+  "ttl": 60,
+  "domain": "mesos",
+  "ns": "ns1",
+  "port": 53,
+  "resolvers": ["8.8.8.8"],
+  "timeout": 5,
+  "listener": "0.0.0.0",
+  "SOAMname": "root.ns1.mesos",
+  "SOARname": "ns1.mesos",
+  "SOARefresh": 60,
+  "SOARetry":   600,
+  "SOAExpire":  86400,
+  "SOAMinttl": 60,
+  "dnson": true,
+  "httpon": true,
+  "httpport": 8123,
+  "externalon": true,
+  "recurseon": true
+}
