@@ -47,7 +47,7 @@
     image: swarm
     command: join --advertise={{ ip }}:2375 consul://{{ ip }}:8500/swarm
     env:
-      SERVICE_NAME: swarm-master
+      SERVICE_NAME: swarm-node
   when: not swarm_master is defined
   tags: [swarm]
 
