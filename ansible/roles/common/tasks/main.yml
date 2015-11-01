@@ -1,5 +1,4 @@
-- name: Package is present
+- name: JQ is present
   apt:
-    name: "{{ item }}"
-  with_items: packages
+    name: jq
   tags: [common]
