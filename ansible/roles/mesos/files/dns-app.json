@@ -1,0 +1,11 @@
+{
+  "id": "dns",
+  "cmd": "sudo /opt/go/src/github.com/mesosphere/mesos-dns/mesos-dns -v=1 -config=/opt/go/src/github.com/mesosphere/mesos-dns/config.json",
+  "cpus": 0.1,
+  "mem": 20.0,
+  "instances": 1,
+  "ports": [4000],
+  "constraints": [
+    ["hostname", "CLUSTER", "mesos-1"]
+  ]
+}

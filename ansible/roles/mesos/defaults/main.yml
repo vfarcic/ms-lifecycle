@@ -33,3 +33,12 @@ master_templates: [
     dest: "/opt/go/src/github.com/mesosphere/mesos-dns/config.json"
   }
 ]
+
+master_files: [
+  { src: "install-dns.sh", dest: "/opt/install-dns.sh", mode: "0755" },
+  { src: "sample-web-app.json", dest: "/data/mesos/sample-web-app.json", mode: "0644" }
+]
+
+mesos_apps:
+  - sample-web-app.json
+  - dns-app.json

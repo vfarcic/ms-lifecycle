@@ -1,0 +1,21 @@
+{
+  "id": "sample-web-app",
+  "cmd": "python -m SimpleHTTPServer $PORT0",
+  "cpus": 0.1,
+  "mem": 20.0,
+  "instances": 3,
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "path": "/",
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ],
+  "ports": [4000],
+  "constraints": [
+    ["hostname", "UNIQUE", ""]
+  ]
+}
