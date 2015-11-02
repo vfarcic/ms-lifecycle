@@ -49,10 +49,10 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>#ansible-playbook /vagrant/ansible/service-healing.yml \
-#    -i /vagrant/ansible/hosts/prod \
-#    --extra-vars &quot;repo_dir=$PWD service_name=$SERVICE_NAME ping_address=$PING_ADDRESS&quot; \
-#    -vv</command>
+      <command>ansible-playbook /vagrant/ansible/{{ playbook }}.yml \
+    -i /vagrant/ansible/hosts/prod \
+    --extra-vars &quot;repo_dir=$PWD service_name=$SERVICE_NAME ping_address=$PING_ADDRESS&quot; \
+    -vv</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
