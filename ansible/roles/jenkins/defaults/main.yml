@@ -1,6 +1,6 @@
 home: /data/jenkins
 
-playbook: service
+playbook: service-swarm
 
 directories: [
   { path: '{{ home }}', owner: 'root', mode: '0777' },
