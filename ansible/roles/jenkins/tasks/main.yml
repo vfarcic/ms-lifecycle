@@ -56,4 +56,3 @@
   when: jobs_result|changed or service_jobs_result|changed
   ignore_errors: yes
   tags: [jenkins]
-
