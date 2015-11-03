@@ -5,7 +5,7 @@
 - include: post-deployment.yml
 
 - include: rollback.yml
-  when: post_integ_result|failed
+  when: post_integ_result is defined and post_integ_result|failed
 
 - name: Tests failed
   fail: msg="Some of the tests failed"
