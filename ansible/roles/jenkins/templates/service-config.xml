@@ -23,7 +23,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/vfarcic/books-ms.git</url>
+        <url>https://github.com/vfarcic/{{ item.service_name }}.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
