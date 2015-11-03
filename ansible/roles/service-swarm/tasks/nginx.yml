@@ -10,7 +10,7 @@
     dest: "/data/nginx/upstreams/{{ service_name }}.ctmpl"
     regexp: "range service \"{{ service_name }}\""
     replace: "range service \"{{ service_name }}-{{ next_color.stdout }}\""
-  tags: [service, tests]
+  tags: [service]
 
 - name: Proxy is configured
   shell: consul-template \

@@ -1,7 +1,7 @@
 - name: Next port is retrieved
   shell: /data/{{ service_name }}/get-port.sh {{ service_name }} {{ next_color.stdout }}
   register: next_port
-  tags: [service, tests]
+  tags: [service]
 
 - name: Pre-integration tests are run
   shell: docker-compose \
@@ -17,7 +17,7 @@
   tags: [service, tests]
 
 - include: nginx.yml
-  when: pre_integ_result|success
+  when: not pre_integ_result is defined or pre_integ_result|success
 
 - name: Post-integration tests are run
   shell: docker-compose \
@@ -36,8 +36,8 @@
 - name: Next color is put
   shell: curl -X PUT -d {{ next_color.stdout }} \
     localhost:8500/v1/kv/{{ service_name }}/color
-  when: pre_integ_result|success and post_integ_result|success
-  tags: [service, tests]
+  when: not pre_integ_result is defined or (pre_integ_result|success and post_integ_result|success)
+  tags: [service]
 
 - include: copy.yml
 

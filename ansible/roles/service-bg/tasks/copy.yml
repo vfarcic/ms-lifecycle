@@ -4,12 +4,12 @@
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
   with_items: files
-  tags: [service, tests]
+  tags: [service]
 
 - name: Next color is retrieved
   shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
   register: next_color
-  tags: [service, tests]
+  tags: [service]
 
 - name: Configs are updated
   replace:
@@ -17,4 +17,4 @@
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items: replace
-  tags: [service, tests]
+  tags: [service]

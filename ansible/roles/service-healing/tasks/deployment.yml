@@ -3,7 +3,7 @@
     path: /data/{{ service_name }}
     recurse: yes
     state: directory
-  tags: [service, tests]
+  tags: [service]
 
 - include: copy.yml
 
@@ -26,6 +26,14 @@
   tags: [service]
 
 - include: configure-compose.yml
+
+- name: App container is removed
+  shell: docker-compose rm -f app-{{ next_color.stdout }}
+  environment:
+    DOCKER_HOST: tcp://10.100.192.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
 
 - name: App container is running
   shell: docker-compose scale app-{{ next_color.stdout }}={{ scale_service }}

@@ -52,7 +52,7 @@
       <command>ansible-playbook /vagrant/ansible/{{ playbook }}.yml \
     -i /vagrant/ansible/hosts/prod \
     --extra-vars &quot;repo_dir=$PWD service_name=$SERVICE_NAME ping_address=$PING_ADDRESS&quot; \
-    --skip-tags "build,pull" \
+    --skip-tags "build,pull,tests" \
     -vv</command>
     </hudson.tasks.Shell>
   </builders>

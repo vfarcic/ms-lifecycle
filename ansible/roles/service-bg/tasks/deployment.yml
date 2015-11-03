@@ -3,7 +3,7 @@
     path: /data/{{ service_name }}
     recurse: yes
     state: directory
-  tags: [service, tests]
+  tags: [service]
 
 - include: copy.yml
 
@@ -12,6 +12,12 @@
   args:
     chdir: /data/{{ service_name }}
   tags: [service, pull]
+
+- name: Containers are running
+  shell: docker-compose rm -f app-{{ next_color.stdout }}
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
 
 - name: Containers are running
   shell: docker-compose up -d app-{{ next_color.stdout }}

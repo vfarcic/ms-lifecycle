@@ -8,11 +8,6 @@
   delegate_to: 127.0.0.1
   tags: [service, tests, build]
 
-#- name: Pre-deployment tests failed
-#  fail: msg="Simulation of pre-deployment tests failure"
-#  delegate_to: 127.0.0.1
-#  tags: [service, tests]
-
 - name: Pre-deployment tests are run
   shell: docker-compose \
     -f docker-compose-dev.yml \
