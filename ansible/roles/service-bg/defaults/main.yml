@@ -18,18 +18,6 @@ files: [
   }
 ]
 
-replace: [
-  {
-    dest: "/data/{{ service_name }}/docker-compose.yml",
-    regexp: "app:",
-    replace: "app-{{ next_color.stdout }}:"
-  }, {
-    dest: "/data/{{ service_name }}/docker-compose.yml",
-    regexp: "SERVICE_NAME={{ service_name }}",
-    replace: "SERVICE_NAME={{ service_name }}-{{ next_color.stdout }}"
-  }
-]
-
 ct_src: /data/nginx/upstreams/{{ service_name }}.ctmpl
 ct_dest: /data/nginx/upstreams/{{ service_name }}.conf
 ct_cmd: docker kill -s HUP nginx
