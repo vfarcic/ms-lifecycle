@@ -10,11 +10,3 @@
   shell: /data/{{ service_name }}/get-color.sh {{ service_name }}
   register: next_color
   tags: [service]
-
-- name: Configs are updated
-  replace:
-    dest: "{{ item.dest }}"
-    regexp: "{{ item.regexp }}"
-    replace: "{{ item.replace }}"
-  with_items: replace
-  tags: [service]

@@ -1,7 +1,7 @@
 files: [
   {
-    src: "{{ repo_dir }}/docker-compose-swarm.ctmpl",
-    dest: "/data/{{ service_name }}/docker-compose-swarm.ctmpl",
+    src: "{{ repo_dir }}/docker-compose-swarm.yml",
+    dest: "/data/{{ service_name }}/docker-compose.yml",
     mode: "0644"
   }, {
     src: "{{ repo_dir }}/nginx-includes.conf",
@@ -15,18 +15,6 @@ files: [
     src: "get-domain.sh",
     dest: "/data/{{ service_name }}/get-domain.sh",
     mode: "0755"
-  }
-]
-
-replace: [
-  {
-    dest: "/data/{{ service_name }}/docker-compose-swarm.ctmpl",
-    regexp: "app:",
-    replace: "app-{{ next_color.stdout }}:"
-  }, {
-    dest: "/data/{{ service_name }}/docker-compose-swarm.ctmpl",
-    regexp: "SERVICE_NAME={{ service_name }}",
-    replace: "SERVICE_NAME={{ service_name }}-{{ next_color.stdout }}"
   }
 ]
 
