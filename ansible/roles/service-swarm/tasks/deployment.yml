@@ -16,7 +16,7 @@
   tags: [service, pull]
 
 - name: DB container is running
-  shell: docker-compose up -d db
+  shell: docker-compose --x-networking up -d db
   environment:
     DOCKER_HOST: tcp://10.100.192.200:2375
   args:
@@ -32,7 +32,7 @@
   tags: [service]
 
 - name: App container is running
-  shell: docker-compose scale app-{{ next_color.stdout }}={{ scale_service }}
+  shell: docker-compose scale --x-networking app-{{ next_color.stdout }}={{ scale_service }}
   environment:
     DOCKER_HOST: tcp://10.100.192.200:2375
   args:
