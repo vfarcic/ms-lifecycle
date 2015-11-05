@@ -34,7 +34,4 @@ ct_src: /data/nginx/upstreams/{{ service_name }}.ctmpl
 ct_dest: /data/nginx/upstreams/{{ service_name }}.conf
 ct_cmd: docker kill -s HUP nginx
 
-ct_compose_src: /data/{{ service_name }}/docker-compose-swarm.ctmpl
-ct_compose_dest: /data/{{ service_name }}/docker-compose.yml
-
 scale_service: 1

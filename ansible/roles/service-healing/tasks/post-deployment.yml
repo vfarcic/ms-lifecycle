@@ -41,8 +41,6 @@
 
 - include: copy.yml
 
-- include: configure-compose.yml
-
 - name: Consul configs are present
   template:
     src: consul_service.json

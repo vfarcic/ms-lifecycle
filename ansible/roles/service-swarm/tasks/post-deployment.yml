@@ -41,8 +41,6 @@
 
 - include: copy.yml
 
-- include: configure-compose.yml
-
 - name: Container is stopped
   shell: docker-compose stop app-{{ next_color.stdout }}
   environment:

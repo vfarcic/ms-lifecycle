@@ -7,8 +7,6 @@
 
 - include: copy.yml
 
-- include: configure-compose.yml
-
 - name: Containers are pulled
   shell: docker-compose pull app-{{ next_color.stdout }}
   environment:
@@ -24,8 +22,6 @@
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
-
-- include: configure-compose.yml
 
 - name: App container is removed
   shell: docker-compose rm -f app-{{ next_color.stdout }}
