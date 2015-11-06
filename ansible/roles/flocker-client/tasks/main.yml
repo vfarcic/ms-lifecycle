@@ -1,0 +1,50 @@
+- name: Add repository and update apt cache
+  apt_repository:
+    repo: deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/15.04/$(ARCH) /
+    update_cache: yes
+    state: present
+  tags: [flocker]
+
+- name: Packages are present
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes
+  with_items: packages
+  tags: [flocker]
+
+- name: Flocker authority directory is present
+  file:
+    path: /etc/flocker
+    state: directory
+  tags: [flocker]
+
+- name: Generate Flocker cluster certificates
+  command: flocker-ca initialize swarm-cluster
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/cluster.key
+  tags: [flocker]
+
+- name: Generate Flocker service certificates
+  command: flocker-ca create-control-certificate swarm-master
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/control-swarm-master.key
+  tags: [flocker]
+
+- name: Generate Flocker API certificates
+  command: flocker-ca create-api-certificate su
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/su.key
+  tags: [flocker]
+
+- name: Set permissions
+  file:
+    path: /etc/flocker/{{ item }}
+    mode: 0644
+  with_items:
+    - cluster.crt
+    - su.crt
+    - su.key

@@ -1,0 +1,4 @@
+packages:
+  - apt-transport-https
+  - software-properties-common
+  - clusterhq-flocker-cli

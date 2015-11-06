@@ -1,21 +1,22 @@
-- name: Add Docker repository and update apt cache
+- name: Swarm master is added to hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: swarm-master
+    line: "{{ swarm_master_ip }} swarm-master"
+  when: swarm_master_ip is defined
+  tags: [swarm]
+
+- name: Add repository and update apt cache
   apt_repository:
     repo: deb https://apt.dockerproject.org/repo ubuntu-vivid main
     update_cache: yes
     state: present
   tags: [swarm, docker]
 
-- name: Old Docker is absent
-  apt:
-    name: lxc-docker
-    purge: yes
-    state: absent
-  tags: [swarm, docker]
-
-- name: Docker is present
+- name: Package is present
   apt:
     name: docker-engine
-    state: latest
+    state: present
     force: yes
   tags: [swarm, docker]
 

@@ -1,0 +1,36 @@
+- name: Flocker authority directory is present
+  file:
+    path: /etc/flocker
+    state: directory
+  tags: [flocker]
+
+- name: Add repository and update apt cache
+  apt_repository:
+    repo: deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/15.04/$(ARCH) /
+    update_cache: yes
+    state: present
+  tags: [flocker]
+
+- name: Packages are present
+  apt:
+    name: "{{ item }}"
+    state: present
+    force: yes
+  with_items: packages
+  tags: [flocker]
+
+- name: Certificates are copied
+  copy:
+    src: /etc/flocker/{{ item }}
+    dest: /etc/flocker/{{ item }}
+  with_items:
+    - cluster.crt
+    - vagrant.crt
+    - vagrant.key
+  tags: [flocker]
+
+- name: Service is started
+  service:
+    name: flocker-docker-plugin
+    state: started
+  tags: [flocker]
