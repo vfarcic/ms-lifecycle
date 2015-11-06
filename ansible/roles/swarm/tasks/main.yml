@@ -3,29 +3,29 @@
     repo: deb https://apt.dockerproject.org/repo ubuntu-vivid main
     update_cache: yes
     state: present
-  tags: [docker]
+  tags: [swarm, docker]
 
 - name: Old Docker is absent
   apt:
     name: lxc-docker
     purge: yes
     state: absent
-  tags: [docker]
+  tags: [swarm, docker]
 
 - name: Docker is present
   apt:
     name: docker-engine
     state: latest
     force: yes
-  tags: [docker]
+  tags: [swarm, docker]
 
 - name: Python-pip is present
   apt: name=python-pip state=present
-  tags: [docker]
+  tags: [swarm, docker]
 
 - name: Docker-py is present
   pip: name=docker-py version=0.4.0 state=present
-  tags: [docker]
+  tags: [swarm, docker]
 
 - name: Configuration is present
   template:
