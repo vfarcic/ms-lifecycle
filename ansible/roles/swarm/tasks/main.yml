@@ -66,3 +66,9 @@
       SERVICE_NAME: swarm-master
   when: swarm_master is defined
   tags: [swarm]
+
+- name: Swarm network is created
+  command: docker network create swarm-net
+  ignore_errors: yes
+  when: swarm_master is defined
+  tags: [swarm]
