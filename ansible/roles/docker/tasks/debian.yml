@@ -1,6 +1,6 @@
 - name: Debian add Docker repository and update apt cache
   apt_repository:
-    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    repo: deb https://apt.dockerproject.org/repo ubuntu-{{ debian_version }} main
     update_cache: yes
     state: present
   tags: [docker]
@@ -21,10 +21,15 @@
   tags: [docker]
 
 - name: Debian files are present
-  copy:
-    src: docker
-    dest: /etc/default/docker
+  template:
+    src: "{{ docker.cfg }}"
+    dest: "{{ docker_cfg_dest }}"
   register: copy_result
+  tags: [docker]
+
+- name: Daemon is reloaded
+  command: systemctl daemon-reload
+  when: config_result|changed and is_systemd is defined
   tags: [docker]
 
 - name: Debian Docker service is restarted

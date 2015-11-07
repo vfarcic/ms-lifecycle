@@ -1,52 +1,3 @@
-- name: Swarm master is added to hosts
-  lineinfile:
-    dest: /etc/hosts
-    regexp: swarm-master
-    line: "{{ swarm_master_ip }} swarm-master"
-  when: swarm_master_ip is defined
-  tags: [swarm]
-
-- name: Add repository and update apt cache
-  apt_repository:
-    repo: deb https://apt.dockerproject.org/repo ubuntu-vivid main
-    update_cache: yes
-    state: present
-  tags: [swarm, docker]
-
-- name: Package is present
-  apt:
-    name: docker-engine
-    state: present
-    force: yes
-  tags: [swarm, docker]
-
-- name: Python-pip is present
-  apt: name=python-pip state=present
-  tags: [swarm, docker]
-
-- name: Docker-py is present
-  pip: name=docker-py version=0.4.0 state=present
-  tags: [swarm, docker]
-
-- name: Configuration is present
-  template:
-    src: "{{ swarm_docker_cfg }}"
-    dest: /lib/systemd/system/docker.service
-  register: config_result
-  tags: [swarm]
-
-- name: Daemon is reloaded
-  command: systemctl daemon-reload
-  when: config_result|changed
-  tags: [swarm]
-
-- name: Service is restarted
-  service:
-    name: docker
-    state: restarted
-  when: config_result|changed
-  tags: [swarm]
-
 - name: Swarm node is running
   docker:
     name: swarm-node
@@ -65,11 +16,5 @@
     command: manage consul://{{ ip }}:8500/swarm
     env:
       SERVICE_NAME: swarm-master
-  when: swarm_master is defined
-  tags: [swarm]
-
-- name: Swarm network is created
-  command: docker network create swarm-net
-  ignore_errors: yes
   when: swarm_master is defined
   tags: [swarm]
