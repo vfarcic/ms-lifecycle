@@ -38,3 +38,8 @@
   args:
     chdir: /data/{{ service_name }}
   tags: [service]
+
+- name: Number of running instances is put
+  shell: curl -X PUT -d {{ scale_service }} \
+    localhost:8500/v1/kv/{{ service_name }}/instances
+  tags: [service]
