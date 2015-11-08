@@ -22,14 +22,14 @@
 
 - name: Debian files are present
   template:
-    src: "{{ docker.cfg }}"
+    src: "{{ docker_cfg }}"
     dest: "{{ docker_cfg_dest }}"
   register: copy_result
   tags: [docker]
 
 - name: Daemon is reloaded
   command: systemctl daemon-reload
-  when: config_result|changed and is_systemd is defined
+  when: copy_result|changed and is_systemd is defined
   tags: [docker]
 
 - name: Debian Docker service is restarted
