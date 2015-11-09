@@ -52,7 +52,7 @@
   with_items: mesos_apps
   tags: [mesos]
 
-- name: Apps are deployed
-  shell: 'curl -X POST "http://{{ mesos_master_ip }}:8080/v2/apps" -d @"/data/mesos/{{ item }}" -H "Content-type: application/json"'
-  with_items: mesos_apps
-  tags: [mesos]
+#- name: Apps are deployed
+#  shell: 'curl -X POST "http://{{ mesos_master_ip }}:8080/v2/apps" -d @"/data/mesos/{{ item }}" -H "Content-type: application/json"'
+#  with_items: mesos_apps
+#  tags: [mesos]

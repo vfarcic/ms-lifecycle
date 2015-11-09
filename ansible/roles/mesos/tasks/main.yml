@@ -1,5 +1,5 @@
-- name: Update hosts file
-  template:
+- name: Hosts file is copied
+  copy:
     src: hosts
     dest: /etc/hosts
   tags: [mesos]
@@ -30,9 +30,8 @@
     dest: /etc/mesos-slave/containerizers
   tags: [mesos]
 
-- name: Services are started
+- name: Mesos slave is started
   service:
-    name: "{{ item }}"
+    name: mesos-slave
     state: started
-  with_items: services
   tags: [mesos]

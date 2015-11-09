@@ -15,9 +15,6 @@ master_packages:
   - bind-utils
   - chronos
 
-services:
-  - mesos-slave
-
 master_services:
   - zookeeper-server
   - mesos-master
