@@ -27,7 +27,7 @@
   register: copy_result
   tags: [docker]
 
-- name: Daemon is reloaded
+- name: Debian Daemon is reloaded
   command: systemctl daemon-reload
   when: copy_result|changed and is_systemd is defined
   tags: [docker]

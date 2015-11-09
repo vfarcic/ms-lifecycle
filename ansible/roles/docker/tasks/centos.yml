@@ -1,4 +1,4 @@
-- name: CentOS repository is added
+- name: CentOS files are copied
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -9,6 +9,10 @@
   yum:
     name: docker-engine
     state: present
+  tags: [docker]
+
+- name: CentOS Daemon is reloaded
+  command: systemctl daemon-reload
   tags: [docker]
 
 - name: CentOS service is running
