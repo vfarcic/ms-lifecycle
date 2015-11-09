@@ -14,3 +14,6 @@ jobs:
 service_jobs: [
   { service_name: 'books-ms', ping_address: '/api/v1/books' }
 ]
+
+plugins:
+  - git

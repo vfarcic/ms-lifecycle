@@ -15,6 +15,7 @@
     ports: 8080:8080
     volumes:
       - /data/jenkins:/var/jenkins_home
+      - /vagrant/.vagrant/machines:/machines
   tags: [jenkins]
 
 - name: Job directories are present
@@ -55,4 +56,25 @@
     method: POST
   when: jobs_result|changed or service_jobs_result|changed
   ignore_errors: yes
+  tags: [jenkins]
+
+- name: Plugins are installed
+  shell: "curl -X POST \
+    -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
+    --header 'Content-Type: text/xml' \
+    http://{{ ip }}:8080/pluginManager/installNecessaryPlugins"
+  args:
+    creates: /data/jenkins/plugins/{{ item }}.jpi
+  with_items: plugins
+  register: plugins_result
+  tags: [jenkins]
+
+- pause: minutes=3
+
+- name: Container is restarted
+  docker:
+    name: jenkins
+    image: jenkins
+    state: restarted
+  when: plugins_result|changed
   tags: [jenkins]
