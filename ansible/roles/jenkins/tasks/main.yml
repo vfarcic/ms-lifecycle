@@ -18,6 +18,13 @@
       - /vagrant/.vagrant/machines:/machines
   tags: [jenkins]
 
+- name: Configurations are present
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: configs
+  tags: [jenkins]
+
 - name: Job directories are present
   file:
     path: "{{ home }}/jobs/{{ item }}"
@@ -58,6 +65,8 @@
   ignore_errors: yes
   tags: [jenkins]
 
+- pause: minutes=2
+
 - name: Plugins are installed
   shell: "curl -X POST \
     -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
@@ -69,7 +78,7 @@
   register: plugins_result
   tags: [jenkins]
 
-- pause: minutes=3
+- pause: minutes=2
 
 - name: Container is restarted
   docker:

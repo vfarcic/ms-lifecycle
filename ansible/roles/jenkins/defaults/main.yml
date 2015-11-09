@@ -4,7 +4,8 @@ playbook: service-swarm
 
 directories: [
   { path: '{{ home }}', owner: 'root', mode: '0777' },
-  { path: '/data/jenkins_slaves', owner: 'vagrant', mode: '0744' }
+  { path: '/data/jenkins_slaves', owner: 'vagrant', mode: '0744' },
+  { path: '/data/jenkins/nodes/cd', owner: 'vagrant', mode: '0755' }
 ]
 
 jobs:
@@ -17,3 +18,8 @@ service_jobs: [
 
 plugins:
   - git
+
+configs: [
+  { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" },
+  { src: "cd_config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
+]
