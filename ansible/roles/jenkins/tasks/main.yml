@@ -16,6 +16,7 @@
     volumes:
       - /data/jenkins:/var/jenkins_home
       - /vagrant/.vagrant/machines:/machines
+  register: container_result
   tags: [jenkins]
 
 - name: Configurations are present
@@ -60,7 +61,8 @@
   register: plugins_result
   tags: [jenkins]
 
-- pause: minutes=2
+- pause: minutes=1
+  when: container_result|changed
 
 - name: Container is restarted
   docker:
@@ -70,7 +72,7 @@
   when: plugins_result|changed
   tags: [jenkins]
 
-- pause: minutes=2
+- pause: minutes=1
   when: plugins_result|changed
 
 - name: Service jobs are present

@@ -18,8 +18,11 @@ service_jobs: [
 
 plugins:
   - git
+  - log-parser
 
 configs: [
   { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" },
-  { src: "cd_config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
+  { src: "cd_config.xml", dest: "/data/jenkins/nodes/cd/config.xml" },
+  { src: "LogParserPublisher.xml", dest: "/data/jenkins/LogParserPublisher.xml" },
+  { src: "parsing_rules", dest: "/data/jenkins/parsing_rules" }
 ]
