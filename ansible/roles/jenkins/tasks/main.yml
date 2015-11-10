@@ -49,24 +49,6 @@
   with_items: service_jobs
   tags: [jenkins]
 
-- name: Service jobs are present
-  template:
-    src: "service-config.xml"
-    dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
-  with_items: service_jobs
-  register: service_jobs_result
-  tags: [jenkins]
-
-- name: Jenkins is reloaded
-  uri:
-    url: http://{{ ip }}:8080/reload
-    method: POST
-  when: jobs_result|changed or service_jobs_result|changed
-  ignore_errors: yes
-  tags: [jenkins]
-
-- pause: minutes=2
-
 - name: Plugins are installed
   shell: "curl -X POST \
     -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
@@ -86,4 +68,23 @@
     image: jenkins
     state: restarted
   when: plugins_result|changed
+  tags: [jenkins]
+
+- pause: minutes=2
+  when: plugins_result|changed
+
+- name: Service jobs are present
+  template:
+    src: "service-config.xml"
+    dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
+  with_items: service_jobs
+  register: service_jobs_result
+  tags: [jenkins]
+
+- name: Jenkins is reloaded
+  uri:
+    url: http://{{ ip }}:8080/reload
+    method: POST
+  when: jobs_result|changed or service_jobs_result|changed
+  ignore_errors: yes
   tags: [jenkins]

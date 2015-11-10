@@ -46,8 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.box = "ubuntu/vivid64"
     d.vm.hostname = "swarm-master"
     d.vm.network "private_network", ip: "10.100.192.200"
-    d.vm.provision :shell, inline: "apt-get update -y"
-    d.vm.provision :shell, inline: "apt-get upgrade -y"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
     end
