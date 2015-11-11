@@ -2,7 +2,7 @@
 <hudson.plugins.logparser.LogParserPublisher_-DescriptorImpl plugin="log-parser@2.0">
     <parsingRulesGlobal>
         <hudson.plugins.logparser.ParserRuleFile>
-            <name></name>
+            <name>general</name>
             <path>/var/jenkins_home/parsing_rules</path>
         </hudson.plugins.logparser.ParserRuleFile>
     </parsingRulesGlobal>

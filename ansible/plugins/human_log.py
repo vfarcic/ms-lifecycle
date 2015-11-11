@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FIELDS = ['cmd', 'command', 'start', 'end', 'delta', 'msg', 'stdout', 'stderr']
+FIELDS = ['cmd', 'command', 'msg', 'stdout', 'stderr']
 
 def human_log(res):
 

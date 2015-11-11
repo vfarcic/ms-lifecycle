@@ -1,11 +1,13 @@
 - name: Directories are created
   file:
     path: "{{ item.path }}"
-    owner: "{{ item.owner }}"
     mode: "{{ item.mode }}"
     recurse: yes
     state: directory
-  with_items: directories
+  with_items:
+    - { path: '{{ home }}', mode: '0777' }
+    - { path: '/data/jenkins_slaves', mode: '0777' }
+    - { path: '/data/jenkins/nodes/cd', mode: '0777' }
   tags: [jenkins]
 
 - name: Container is running
@@ -19,35 +21,19 @@
   register: container_result
   tags: [jenkins]
 
+- pause: seconds=30
+  when: container_result|changed
+
 - name: Configurations are present
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: configs
-  tags: [jenkins]
-
-- name: Job directories are present
-  file:
-    path: "{{ home }}/jobs/{{ item }}"
-    state: directory
-    mode: "0777"
-  with_items: jobs
-  tags: [jenkins]
-
-- name: Jobs are present
-  copy:
-    src: "{{ item }}.xml"
-    dest: "{{ home }}/jobs/{{ item }}/config.xml"
-  register: jobs_result
-  with_items: jobs
-  tags: [jenkins]
-
-- name: Service job directories are present
-  file:
-    path: "{{ home }}/jobs/{{ item.service_name }}"
-    state: directory
-    mode: "0777"
-  with_items: service_jobs
+    mode: 0777
+  with_items:
+    - { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" }
+    - { src: "cd_config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
+    - { src: "LogParserPublisher.xml", dest: "/data/jenkins/hudson.plugins.logparser.LogParserPublisher.xml" }
+    - { src: "parsing_rules", dest: "/data/jenkins/parsing_rules" }
   tags: [jenkins]
 
 - name: Plugins are installed
@@ -57,12 +43,14 @@
     http://{{ ip }}:8080/pluginManager/installNecessaryPlugins"
   args:
     creates: /data/jenkins/plugins/{{ item }}.jpi
-  with_items: plugins
+  with_items:
+    - git
+    - log-parser
   register: plugins_result
   tags: [jenkins]
 
-- pause: minutes=1
-  when: container_result|changed
+- pause: seconds=30
+  when: plugins_result|changed
 
 - name: Container is restarted
   docker:
@@ -72,13 +60,38 @@
   when: plugins_result|changed
   tags: [jenkins]
 
-- pause: minutes=1
+- pause: seconds=30
   when: plugins_result|changed
+
+#- name: Job directories are present
+#  file:
+#    path: "{{ home }}/jobs/{{ item }}"
+#    state: directory
+#  with_items: jobs
+#  tags: [jenkins]
+#
+#- name: Jobs are present
+#  copy:
+#    src: "{{ item }}.xml"
+#    dest: "{{ home }}/jobs/{{ item }}/config.xml"
+#    mode: 0777
+#  register: jobs_result
+#  with_items: jobs
+#  tags: [jenkins]
+
+- name: Service job directories are present
+  file:
+    path: "{{ home }}/jobs/{{ item.service_name }}"
+    state: directory
+    mode: 0777
+  with_items: service_jobs
+  tags: [jenkins]
 
 - name: Service jobs are present
   template:
     src: "service-config.xml"
     dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
+    mode: 0777
   with_items: service_jobs
   register: service_jobs_result
   tags: [jenkins]
@@ -87,6 +100,6 @@
   uri:
     url: http://{{ ip }}:8080/reload
     method: POST
-  when: jobs_result|changed or service_jobs_result|changed
+  when: service_jobs_result|changed
   ignore_errors: yes
   tags: [jenkins]
