@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.vm.hostname = "cd"
     d.vm.network "private_network", ip: "10.100.198.200"
     d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
-    d.vm.provision :shell, inline: "ansible-playbook /vagrant/ansible/cd.yml -c local -vv"
+    d.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/cd.yml -c local"
     d.vm.provider "virtualbox" do |v|
       v.memory = 2048
     end
