@@ -11,7 +11,7 @@
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
   with_items: files
-  register: result
+  register: files
   tags: [consul]
 
 - name: Templates are present
@@ -20,6 +20,7 @@
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
   with_items: templates
+  register: templates
   tags: [consul]
 
 - name: Is running
@@ -40,5 +41,5 @@
 
 - name: Consul is restarted
   shell: killall -HUP consul
-  when: result|changed
+  when: files|changed or templates|changes
   tags: [consul]

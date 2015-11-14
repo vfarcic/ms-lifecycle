@@ -2,7 +2,8 @@ home: /data/jenkins
 
 playbook: service-swarm
 
-#jobs:
+jobs:
+  - hardware-notification
 #  - service-redeploy
 #  - ms-lifecycle
 

@@ -1,0 +1,13 @@
+{
+  "watches": [
+    {
+      "type": "checks",
+      "state": "warning",
+      "handler": "{{ scripts_dir }}/manage_watches.sh >>{{ logs_dir }}/watches.log"
+    }, {
+      "type": "checks",
+      "state": "critical",
+      "handler": "{{ scripts_dir }}/manage_watches.sh >>{{ logs_dir }}/watches.log"
+    }
+  ]
+}

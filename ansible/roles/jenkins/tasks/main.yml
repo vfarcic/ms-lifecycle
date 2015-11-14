@@ -63,21 +63,22 @@
 - pause: seconds=30
   when: plugins_result|changed
 
-#- name: Job directories are present
-#  file:
-#    path: "{{ home }}/jobs/{{ item }}"
-#    state: directory
-#  with_items: jobs
-#  tags: [jenkins]
-#
-#- name: Jobs are present
-#  copy:
-#    src: "{{ item }}.xml"
-#    dest: "{{ home }}/jobs/{{ item }}/config.xml"
-#    mode: 0777
-#  register: jobs_result
-#  with_items: jobs
-#  tags: [jenkins]
+- name: Job directories are present
+  file:
+    path: "{{ home }}/jobs/{{ item }}"
+    state: directory
+    mode: 0777
+  with_items: jobs
+  tags: [jenkins]
+
+- name: Jobs are present
+  copy:
+    src: "{{ item }}.xml"
+    dest: "{{ home }}/jobs/{{ item }}/config.xml"
+    mode: 0777
+  register: jobs_result
+  with_items: jobs
+  tags: [jenkins]
 
 - name: Service job directories are present
   file:
@@ -100,6 +101,6 @@
   uri:
     url: http://{{ ip }}:8080/reload
     method: POST
-  when: service_jobs_result|changed
+  when: jobs_result|changed or service_jobs_result|changed
   ignore_errors: yes
   tags: [jenkins]
