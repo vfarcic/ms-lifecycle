@@ -7,20 +7,20 @@ set -e
 cd books-ms
 
 docker build \
-	-f Dockerfile.test \
-	-t 10.100.198.200:5000/books-ms-tests \
-	.
+    -f Dockerfile.test \
+    -t 10.100.198.200:5000/books-ms-tests \
+    .
 
 docker push 10.100.198.200:5000/books-ms-tests
 
 docker-compose \
-	-f docker-compose-dev.yml \
-	run --rm tests
+    -f docker-compose-dev.yml \
+    run --rm tests
 
 docker build \
-	-f Dockerfile \
-	-t 10.100.198.200:5000/books-ms \
-	.
+    -f Dockerfile \
+    -t 10.100.198.200:5000/books-ms \
+    .
 
 docker push 10.100.198.200:5000/books-ms
 
