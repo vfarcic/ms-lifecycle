@@ -13,5 +13,5 @@ pip install ansible==1.9.2
 mkdir -p /etc/ansible
 touch /etc/ansible/hosts
 cp /vagrant/ansible/ansible.cfg /etc/ansible/ansible.cfg
-mkdir /etc/ansible/callback_plugins/
+mkdir -p /etc/ansible/callback_plugins/
 cp /vagrant/ansible/plugins/human_log.py /etc/ansible/callback_plugins/human_log.py
