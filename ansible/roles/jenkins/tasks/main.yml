@@ -98,10 +98,27 @@
   register: service_jobs_result
   tags: [jenkins]
 
+- name: Service redeploy job directories are present
+  file:
+    path: "{{ home }}/jobs/{{ item.service_name }}-redeploy"
+    state: directory
+    mode: 0777
+  with_items: service_jobs
+  tags: [jenkins]
+
+- name: Service jobs are present
+  template:
+    src: service-config-redeploy.xml
+    dest: "{{ home }}/jobs/{{ item.service_name }}-redeploy/config.xml"
+    mode: 0777
+  with_items: service_jobs
+  register: service_redeploy_jobs_result
+  tags: [jenkins]
+
 - name: Jenkins is reloaded
   uri:
     url: http://{{ ip }}:8080/reload
     method: POST
-  when: jobs_result|changed or service_jobs_result|changed
+  when: jobs_result|changed or service_jobs_result|changed or service_redeploy_jobs_result|changed
   ignore_errors: yes
   tags: [jenkins]
