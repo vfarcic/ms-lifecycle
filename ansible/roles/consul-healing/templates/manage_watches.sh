@@ -9,17 +9,20 @@ echo "$JSON"
 
 STATUS_ARRAY=($(echo "$JSON" | jq -r ".[].Status"))
 CHECK_ID_ARRAY=($(echo "$JSON" | jq -r ".[].CheckID"))
-LENGTH=${#STATUS_ARRAY[*]}
+SERVICE_ID_ARRAY=($(echo "$JSON" | jq -r ".[].ServiceID"))
+{% raw %}LENGTH=${#STATUS_ARRAY[*]}{% endraw %}
 
 for (( i=0; i<=$(( $LENGTH -1 )); i++ ))
 do
     CHECK_ID=${CHECK_ID_ARRAY[$i]}
     STATUS=${STATUS_ARRAY[$i]}
+    SERVICE_ID=${SERVICE_ID_ARRAY[$i]}
     if [[ "$CHECK_ID" == "mem" || "$CHECK_ID" == "disk" ]]; then
         echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/hardware-notification/build${NC}"
         curl -X POST http://{{ jenkins_ip }}:8080/job/hardware-notification/build \
             --data-urlencode json="{\"parameter\": [{\"name\": \"CHECK_ID\", \"value\": \"$CHECK_ID\"},{\"name\": \"STATUS\", \"value\": \"$STATUS\"}]}"
     else
-        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/service-redeploy/build${NC}"
+        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/${SERVICE_ID}-redeploy/build${NC}"
+        curl -X POST http://{{ jenkins_ip }}:8080/job/${SERVICE_ID}-redeploy/build
     fi
 done

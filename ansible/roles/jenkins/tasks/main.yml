@@ -46,10 +46,11 @@
   with_items:
     - git
     - log-parser
+    - copyartifact
   register: plugins_result
   tags: [jenkins]
 
-- pause: seconds=30
+- pause: seconds=60
   when: plugins_result|changed
 
 - name: Container is restarted
@@ -90,7 +91,7 @@
 
 - name: Service jobs are present
   template:
-    src: "service-config.xml"
+    src: "{{ service_job_template }}"
     dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
     mode: 0777
   with_items: service_jobs

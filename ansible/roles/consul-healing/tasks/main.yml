@@ -21,6 +21,7 @@
     mode: "{{ item.mode }}"
   with_items: templates
   register: templates
+  when: not consul_server_ip is defined
   tags: [consul]
 
 - name: Is running
@@ -41,5 +42,5 @@
 
 - name: Consul is restarted
   shell: killall -HUP consul
-  when: files|changed or templates|changes
+  when: files|changed or templates|changed
   tags: [consul]

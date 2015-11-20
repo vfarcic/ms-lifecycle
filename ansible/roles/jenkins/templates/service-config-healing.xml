@@ -36,11 +36,18 @@
 
 ansible-playbook /vagrant/ansible/{{ playbook }}.yml \
     -i /vagrant/ansible/hosts/prod \
-    --extra-vars &quot;repo_dir=$PWD service_name={{ item.service_name }}&quot; \
+    --extra-vars &quot;repo_dir=$PWD service_name={{ item.service_name }} ping_address={{ item.ping_address }}&quot; \
     --skip-tags &quot;build,pull,push&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>docker-compose*.yml</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
     <hudson.plugins.logparser.LogParserPublisher plugin="log-parser@2.0">
       <unstableOnWarning>false</unstableOnWarning>
       <failBuildOnError>false</failBuildOnError>

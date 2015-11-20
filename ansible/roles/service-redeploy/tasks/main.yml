@@ -1,0 +1,25 @@
+- name: Color is retrieved
+  shell: curl http://localhost:8500/v1/kv/{{ service_name }}/color?raw
+  register: color
+  tags: [service]
+
+- name: Instances are retrieved
+  shell: curl http://localhost:8500/v1/kv/{{ service_name }}/instances?raw
+  register: instances
+  tags: [service]
+
+- name: App container is running
+  shell: docker-compose --x-networking scale \
+    db=1 app-{{ color.stdout }}={{ instances.stdout }}
+  environment:
+    DOCKER_HOST: tcp://10.100.192.200:2375
+  args:
+    chdir: /data/{{ service_name }}
+  tags: [service]
+
+- name: Proxy is configured
+  shell: consul-template \
+    -consul localhost:8500 \
+    -template "{{ ct_src }}:{{ ct_dest }}:{{ ct_cmd }}" \
+    -once
+  tags: [service]

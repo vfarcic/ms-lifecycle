@@ -41,6 +41,19 @@
 
 - include: copy.yml
 
+- name: Consul configs are present
+  template:
+    src: consul_service.json
+    dest: /data/consul/config/{{ service_name }}.json
+  register: health_result
+  when: ping_address is defined
+  tags: [service]
+
+- name: Consul is restarted
+  shell: killall -HUP consul
+  when: health_result|changed
+  tags: [service]
+
 - name: Container is stopped
   shell: docker-compose stop app-{{ next_color.stdout }}
   environment:
