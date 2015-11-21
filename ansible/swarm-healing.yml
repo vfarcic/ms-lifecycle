@@ -8,6 +8,7 @@
     - is_systemd: true
   roles:
     - common
+    - rsyslog
     - consul-healing
     - docker
     - swarm
