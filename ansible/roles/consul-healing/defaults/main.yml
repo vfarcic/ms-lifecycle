@@ -12,12 +12,12 @@ directories:
 files: [
   { src: 'consul', dest: '/usr/local/bin/consul', mode: '0755' },
   { src: 'ui', dest: '/data/consul', mode: '0644' },
+  { src: 'consul_check.json', dest: '{{ config_dir }}/consul_check.json', mode: '0644' },
   { src: 'mem.sh', dest: '{{ scripts_dir }}/mem.sh', mode: '0755' },
   { src: 'disk.sh', dest: '{{ scripts_dir }}/disk.sh', mode: '0755' }
 ]
 
 templates: [
-  { src: 'consul_check.json', dest: '{{ config_dir }}/consul_check.json', mode: '0644' },
   { src: 'watches.json', dest: '{{ config_dir }}/watchers.json', mode: '0644'},
   { src: 'manage_watches.sh', dest: '{{ scripts_dir }}/manage_watches.sh', mode: '0755' }
 ]

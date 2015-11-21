@@ -21,7 +21,6 @@
     mode: "{{ item.mode }}"
   with_items: templates
   register: templates
-  when: not consul_server_ip is defined
   tags: [consul]
 
 - name: Is running
