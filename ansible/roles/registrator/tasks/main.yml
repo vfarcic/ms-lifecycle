@@ -6,4 +6,4 @@
       - /var/run/docker.sock:/tmp/docker.sock
     hostname: "{{ ansible_hostname }}"
     command: -ip {{ facter_ipaddress_eth1 }} {{ registrator_protocol }}://{{ facter_ipaddress_eth1 }}:{{ registrator_port }}
-  tags: [etcd]
+  tags: [registrator]
