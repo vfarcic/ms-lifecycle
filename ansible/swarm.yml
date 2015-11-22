@@ -3,7 +3,7 @@
   serial: 1
   sudo: yes
   vars:
-    - debian_version: trusty
+    - debian_version: vivid
     - docker_cfg_dest: /lib/systemd/system/docker.service
     - is_systemd: true
   roles:
