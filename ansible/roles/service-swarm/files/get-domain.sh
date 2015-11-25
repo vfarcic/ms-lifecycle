@@ -5,7 +5,11 @@ SERVICE_NAME=$1
 COLOR=$2
 
 ADDRESS=`curl \
-    localhost:8500/v1/catalog/service/books-ms \
-    | jq -r '.[0].ServiceAddress + ":" + (.[0].ServicePort | tostring)'`
+    localhost:8500/v1/catalog/service/$SERVICE_NAME-$COLOR \
+    | jq '.[0].ServiceAddress'`
 
-echo $ADDRESS
+PORT=`curl \
+    localhost:8500/v1/catalog/service/$SERVICE_NAME-$COLOR \
+    | jq '.[0].ServicePort'`
+
+echo ${ADDRESS//\"}:$PORT
