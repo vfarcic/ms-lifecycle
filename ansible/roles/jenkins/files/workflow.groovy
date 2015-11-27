@@ -1,44 +1,37 @@
 import groovy.json.JsonSlurper
 
-def service = "books-ms"
-def registry = "10.100.198.200"
-def swarmMaster = "10.100.192.200"
-def proxy = "10.100.192.200"
-
-// TODO: Test normal both colors
-// TODO: Test pre-deployment failure
 // TODO: Test pre-integration failure
 // TODO: Test post-integration failure
+// TODO: Test with build
 // TODO: Add to Ansible
 
 node("cd") {
-    def dir = pwd()
-    def nextColor = getNextColor()
-    def currentColor = getCurrentColor()
+    def service = "books-ms"
+    def registry = "10.100.198.200"
+    def swarmMaster = "10.100.192.200"
+    def proxy = "10.100.192.200"
+    def currentColor = getCurrentColor(swarmMaster, service)
+    def nextColor = getNextColor(service, currentColor)
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
-    if (provision) {
+    if (provision.toBoolean()) {
         sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
-    stage "> Pre-Deployment"
-    git url: "https://github.com/vfarcic/${service}.git"
-    if (build) {
+    if (build.toBoolean()) {
+        stage "> Pre-Deployment"
+        git url: "https://github.com/vfarcic/${service}.git"
         sh "sudo docker build -t ${registry}:5000/${service}-tests -f Dockerfile.test ."
-    }
-    sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
-    if (build) {
+        sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
         def app = docker.build "${registry}:5000/${service}"
-    }
-    if (push) {
         app.push()
     }
 
     stage "> Deployment"
     env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
-    def instances = getInstances()
-    if (pull) {
+    def instances = getInstances(swarmMaster, service)
+    if (build.toBoolean()) {
         sh "docker-compose -f docker-compose-swarm.yml pull app-${nextColor}"
     }
     sh "docker-compose -f docker-compose-swarm.yml --x-networking up -d db"
@@ -47,30 +40,35 @@ node("cd") {
     sh "curl -X PUT -d $instances http://${swarmMaster}:8500/v1/kv/${service}/instances"
 
     stage "> Post-Deployment"
-    def address = getAddress()
+    def address = getAddress(swarmMaster, service, nextColor)
     env.DOCKER_HOST = ""
     try {
-        sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://$address integ"
+        sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://1$address integ"
     } catch (e) {
+        sh "docker-compose -f docker-compose-swarm.yml stop app-${nextColor}"
         error("Pre-integration tests failed")
     }
-    updateProxy(nextColor)
+    updateProxy(swarmMaster, service, nextColor)
     try {
         sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://${proxy} integ"
     } catch (e) {
-        updateProxy(currentColor)
+        if (currentColor != "") {
+            updateProxy(swarmMaster, service, currentColor)
+        }
         sh "docker-compose -f docker-compose-swarm.yml stop app-${nextColor}"
         error("Post-integration tests failed")
     }
     sh "curl -X PUT -d ${nextColor} http://${swarmMaster}:8500/v1/kv/${service}/color"
-    env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
-    sh "docker-compose -f docker-compose-swarm.yml stop app-${currentColor}"
+    if (currentColor != "") {
+        env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
+        sh "docker-compose -f docker-compose-swarm.yml stop app-${currentColor}"
+    }
     // TODO: Add pings
     env.DOCKER_HOST = ""
     sh "docker push ${registry}:5000/${service}-tests"
 }
 
-def getCurrentColor() {
+def getCurrentColor(swarmMaster, service) {
     try {
         return "http://${swarmMaster}:8500/v1/kv/${service}/color?raw".toURL().text
     } catch(e) {
@@ -78,16 +76,15 @@ def getCurrentColor() {
     }
 }
 
-def getNextColor() {
-    def color = getCurrentColor()
-    if (color == "blue") {
+def getNextColor(service, currentColor) {
+    if (currentColor == "blue") {
         return "green"
     } else {
         return "blue"
     }
 }
 
-def getInstances() {
+def getInstances(swarmMaster, service) {
     instances = instances.toInteger()
     if (instances == 0) {
         try {
@@ -99,14 +96,15 @@ def getInstances() {
     return instances
 }
 
-def getAddress() {
-    def service = "http://${swarmMaster}:8500/v1/catalog/service/${service}-${nextColor}".toURL().text
-    def slurper = new JsonSlurper()
-    def result = slurper.parseText(service)[0]
+def getAddress(swarmMaster, service, color) {
+    echo "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}"
+    def serviceJson = "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}".toURL().text
+    def result = new JsonSlurper().parseText(serviceJson)[0]
     return result.ServiceAddress + ":" + result.ServicePort
 }
 
-def updateProxy(color) {
+def updateProxy(swarmMaster, service, color) {
+    def dir = pwd()
     sh "consul-template -consul ${swarmMaster}:8500 -template 'nginx-upstreams-${color}.ctmpl:nginx-upstreams.conf' -once"
     sh "ansible-playbook /vagrant/ansible/nginx-update.yml -i /vagrant/ansible/hosts/prod --extra-vars 'repo_dir=${dir} service_name=${service}'"
 }
