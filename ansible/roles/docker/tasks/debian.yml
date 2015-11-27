@@ -32,9 +32,16 @@
   when: copy_result|changed and is_systemd is defined
   tags: [docker]
 
+- name: vagrant user is added to the docker group
+  user:
+    name: vagrant
+    group: docker
+  register: user_result
+  tags: [docker]
+
 - name: Debian Docker service is restarted
   service:
     name: docker
     state: restarted
-  when: copy_result|changed
+  when: copy_result|changed or user_result|changed
   tags: [docker]

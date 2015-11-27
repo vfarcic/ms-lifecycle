@@ -8,6 +8,7 @@
     - { path: '{{ home }}', mode: '0777' }
     - { path: '/data/jenkins_slaves', mode: '0777' }
     - { path: '/data/jenkins/nodes/cd', mode: '0777' }
+    - { path: '/data/jenkins/nodes/swarm-master', mode: '0777' }
   tags: [jenkins]
 
 - name: Container is running
@@ -47,6 +48,8 @@
     - git
     - log-parser
     - copyartifact
+    - workflow-aggregator
+    - docker-workflow
   register: plugins_result
   tags: [jenkins]
 
