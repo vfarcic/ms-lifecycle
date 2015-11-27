@@ -9,6 +9,7 @@ def proxy = "10.100.192.200"
 // TODO: Test pre-deployment failure
 // TODO: Test pre-integration failure
 // TODO: Test post-integration failure
+// TODO: Add to Ansible
 
 node("cd") {
     def dir = pwd()
