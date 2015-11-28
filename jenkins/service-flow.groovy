@@ -6,7 +6,7 @@ node("cd") {
     def swarmMaster = "10.100.192.200"
     def proxy = "10.100.192.200"
     def currentColor = getCurrentColor(swarmMaster, service)
-    def nextColor = getNextColor(service, currentColor)
+    def nextColor = getNextColor(currentColor)
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
@@ -65,13 +65,13 @@ node("cd") {
 
 def getCurrentColor(swarmMaster, service) {
     try {
-        return "http://${swarmMaster}:8500/v1/kv/${service}/color?raw".toURL().text
+        return new URL("http://${swarmMaster}:8500/v1/kv/${service}/color?raw").text
     } catch(e) {
         return ""
     }
 }
 
-def getNextColor(service, currentColor) {
+def getNextColor(currentColor) {
     if (currentColor == "blue") {
         return "green"
     } else {
@@ -82,7 +82,7 @@ def getNextColor(service, currentColor) {
 def getInstances(swarmMaster, service) {
     if (instances == "0") {
         try {
-            instances = "http://${swarmMaster}:8500/v1/kv/${service}/instances?raw".toURL().text
+            instances = new URL("http://${swarmMaster}:8500/v1/kv/${service}/instances?raw").text
         } catch (e) {
             return 1
         }
