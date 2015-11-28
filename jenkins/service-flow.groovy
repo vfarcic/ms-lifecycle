@@ -9,13 +9,13 @@ node("cd") {
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
-    if (new Boolean(provision)) {
+    if (provision.toBoolean()) {
         sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
     stage "> Pre-Deployment"
     git url: "https://github.com/vfarcic/${service}.git"
-    if (new Boolean(build)) {
+    if (build.toBoolean()) {
         sh "sudo docker build -t ${registry}:5000/${service}-tests -f Dockerfile.test ."
         sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
         def app = docker.build "${registry}:5000/${service}"
@@ -25,7 +25,7 @@ node("cd") {
     stage "> Deployment"
     env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
     def instances = getInstances(swarmMaster, service)
-    if (new Boolean(build)) {
+    if (build.toBoolean()) {
         sh "docker-compose -f docker-compose-swarm.yml pull app-${nextColor}"
     }
     sh "docker-compose -f docker-compose-swarm.yml --x-networking up -d db"
