@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper
 
+import java.net.URL
+
 node("cd") {
     def service = "books-ms"
     def registry = "10.100.198.200:5000/"
