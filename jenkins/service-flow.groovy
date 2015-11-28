@@ -1,12 +1,6 @@
 import groovy.json.JsonSlurper
 
-// TODO: Test pre-integration failure
-// TODO: Test post-integration failure
-// TODO: Test with build
-// TODO: Add to Ansible
-
 node("cd") {
-    def service = "books-ms"
     def registry = "10.100.198.200"
     def swarmMaster = "10.100.192.200"
     def proxy = "10.100.192.200"
@@ -19,9 +13,9 @@ node("cd") {
         sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
+    stage "> Pre-Deployment"
+    git url: "https://github.com/vfarcic/${service}.git"
     if (build.toBoolean()) {
-        stage "> Pre-Deployment"
-        git url: "https://github.com/vfarcic/${service}.git"
         sh "sudo docker build -t ${registry}:5000/${service}-tests -f Dockerfile.test ."
         sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
         def app = docker.build "${registry}:5000/${service}"

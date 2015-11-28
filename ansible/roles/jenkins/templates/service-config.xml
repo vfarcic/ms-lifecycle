@@ -12,7 +12,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/vfarcic/{{ item.service_name }}.git</url>
+        <url>https://github.com/vfarcic/{{ item.name }}.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -35,9 +35,12 @@
     <hudson.tasks.Shell>
       <command>export PYTHONUNBUFFERED=1
 
-ansible-playbook /vagrant/ansible/{{ playbook }}.yml \
+ansible-playbook /vagrant/ansible/swarm.yml \
+    -i /vagrant/ansible/hosts/prod
+
+ansible-playbook /vagrant/ansible/service-swarm.yml \
     -i /vagrant/ansible/hosts/prod \
-    --extra-vars &quot;repo_dir=$PWD service_name={{ item.service_name }}&quot; \
+    --extra-vars &quot;repo_dir=$PWD service_name={{ item.name }}&quot; \
     --skip-tags &quot;build,pull,push&quot;</command>
     </hudson.tasks.Shell>
   </builders>

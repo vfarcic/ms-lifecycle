@@ -8,7 +8,6 @@
     - { path: '{{ home }}', mode: '0777' }
     - { path: '/data/jenkins_slaves', mode: '0777' }
     - { path: '/data/jenkins/nodes/cd', mode: '0777' }
-    - { path: '/data/jenkins/nodes/swarm-master', mode: '0777' }
   tags: [jenkins]
 
 - name: Container is running
@@ -43,18 +42,14 @@
     --header 'Content-Type: text/xml' \
     http://{{ ip }}:8080/pluginManager/installNecessaryPlugins"
   args:
-    creates: /data/jenkins/plugins/{{ item }}.jpi
-  with_items:
-    - git
-    - log-parser
-    - copyartifact
-    - workflow-aggregator
-    - docker-workflow
+    creates: /data/jenkins/plugins/{{ item }}
+  with_items: plugins
   register: plugins_result
   tags: [jenkins]
 
-- pause: seconds=60
-  when: plugins_result|changed
+- wait_for:
+    path: /data/jenkins/plugins/{{ item }}
+  with_items: plugins
 
 - name: Container is restarted
   docker:
@@ -69,59 +64,26 @@
 
 - name: Job directories are present
   file:
-    path: "{{ home }}/jobs/{{ item }}"
+    path: "{{ home }}/jobs/{{ item.name }}"
     state: directory
     mode: 0777
   with_items: jobs
   tags: [jenkins]
 
 - name: Jobs are present
-  copy:
-    src: "{{ item }}.xml"
-    dest: "{{ home }}/jobs/{{ item }}/config.xml"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ home }}/jobs/{{ item.name }}/config.xml"
     mode: 0777
-  register: jobs_result
   with_items: jobs
-  tags: [jenkins]
-
-- name: Service job directories are present
-  file:
-    path: "{{ home }}/jobs/{{ item.service_name }}"
-    state: directory
-    mode: 0777
-  with_items: service_jobs
-  tags: [jenkins]
-
-- name: Service jobs are present
-  template:
-    src: "{{ service_job_template }}"
-    dest: "{{ home }}/jobs/{{ item.service_name }}/config.xml"
-    mode: 0777
-  with_items: service_jobs
-  register: service_jobs_result
-  tags: [jenkins]
-
-- name: Service redeploy job directories are present
-  file:
-    path: "{{ home }}/jobs/{{ item.service_name }}-redeploy"
-    state: directory
-    mode: 0777
-  with_items: service_jobs
-  tags: [jenkins]
-
-- name: Service jobs are present
-  template:
-    src: service-config-redeploy.xml
-    dest: "{{ home }}/jobs/{{ item.service_name }}-redeploy/config.xml"
-    mode: 0777
-  with_items: service_jobs
-  register: service_redeploy_jobs_result
+  register: jobs_result
   tags: [jenkins]
 
 - name: Jenkins is reloaded
   uri:
     url: http://{{ ip }}:8080/reload
     method: POST
-  when: jobs_result|changed or service_jobs_result|changed or service_redeploy_jobs_result|changed
+    status_code: 200,302
+  when: jobs_result|changed
   ignore_errors: yes
   tags: [jenkins]
