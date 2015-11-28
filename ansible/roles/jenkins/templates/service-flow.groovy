@@ -1,7 +1,6 @@
 import groovy.json.JsonSlurper
 
 node("cd") {
-    def service = "books-ms"
     def registry = "10.100.198.200:5000/"
     def swarmMaster = "10.100.192.200"
     def proxy = "10.100.192.200"
@@ -38,7 +37,7 @@ node("cd") {
     def address = getAddress(swarmMaster, service, nextColor)
     env.DOCKER_HOST = ""
     try {
-        sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://1$address integ"
+        sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://$address integ"
     } catch (e) {
         sh "docker-compose -f docker-compose-swarm.yml stop app-${nextColor}"
         error("Pre-integration tests failed")

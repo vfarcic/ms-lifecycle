@@ -1,9 +1,14 @@
 home: /data/jenkins
 
-service_job_template: service-config.xml
+service_job_template: service-workflow-config.xml
 
 jobs: [
-  { name: "books-ms", src: "{{ service_job_template }}", ping_address: "/api/v1/books" }
+  {
+    name: "books-ms",
+    service_name: "books-ms",
+    src: "{{ service_job_template }}",
+    ping_address: "/api/v1/books"
+  }
 ]
 #  - hardware-notification
 #  - service-redeploy
