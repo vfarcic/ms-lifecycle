@@ -10,7 +10,7 @@ node("cd") {
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
-    if (provision.toBoolean()) {
+    if (provision == true) {
         sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
