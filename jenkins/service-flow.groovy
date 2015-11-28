@@ -1,7 +1,4 @@
 import groovy.json.JsonSlurper
-import groovyx.net.http.HTTPBuilder
-
-import java.net.URL
 
 node("cd") {
     def service = "books-ms"
@@ -9,7 +6,7 @@ node("cd") {
     def swarmMaster = "10.100.192.200"
     def proxy = "10.100.192.200"
     def currentColor = getCurrentColor(swarmMaster, service)
-    def nextColor = getNextColor(currentColor)
+    def nextColor = getNextColor(service, currentColor)
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
@@ -68,13 +65,13 @@ node("cd") {
 
 def getCurrentColor(swarmMaster, service) {
     try {
-        return new URL("http://${swarmMaster}:8500/v1/kv/${service}/color?raw").text
+        return "http://${swarmMaster}:8500/v1/kv/${service}/color?raw".toURL().text
     } catch(e) {
         return ""
     }
 }
 
-def getNextColor(currentColor) {
+def getNextColor(service, currentColor) {
     if (currentColor == "blue") {
         return "green"
     } else {
@@ -85,7 +82,7 @@ def getNextColor(currentColor) {
 def getInstances(swarmMaster, service) {
     if (instances == "0") {
         try {
-            instances = new URL("http://${swarmMaster}:8500/v1/kv/${service}/instances?raw").text
+            instances = "http://${swarmMaster}:8500/v1/kv/${service}/instances?raw".toURL().text
         } catch (e) {
             return 1
         }
@@ -94,11 +91,8 @@ def getInstances(swarmMaster, service) {
 }
 
 def getAddress(swarmMaster, service, color) {
-    def http = new HTTPBuilder("http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}")
-    def html = http.get()
-    echo "HTML: $html"
-
-    def serviceJson = new URL("http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}").text
+    echo "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}"
+    def serviceJson = "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}".toURL().text
     def result = new JsonSlurper().parseText(serviceJson)[0]
     return result.ServiceAddress + ":" + result.ServicePort
 }
