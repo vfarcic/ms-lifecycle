@@ -93,9 +93,6 @@ def getInstances(swarmMaster, service) {
 }
 
 def getAddress(swarmMaster, service, color) {
-    echo "URL: http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}"
-    def xxx = sh "curl http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}"
-    echo "Xxx: $xxx"
     def serviceJson = new URL("http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}").text
     def result = new JsonSlurper().parseText(serviceJson)[0]
     return result.ServiceAddress + ":" + result.ServicePort
