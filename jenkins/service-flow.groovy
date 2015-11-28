@@ -1,4 +1,5 @@
 import groovy.json.JsonSlurper
+import groovyx.net.http.HTTPBuilder
 
 import java.net.URL
 
