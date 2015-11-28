@@ -1,7 +1,8 @@
 import groovy.json.JsonSlurper
 
 node("cd") {
-    def registry = "10.100.198.200"
+    def service = "books-ms"
+    def registry = "10.100.198.200:5000/"
     def swarmMaster = "10.100.192.200"
     def proxy = "10.100.192.200"
     def currentColor = getCurrentColor(swarmMaster, service)
@@ -16,9 +17,9 @@ node("cd") {
     stage "> Pre-Deployment"
     git url: "https://github.com/vfarcic/${service}.git"
     if (build.toBoolean()) {
-        sh "sudo docker build -t ${registry}:5000/${service}-tests -f Dockerfile.test ."
+        sh "sudo docker build -t ${registry}${service}-tests -f Dockerfile.test ."
         sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
-        def app = docker.build "${registry}:5000/${service}"
+        def app = docker.build "${registry}${service}"
         app.push()
     }
 
@@ -59,7 +60,7 @@ node("cd") {
     }
     // TODO: Add pings
     env.DOCKER_HOST = ""
-    sh "docker push ${registry}:5000/${service}-tests"
+    sh "docker push ${registry}${service}-tests"
 }
 
 def getCurrentColor(swarmMaster, service) {
