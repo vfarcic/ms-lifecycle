@@ -80,8 +80,7 @@ def getNextColor(service, currentColor) {
 }
 
 def getInstances(swarmMaster, service) {
-    instances = instances.toInteger()
-    if (instances == 0) {
+    if (instances == "0") {
         try {
             instances = "http://${swarmMaster}:8500/v1/kv/${service}/instances?raw".toURL().text
         } catch (e) {
