@@ -16,7 +16,7 @@ node("cd") {
 
     stage "> Pre-Deployment"
     git url: "https://github.com/vfarcic/${service}.git"
-    if (build.toBoolean()) {
+    if (build == "true") {
         sh "sudo docker build -t ${registry}${service}-tests -f Dockerfile.test ."
         sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
         def app = docker.build "${registry}${service}"
@@ -26,7 +26,7 @@ node("cd") {
     stage "> Deployment"
     env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
     def instances = getInstances(swarmMaster, service)
-    if (build.toBoolean()) {
+    if (build == "true") {
         sh "docker-compose -f docker-compose-swarm.yml pull app-${nextColor}"
     }
     sh "docker-compose -f docker-compose-swarm.yml --x-networking up -d db"
