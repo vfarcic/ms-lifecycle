@@ -9,13 +9,13 @@ node("cd") {
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
-    if (provision == true) {
+    if (provision.toBoolean()) {
         sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
     stage "> Pre-Deployment"
     git url: "https://github.com/vfarcic/${service}.git"
-    if (build == "true") {
+    if (build.toBoolean()) {
         sh "sudo docker build -t ${registry}${service}-tests -f Dockerfile.test ."
         sh "sudo docker-compose -f docker-compose-dev.yml run --rm tests"
         def app = docker.build "${registry}${service}"
@@ -25,7 +25,7 @@ node("cd") {
     stage "> Deployment"
     env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
     def instances = getInstances(swarmMaster, service)
-    if (build == "true") {
+    if (build.toBoolean()) {
         sh "docker-compose -f docker-compose-swarm.yml pull app-${nextColor}"
     }
     sh "docker-compose -f docker-compose-swarm.yml --x-networking up -d db"
@@ -79,14 +79,14 @@ def getNextColor(service, currentColor) {
 }
 
 def getInstances(swarmMaster, service) {
-    if (instances == "0") {
+    if (instances.toInteger() == 0) {
         try {
             instances = "http://${swarmMaster}:8500/v1/kv/${service}/instances?raw".toURL().text
         } catch (e) {
             return 1
         }
     }
-    return instances
+    return instances.toInteger()
 }
 
 def getAddress(swarmMaster, service, color) {
