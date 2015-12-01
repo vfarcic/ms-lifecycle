@@ -8,11 +8,7 @@ jobs: [
     service_name: "books-ms",
     src: "{{ service_job_template }}",
     ping_address: "/api/v1/books"
-  }, {
-     name: "hardware-notification",
-     service_name: "books-ms",
-     src: "hardware-notification-config.xml"
-   }
+  }
 ]
 #  - hardware-notification
 #  - service-redeploy
@@ -24,4 +20,3 @@ plugins:
   - copyartifact
   - workflow-aggregator
   - docker-workflow
-  - template-project

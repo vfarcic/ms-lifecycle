@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVICE_NAME</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <assignedNode>cd</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>
+sudo chmod -x /data/jenkins_slaves/cd/workspace/ms-lifecycle/ansible/hosts/*
+
+ansible-playbook /data/jenkins_slaves/cd/workspace/ms-lifecycle/ansible/service-healing.yml \
+    -i /data/jenkins_slaves/cd/workspace/ms-lifecycle/ansible/hosts/prod \
+    --extra-vars &quot;repo_dir=/data/jenkins_slaves/cd/workspace/$SERVICE_NAME service_name=$SERVICE_NAME&quot; \
+    -vv --skip-tags &quot;build,pull,tests&quot;</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

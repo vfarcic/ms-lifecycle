@@ -6,8 +6,8 @@
     state: directory
   with_items:
     - { path: '{{ home }}', mode: '0777' }
-    - { path: '/data/jenkins_slaves', mode: '0777' }
     - { path: '/data/jenkins/nodes/cd', mode: '0777' }
+    - { path: '/data/jenkins/nodes/swarm-master', mode: '0777' }
   tags: [jenkins]
 
 - name: Container is running
@@ -31,7 +31,8 @@
     mode: 0777
   with_items:
     - { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" }
-    - { src: "cd_config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
+    - { src: "cd-config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
+    - { src: "swarm-master-config.xml", dest: "/data/jenkins/nodes/swarm-master/config.xml" }
     - { src: "LogParserPublisher.xml", dest: "/data/jenkins/hudson.plugins.logparser.LogParserPublisher.xml" }
     - { src: "parsing_rules", dest: "/data/jenkins/parsing_rules" }
   tags: [jenkins]

@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slave>
+    <name>swarm-master</name>
+    <description></description>
+    <remoteFS>/data/jenkins_slaves/swarm-master</remoteFS>
+    <numExecutors>1</numExecutors>
+    <mode>EXCLUSIVE</mode>
+    <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+    <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.9">
+        <host>10.100.192.200</host>
+        <port>22</port>
+        <credentialsId>c03451d6-4552-4719-9033-39e65a23184c</credentialsId>
+        <maxNumRetries>0</maxNumRetries>
+        <retryWaitTime>0</retryWaitTime>
+    </launcher>
+    <label>swarm-master lb</label>
+    <nodeProperties/>
+    <userId>anonymous</userId>
+</slave>

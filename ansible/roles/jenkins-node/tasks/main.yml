@@ -1,0 +1,9 @@
+- name: Directories are created
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    recurse: yes
+    state: directory
+  with_items:
+    - { path: '/data/jenkins_slaves', owner: 'vagrant' }
+  tags: [jenkins]

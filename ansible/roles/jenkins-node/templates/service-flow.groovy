@@ -1,21 +1,16 @@
 import groovy.json.JsonSlurper
 
-def registry = "10.100.198.200:5000/"
-def swarmMaster = "10.100.192.200"
-def proxy = "10.100.192.200"
-def currentColor = getCurrentColor(swarmMaster, service)
-def nextColor = getNextColor(currentColor)
-
 node("cd") {
+    def registry = "10.100.198.200:5000/"
+    def swarmMaster = "10.100.192.200"
+    def proxy = "10.100.192.200"
+    def currentColor = getCurrentColor(swarmMaster, service)
+    def nextColor = getNextColor(service, currentColor)
     env.PYTHONUNBUFFERED = 1
 
     stage "> Provisioning"
     if (provision.toBoolean()) {
-        sh "ansible-playbook /vagrant/ansible/swarm.yml \
-            -i /vagrant/ansible/hosts/prod"
-        sh "ansible-playbook /vagrant/ansible/nginx.yml \
-            -i /vagrant/ansible/hosts/prod --extra-vars \
-            \"proxy_host=swarm-master\""
+        sh "ansible-playbook /vagrant/ansible/swarm.yml -i /vagrant/ansible/hosts/prod"
     }
 
     stage "> Pre-Deployment"
@@ -47,16 +42,7 @@ node("cd") {
         sh "docker-compose -f docker-compose-swarm.yml stop app-${nextColor}"
         error("Pre-integration tests failed")
     }
-    sh "consul-template -consul ${swarmMaster}:8500 -template 'nginx-upstreams-${nextColor}.ctmpl:nginx-upstreams.conf' -once"
-    stash includes: 'nginx-*.conf', name: 'nginx'
-}
-node("lb") {
-    unstash 'nginx'
-    sh "sudo cp nginx-includes.conf /data/nginx/includes/${service}.conf"
-    sh "sudo cp nginx-upstreams.conf /data/nginx/upstreams/${service}.conf"
-    sh "docker kill -s HUP nginx"
-}
-node("cd") {
+    updateProxy(swarmMaster, service, nextColor)
     try {
         sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://${proxy} integ"
     } catch (e) {
@@ -84,7 +70,7 @@ def getCurrentColor(swarmMaster, service) {
     }
 }
 
-def getNextColor(currentColor) {
+def getNextColor(service, currentColor) {
     if (currentColor == "blue") {
         return "green"
     } else {
@@ -108,4 +94,10 @@ def getAddress(swarmMaster, service, color) {
     def serviceJson = "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}".toURL().text
     def result = new JsonSlurper().parseText(serviceJson)[0]
     return result.ServiceAddress + ":" + result.ServicePort
+}
+
+def updateProxy(swarmMaster, service, color) {
+    def dir = pwd()
+    sh "consul-template -consul ${swarmMaster}:8500 -template 'nginx-upstreams-${color}.ctmpl:nginx-upstreams.conf' -once"
+    sh "ansible-playbook /vagrant/ansible/nginx-update.yml -i /vagrant/ansible/hosts/prod --extra-vars 'repo_dir=${dir} service_name=${service}'"
 }
