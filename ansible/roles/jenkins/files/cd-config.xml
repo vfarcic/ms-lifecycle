@@ -3,7 +3,7 @@
     <name>cd</name>
     <description></description>
     <remoteFS>/data/jenkins_slaves/cd</remoteFS>
-    <numExecutors>1</numExecutors>
+    <numExecutors>3</numExecutors>
     <mode>NORMAL</mode>
     <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
     <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.9">

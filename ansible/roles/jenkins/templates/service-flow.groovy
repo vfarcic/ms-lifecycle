@@ -48,16 +48,7 @@ node("cd") {
         sh "docker-compose -f docker-compose-swarm.yml stop app-${nextColor}"
         error("Pre-integration tests failed")
     }
-    sh "consul-template -consul ${swarmMaster}:8500 -template 'nginx-upstreams-${nextColor}.ctmpl:nginx-upstreams.conf' -once"
-    stash includes: 'nginx-*.conf', name: 'nginx'
-}
-node("lb") {
-    unstash 'nginx'
-    sh "sudo cp nginx-includes.conf /data/nginx/includes/${service}.conf"
-    sh "sudo cp nginx-upstreams.conf /data/nginx/upstreams/${service}.conf"
-    sh "docker kill -s HUP nginx"
-}
-node("cd") {
+    updateProxy(swarmMaster, service, nextColor);
     try {
         sh "docker-compose -f docker-compose-dev.yml run --rm -e DOMAIN=http://${proxy} integ"
     } catch (e) {
@@ -73,8 +64,10 @@ node("cd") {
         sh "docker-compose -f docker-compose-swarm.yml stop app-${currentColor}"
     }
     // TODO: Add pings
-    env.DOCKER_HOST = ""
-    sh "docker push ${registry}${service}-tests"
+    if (build.toBoolean()) {
+        env.DOCKER_HOST = ""
+        sh "docker push ${registry}${service}-tests"
+    }
 }
 
 def getCurrentColor(swarmMaster, service) {
@@ -108,4 +101,15 @@ def getAddress(swarmMaster, service, color) {
     def serviceJson = "http://${swarmMaster}:8500/v1/catalog/service/${service}-${color}".toURL().text
     def result = new JsonSlurper().parseText(serviceJson)[0]
     return result.ServiceAddress + ":" + result.ServicePort
+}
+
+def updateProxy(swarmMaster, service, color) {
+    sh "consul-template -consul ${swarmMaster}:8500 -template 'nginx-upstreams-${color}.ctmpl:nginx-upstreams.conf' -once"
+    stash includes: 'nginx-*.conf', name: 'nginx'
+    node("lb") {
+        unstash 'nginx'
+        sh "sudo cp nginx-includes.conf /data/nginx/includes/${service}.conf"
+        sh "sudo cp nginx-upstreams.conf /data/nginx/upstreams/${service}.conf"
+        sh "docker kill -s HUP nginx"
+    }
 }
