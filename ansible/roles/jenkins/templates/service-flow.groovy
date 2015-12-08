@@ -63,7 +63,7 @@ node("cd") {
         env.DOCKER_HOST = "tcp://${swarmMaster}:2375"
         sh "docker-compose -f docker-compose-swarm.yml stop app-${currentColor}"
     }
-    // TODO: Add pings
+    updateConsul(swarmMaster)
     if (build.toBoolean()) {
         env.DOCKER_HOST = ""
         sh "docker push ${registry}${service}-tests"
@@ -111,5 +111,15 @@ def updateProxy(swarmMaster, service, color) {
         sh "sudo cp nginx-includes.conf /data/nginx/includes/${service}.conf"
         sh "sudo cp nginx-upstreams.conf /data/nginx/upstreams/${service}.conf"
         sh "docker kill -s HUP nginx"
+    }
+}
+
+def updateConsul(swarmMaster) {
+    stash includes: 'consul_check.ctmpl', name: 'consul-check'
+    node("swarm-master") {
+        unstash 'consul-check'
+        sh "sudo consul-template -consul ${swarmMaster}:8500 \
+            -template 'consul_check.ctmpl:/data/consul/config/${service}.json:killall -HUP consul' \
+            -once"
     }
 }

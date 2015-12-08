@@ -32,4 +32,5 @@
     url: http://localhost:8500/v1/kv/proxy/ip
     method: PUT
     body: "{{ ip }}"
+  ignore_errors: yes
   tags: [nginx]
