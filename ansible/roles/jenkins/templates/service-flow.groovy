@@ -11,7 +11,7 @@ node("cd") {
 
     stage "> Provisioning"
     if (provision.toBoolean()) {
-        sh "ansible-playbook /vagrant/ansible/swarm.yml \
+        sh "ansible-playbook /vagrant/ansible/{{ swarm_playbook }} \
             -i /vagrant/ansible/hosts/prod"
         sh "ansible-playbook /vagrant/ansible/nginx.yml \
             -i /vagrant/ansible/hosts/prod --extra-vars \

@@ -1,4 +1,5 @@
 home: /data/jenkins
+swarm_playbook: swarm-healing.yml
 
 service_job_template: service-workflow-config.xml
 
@@ -7,6 +8,10 @@ jobs: [
     name: "books-ms",
     service_name: "books-ms",
     src: "{{ service_job_template }}"
+  }, {
+    name: "books-ms-redeploy",
+    service_name: "books-ms",
+    src: "service-redeploy-config.xml"
   }, {
      name: "hardware-notification",
      service_name: "books-ms",
