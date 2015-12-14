@@ -23,6 +23,7 @@ do
             --data-urlencode json="{\"parameter\": [{\"name\": \"checkId\", \"value\": \"$CHECK_ID\"},{\"name\": \"status\", \"value\": \"$STATUS\"}]}"
     else
         echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/${SERVICE_ID}-redeploy/build${NC}"
-        curl -X POST http://{{ jenkins_ip }}:8080/job/${SERVICE_ID}-redeploy/build
+        curl -X POST http://{{ jenkins_ip }}:8080/job/${SERVICE_ID}-redeploy/build \
+            --data-urlencode json="{\"parameter\": [{\"name\":\"service\", \"value\":\"${SERVICE_ID}\"}]}"
     fi
 done
