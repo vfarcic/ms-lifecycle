@@ -167,6 +167,16 @@ After=flanneld.service
 EOF
     }
 
+    local TEMPLATE=/etc/systemd/system/docker.service.d/50-docker.conf
+    [ -f $TEMPLATE ] || {
+        echo "TEMPLATE: $TEMPLATE"
+        mkdir -p $(dirname $TEMPLATE)
+        cat << EOF > $TEMPLATE
+[Service]
+Environment=DOCKER_OPTS='--insecure-registry="10.100.198.200:5000"'
+EOF
+    }
+
 }
 
 init_config
