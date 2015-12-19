@@ -1,7 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: books-ms
+  name: books-ms-pod
+  labels:
+    type: service
 spec:
   containers:
   - name: books-ms
