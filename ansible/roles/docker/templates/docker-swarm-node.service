@@ -11,7 +11,7 @@ ExecStart=/usr/bin/docker daemon -H fd:// \
           -H unix:///var/run/docker.sock \
           --insecure-registry 10.100.198.200:5000 \
           --cluster-store=consul://{{ ip }}:8500/swarm \
-          --cluster-advertise={{ ip }}:2375
+          --cluster-advertise={{ ip }}:2375 {{ docker_extra }}
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576

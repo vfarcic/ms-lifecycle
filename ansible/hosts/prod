@@ -15,7 +15,7 @@
 10.100.199.200
 
 [logging]
-10.100.192.200
+10.100.198.200
 
 [mesos]
 10.100.197.201 mesos_master=true
@@ -32,7 +32,7 @@ mesos_master_ip=10.100.197.201
 10.100.192.20[1:2] swarm_master_ip=10.100.192.200 consul_extra="-join 10.100.192.200" consul_server_ip=10.100.192.200 docker_cfg=docker-swarm-node.service
 
 [swarm:vars]
-elk_ip=10.100.192.200
+elk_ip=10.100.198.200
 
 [swarm-master]
 10.100.192.200

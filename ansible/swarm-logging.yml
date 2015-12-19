@@ -6,6 +6,7 @@
     - debian_version: vivid
     - docker_cfg_dest: /lib/systemd/system/docker.service
     - is_systemd: true
+    - docker_extra: --log-driver=syslog --log-opt syslog-address=tcp://{{ elk_ip }}:25826 --log-opt tag={{ '{{.Name}}' }}
   roles:
     - common
     - rsyslog
