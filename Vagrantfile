@@ -4,8 +4,11 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    config.vm.synced_folder ".", "/vagrant"
-    # config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
+    if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+        config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
+    else
+        config.vm.synced_folder ".", "/vagrant"
+    end
     config.vm.define "cd" do |d|
         d.vm.box = "ubuntu/trusty64"
         d.vm.hostname = "cd"
