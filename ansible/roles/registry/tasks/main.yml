@@ -10,8 +10,8 @@
 - name: Container is running
   docker:
     name: registry
-    image: registry
+    image: registry:2
     ports: 5000:5000
     volumes:
-      - /vagrant/registry:/tmp/registry
+      - /vagrant/registry:/var/lib/registry/docker/registry
   tags: [registry]
