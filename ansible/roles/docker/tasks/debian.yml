@@ -45,3 +45,13 @@
     state: restarted
   when: copy_result|changed or user_result|changed
   tags: [docker]
+
+- name: DockerUI is running
+  docker:
+    image: dockerui/dockerui
+    name: dockerui
+    ports: 9000:9000
+    privileged: yes
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  tags: [docker]
