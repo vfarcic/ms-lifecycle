@@ -17,7 +17,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         d.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/cd.yml"
         end
-#        d.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/cd.yml -c local"
         d.vm.provider "virtualbox" do |v|
             v.memory = 2048
         end
