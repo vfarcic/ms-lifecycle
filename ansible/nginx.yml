@@ -1,4 +1,4 @@
-- hosts: "{{ proxy_host }}"
+- hosts: proxy
   remote_user: vagrant
   serial: 1
   sudo: yes
