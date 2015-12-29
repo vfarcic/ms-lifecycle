@@ -1,3 +1,10 @@
+- name: Tests container is pulled
+  shell: docker pull \
+    {{ registry_url }}{{ service_name }}-tests
+  delegate_to: 127.0.0.1
+  ignore_errors: yes
+  tags: [service, tests]
+
 - name: Tests container is built
   shell: docker build \
     -t {{ registry_url }}{{ service_name }}-tests \
@@ -15,6 +22,13 @@
   args:
     chdir: "{{ repo_dir }}"
   delegate_to: 127.0.0.1
+  tags: [service, tests]
+
+- name: Container is pulled
+  shell: docker pull \
+    {{ registry_url }}{{ service_name }}
+  delegate_to: 127.0.0.1
+  ignore_errors: yes
   tags: [service, tests]
 
 - name: Container is built

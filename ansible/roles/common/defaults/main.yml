@@ -7,6 +7,5 @@ hosts: [
   { host_ip: "10.100.193.200", host_name: "proxy"},
   { host_ip: "10.100.192.200", host_name: "swarm-master"},
   { host_ip: "10.100.192.201", host_name: "swarm-node-1"},
-  { host_ip: "10.100.192.202", host_name: "swarm-node-2"},
-  { host_ip: "10.100.199.200", host_name: "kube-master"}
+  { host_ip: "10.100.192.202", host_name: "swarm-node-2"}
 ]
