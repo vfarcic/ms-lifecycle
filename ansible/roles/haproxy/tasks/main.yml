@@ -2,6 +2,7 @@
   file:
     dest: "{{ item }}"
     state: directory
+    owner: vagrant
   with_items: directories
   tags: [haproxy]
 
