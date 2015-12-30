@@ -1,13 +1,24 @@
 home: /data/jenkins
 swarm_playbook: swarm-healing.yml
 
-service_job_template: service-workflow-config.xml
+configs: [
+  { src: "credentials.xml", dir: "/data/jenkins", file: "credentials.xml" },
+  { src: "cd-config.xml", dir: "/data/jenkins/nodes/cd", file: "config.xml" },
+  { src: "prod-config.xml", dir: "/data/jenkins/nodes/prod", file: "config.xml" },
+  { src: "swarm-master-config.xml", dir: "/data/jenkins/nodes/swarm-master", file: "config.xml" },
+  { src: "LogParserPublisher.xml", dir: "/data/jenkins", file: "hudson.plugins.logparser.LogParserPublisher.xml" },
+  { src: "parsing_rules", dir: "/data/jenkins", file: "parsing_rules" }
+]
 
 jobs: [
   {
+    name: "books-ms-ansible",
+    service_name: "books-ms",
+    src: "service-ansible-config.xml"
+  }, {
     name: "books-ms",
     service_name: "books-ms",
-    src: "{{ service_job_template }}"
+    src: "service-workflow-config.xml"
   }, {
     name: "books-ms-redeploy",
     service_name: "books-ms",
@@ -18,9 +29,6 @@ jobs: [
      src: "hardware-notification-config.xml"
    }
 ]
-#  - hardware-notification
-#  - service-redeploy
-#  - ms-lifecycle
 
 plugins:
   - git

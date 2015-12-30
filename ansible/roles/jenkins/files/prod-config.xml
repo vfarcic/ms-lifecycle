@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <slave>
-    <name>cd</name>
+    <name>prod</name>
     <description></description>
     <remoteFS>/data/jenkins_slaves/cd</remoteFS>
     <numExecutors>3</numExecutors>
     <mode>NORMAL</mode>
     <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
     <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.9">
-        <host>10.100.198.200</host>
+        <host>10.100.198.201</host>
         <port>22</port>
-        <credentialsId>0f0d9da8-c1e9-40af-b0b5-13d75e58401e</credentialsId>
+        <credentialsId>b90e7674-13fb-4108-bd07-843842127283</credentialsId>
         <maxNumRetries>0</maxNumRetries>
         <retryWaitTime>0</retryWaitTime>
     </launcher>
-    <label>cd</label>
+    <label>prod</label>
     <nodeProperties/>
     <userId>anonymous</userId>
 </slave>

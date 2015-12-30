@@ -1,13 +1,10 @@
 - name: Directories are created
   file:
-    path: "{{ item.path }}"
-    mode: "{{ item.mode }}"
+    path: "{{ item.dir }}"
+    mode: 0777
     recurse: yes
     state: directory
-  with_items:
-    - { path: '{{ home }}', mode: '0777' }
-    - { path: '/data/jenkins/nodes/cd', mode: '0777' }
-    - { path: '/data/jenkins/nodes/swarm-master', mode: '0777' }
+  with_items: configs
   tags: [jenkins]
 
 - name: Container is running
@@ -23,18 +20,15 @@
 
 - pause: seconds=30
   when: container_result|changed
+  tags: [jenkins]
 
 - name: Configurations are present
   copy:
     src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    dest: "{{ item.dir }}/{{ item.file }}"
     mode: 0777
-  with_items:
-    - { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" }
-    - { src: "cd-config.xml", dest: "/data/jenkins/nodes/cd/config.xml" }
-    - { src: "swarm-master-config.xml", dest: "/data/jenkins/nodes/swarm-master/config.xml" }
-    - { src: "LogParserPublisher.xml", dest: "/data/jenkins/hudson.plugins.logparser.LogParserPublisher.xml" }
-    - { src: "parsing_rules", dest: "/data/jenkins/parsing_rules" }
+  with_items: configs
+  register: configs_result
   tags: [jenkins]
 
 - name: Plugins are installed
@@ -57,11 +51,11 @@
     name: jenkins
     image: jenkins
     state: restarted
-  when: plugins_result|changed
+  when: configs_result|changed or plugins_result|changed
   tags: [jenkins]
 
 - pause: seconds=30
-  when: plugins_result|changed
+  when: configs_result|changed or plugins_result|changed
 
 - name: Job directories are present
   file:
@@ -87,4 +81,11 @@
     status_code: 200,302
   when: jobs_result|changed
   ignore_errors: yes
+  tags: [jenkins]
+
+- name: Scripts are present
+  copy:
+    src: scripts
+    dest: /data
+    mode: 0766
   tags: [jenkins]
