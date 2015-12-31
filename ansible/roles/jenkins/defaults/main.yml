@@ -20,6 +20,10 @@ jobs: [
     service_name: "books-ms",
     src: "service-workflow-config.xml"
   }, {
+    name: "books-ms-multibranch",
+    service_name: "books-ms",
+    src: "service-workflow-multibranch-config.xml"
+  }, {
     name: "books-ms-redeploy",
     service_name: "books-ms",
     src: "service-redeploy-config.xml"
@@ -35,5 +39,6 @@ plugins:
   - log-parser
   - copyartifact
   - workflow-aggregator
+  - workflow-multibranch
   - docker-workflow
   - template-project
