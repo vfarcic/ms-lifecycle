@@ -8,7 +8,9 @@ def provision(playbook) {
 def buildTests(serviceName, registryIpPort) {
     stage "Build tests"
     def tests = docker.image("${registryIpPort}/${serviceName}-tests")
-    tests.pull()
+    try {
+        tests.pull()
+    } catch(e) {}
     sh "docker build -t \"${registryIpPort}/${serviceName}-tests\" \
         -f Dockerfile.test ."
     tests.push()
@@ -23,7 +25,9 @@ def runTests(serviceName, target, extraArgs) {
 def buildService(serviceName, registryIpPort) {
     stage "Build service"
     def service = docker.image("${registryIpPort}/${serviceName}")
-    service.pull()
+    try {
+        service.pull()
+    } catch(e) {}
     docker.build "${registryIpPort}/${serviceName}"
     service.push()
 }
@@ -31,7 +35,9 @@ def buildService(serviceName, registryIpPort) {
 def deploy(pserviceName, rodIp) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${prodIp}:2375"]) {
-        sh "docker-compose pull  -p ${serviceName} app"
+        try {
+            sh "docker-compose pull  -p ${serviceName} app"
+        } catch(e) {}
         sh "docker-compose up  -p ${serviceName} -d app"
     }
 }
