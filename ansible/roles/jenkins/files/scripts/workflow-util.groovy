@@ -14,9 +14,10 @@ def buildTests(serviceName, registryIpPort) {
     tests.push()
 }
 
-def runTests(target, extraArgs) {
+def runTests(serviceName, target, extraArgs) {
     stage "Run ${target} tests"
-    sh "docker-compose -f docker-compose-dev.yml run --rm ${extraArgs} ${target}"
+    sh "docker-compose -f docker-compose-dev.yml \
+        -p ${serviceName} run --rm ${extraArgs} ${target}"
 }
 
 def buildService(serviceName, registryIpPort) {
@@ -27,11 +28,11 @@ def buildService(serviceName, registryIpPort) {
     service.push()
 }
 
-def deploy(prodIp) {
+def deploy(pserviceName, rodIp) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${prodIp}:2375"]) {
-        sh "docker-compose pull app"
-        sh "docker-compose up -d app"
+        sh "docker-compose pull  -p ${serviceName} app"
+        sh "docker-compose up  -p ${serviceName} -d app"
     }
 }
 
