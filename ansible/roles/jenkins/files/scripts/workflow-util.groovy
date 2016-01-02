@@ -32,13 +32,13 @@ def buildService(serviceName, registryIpPort) {
     service.push()
 }
 
-def deploy(pserviceName, rodIp) {
+def deploy(serviceName, prodIp) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${prodIp}:2375"]) {
         try {
-            sh "docker-compose pull  -p ${serviceName} app"
+            sh "docker-compose pull app"
         } catch(e) {}
-        sh "docker-compose up  -p ${serviceName} -d app"
+        sh "docker-compose -p ${serviceName} up -d app"
     }
 }
 

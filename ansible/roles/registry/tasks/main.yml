@@ -2,16 +2,24 @@
   file:
     path: "{{ item }}"
     state: directory
+    recurse: yes
   with_items:
-    - /data
-    - /data/registry
+    - /data/registry/conf
   tags: [registry]
 
-- name: Container is running
+- name: Configuration is copied
+  copy:
+    src: config.yml
+    dest: /data/registry/conf/config.yml
+  tags: [registry]
+
+- name: Registry ontainer is running
   docker:
     name: registry
     image: registry:2
     ports: 5000:5000
     volumes:
       - /vagrant/registry:/var/lib/registry/docker/registry
+      - /data/registry/conf:/conf
+    command: /conf/config.yml
   tags: [registry]

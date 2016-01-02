@@ -45,6 +45,7 @@
 - wait_for:
     path: /data/jenkins/plugins/{{ item }}
   with_items: plugins
+  tags: [jenkins]
 
 - name: Container is restarted
   docker:
@@ -56,6 +57,7 @@
 
 - pause: seconds=30
   when: configs_result|changed or plugins_result|changed
+  tags: [jenkins]
 
 - name: Job directories are present
   file:
