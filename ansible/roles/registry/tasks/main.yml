@@ -13,7 +13,7 @@
     dest: /data/registry/conf/config.yml
   tags: [registry]
 
-- name: Registry ontainer is running
+- name: Container is running
   docker:
     name: registry
     image: registry:2
