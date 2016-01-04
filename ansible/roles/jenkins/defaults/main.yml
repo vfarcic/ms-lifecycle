@@ -2,12 +2,13 @@ home: /data/jenkins
 swarm_playbook: swarm-healing.yml
 
 configs: [
-  { src: "credentials.xml", dir: "/data/jenkins", file: "credentials.xml" },
-  { src: "cd-config.xml", dir: "/data/jenkins/nodes/cd", file: "config.xml" },
-  { src: "prod-config.xml", dir: "/data/jenkins/nodes/prod", file: "config.xml" },
-  { src: "swarm-master-config.xml", dir: "/data/jenkins/nodes/swarm-master", file: "config.xml" },
-  { src: "LogParserPublisher.xml", dir: "/data/jenkins", file: "hudson.plugins.logparser.LogParserPublisher.xml" },
-  { src: "parsing_rules", dir: "/data/jenkins", file: "parsing_rules" }
+  { src: "credentials.xml", dir: "/data/jenkins", file: "credentials.xml", mode: "0777" },
+  { src: "cd-config.xml", dir: "/data/jenkins/nodes/cd", file: "config.xml", mode: "0777" },
+  { src: "prod-config.xml", dir: "/data/jenkins/nodes/prod", file: "config.xml", mode: "0777" },
+  { src: "swarm-master-config.xml", dir: "/data/jenkins/nodes/swarm-master", file: "config.xml", mode: "0777" },
+  { src: "LogParserPublisher.xml", dir: "/data/jenkins", file: "hudson.plugins.logparser.LogParserPublisher.xml", mode: "0777" },
+  { src: "parsing_rules", dir: "/data/jenkins", file: "parsing_rules", mode: "0777" },
+  { src: "scriptApproval.xml", dir: "/data/jenkins", file: "scriptApproval.xml", mode: "0644" }
 ]
 
 jobs: [
@@ -23,6 +24,10 @@ jobs: [
     name: "books-ms-multibranch",
     service_name: "books-ms",
     src: "service-workflow-multibranch-config.xml"
+  }, {
+    name: "books-ms-blue-green",
+    service_name: "books-ms",
+    src: "service-blue-green-config.xml"
   }, {
     name: "books-ms-redeploy",
     service_name: "books-ms",

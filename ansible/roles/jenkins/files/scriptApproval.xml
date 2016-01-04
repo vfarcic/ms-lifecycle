@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scriptApproval plugin="script-security@1.15">
+  <approvedScriptHashes>
+    <string>2fa50cab9be7183f47d4caaf60cc0ada015d8a3c</string>
+    <string>696e68a067cbf6289d0f19dfd9bdbf315a876a16</string>
+    <string>bf96db150612e232076d47494c2004e242ceb778</string>
+  </approvedScriptHashes>
+  <approvedSignatures>
+    <string>method groovy.json.JsonSlurper parseText java.lang.String</string>
+    <string>method org.apache.commons.httpclient.HttpClient executeMethod org.apache.commons.httpclient.HttpMethod</string>
+    <string>method org.apache.commons.httpclient.HttpMethod getResponseBody</string>
+    <string>method org.apache.commons.httpclient.HttpMethod releaseConnection</string>
+    <string>new groovy.json.JsonSlurper</string>
+    <string>new java.lang.String byte[]</string>
+    <string>new org.apache.commons.httpclient.HttpClient</string>
+    <string>new org.apache.commons.httpclient.methods.GetMethod java.lang.String</string>
+    <string>staticMethod org.codehaus.groovy.runtime.ScriptBytecodeAdapter compareGreaterThan java.lang.Object java.lang.Object</string>
+  </approvedSignatures>
+  <aclApprovedSignatures/>
+  <approvedClasspathEntries/>
+  <pendingScripts/>
+  <pendingSignatures/>
+  <pendingClasspathEntries/>
+</scriptApproval>

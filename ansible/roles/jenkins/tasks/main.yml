@@ -18,7 +18,7 @@
   register: container_result
   tags: [jenkins]
 
-- pause: seconds=30
+- pause: seconds=45
   when: container_result|changed
   tags: [jenkins]
 
@@ -26,7 +26,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dir }}/{{ item.file }}"
-    mode: 0777
+    mode: "{{ item.mode }}"
   with_items: configs
   register: configs_result
   tags: [jenkins]
