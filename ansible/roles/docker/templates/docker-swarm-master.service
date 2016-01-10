@@ -7,7 +7,6 @@ Requires=docker.socket
 [Service]
 Type=notify
 ExecStart=/usr/bin/docker daemon -H fd:// \
-          -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock
           --insecure-registry 10.100.198.200:5000 \
           --registry-mirror=http://10.100.198.200:5001 \
           --cluster-store=consul://{{ ip }}:8500/swarm \
