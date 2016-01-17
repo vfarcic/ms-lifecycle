@@ -23,7 +23,7 @@ def buildTests(serviceName, registryIpPort) {
 def runTests(serviceName, target, extraArgs) {
     stage "Run ${target} tests"
     sh "docker-compose -f docker-compose-dev.yml \
-        -p ${serviceName} run --rm ${extraArgs} ${target}"
+        run --rm ${extraArgs} ${target}"
 }
 
 def buildService(serviceName, registryIpPort) {
@@ -50,6 +50,22 @@ def deployBG(serviceName, prodIp, color) {
         sh "docker-compose pull app-${color}"
         sh "docker-compose -p ${serviceName} up -d app-${color}"
     }
+}
+
+def deploySwarm(serviceName, swarmIp, color, instances) {
+    stage "Deploy"
+    withEnv(["DOCKER_HOST=tcp://${swarmIp}:2375"]) {
+        sh "docker-compose pull app-${color}"
+        try {
+            sh "docker network create ${serviceName}"
+        } catch (e) {}
+            sh "docker-compose -f docker-compose-swarm.yml \
+                -p ${serviceName} up -d db"
+            sh "docker-compose -f docker-compose-swarm.yml \
+                -p ${serviceName} scale app-${color}=${instances}"
+    }
+    sh "curl -X PUT -d ${instances} \
+        ${swarmIp}:8500/v1/kv/${serviceName}/instances"
 }
 
 def updateProxy(serviceName, proxyNode) {

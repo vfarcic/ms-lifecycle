@@ -29,6 +29,10 @@ jobs: [
     service_name: "books-ms",
     src: "service-blue-green-config.xml"
   }, {
+    name: "books-ms-swarm",
+    service_name: "books-ms",
+    src: "service-swarm-config.xml"
+  }, {
     name: "books-ms-redeploy",
     service_name: "books-ms",
     src: "service-redeploy-config.xml"

@@ -6,10 +6,6 @@ metadata:
     type: service
 spec:
   containers:
-  - name: books-ms
-    image: 10.100.198.200:5000/books-ms
-    ports:
-    - containerPort: 8080
   - name: books-ms-db
     image: mongo
     ports:
@@ -17,6 +13,10 @@ spec:
     volumeMounts:
     - name: books-ms-storage
       mountPath: /data/db
+  - name: books-ms
+    image: vfarcic/books-ms
+    ports:
+    - containerPort: 8080
   volumes:
   - name: books-ms-storage
     emptyDir: {}

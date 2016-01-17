@@ -63,15 +63,19 @@ end
 Vagrant.configure("2") do |config|
 
     config.vm.define "cd" do |d|
-        config.vm.synced_folder "../", "/vagrant"
+        if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+            config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
+        else
+            config.vm.synced_folder ".", "/vagrant"
+        end
         # config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
         d.vm.box = "ubuntu/trusty64"
         d.vm.hostname = "cd"
         d.vm.network "private_network", ip: "10.100.198.200"
-        d.vm.provision :shell, path: "../scripts/bootstrap_ansible.sh"
-        d.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/cd.yml -c local"
+        # d.vm.provision :shell, path: "../scripts/bootstrap_ansible.sh"
+        # d.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/cd.yml -c local"
         d.vm.provider "virtualbox" do |v|
-            v.memory = 2048
+            v.memory = 1024
         end
     end
 

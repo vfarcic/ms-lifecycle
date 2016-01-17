@@ -17,7 +17,10 @@
   tags: [docker]
 
 - name: Debian docker-py is present
-  pip: name=docker-py version=0.4.0 state=present
+  pip:
+    name: docker-py
+    version: 0.4.0
+    state: present
   tags: [docker]
 
 - name: Debian files are present
@@ -54,4 +57,5 @@
     privileged: yes
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  when: not skip_ui is defined
   tags: [docker]

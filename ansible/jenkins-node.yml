@@ -1,4 +1,4 @@
-- hosts: jenkins-node
+- hosts: "{{ jenkins_node_hosts }}"
   remote_user: vagrant
   serial: 1
   sudo: yes
