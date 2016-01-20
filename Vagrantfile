@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
     d.vm.hostname = "swarm-master"
     d.vm.network "private_network", ip: "10.100.192.200"
     d.vm.provider "virtualbox" do |v|
-      v.memory = 512
+      v.memory = 1024
     end
   end
   (1..2).each do |i|

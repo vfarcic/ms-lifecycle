@@ -2,6 +2,7 @@ import groovy.json.JsonSlurper
 import org.apache.commons.httpclient.HttpClient
 import org.apache.commons.httpclient.methods.GetMethod
 
+
 def provision(playbook) {
     stage "Provision"
     env.PYTHONUNBUFFERED = 1
@@ -61,6 +62,8 @@ def deploySwarm(serviceName, swarmIp, color, instances) {
         } catch (e) {}
             sh "docker-compose -f docker-compose-swarm.yml \
                 -p ${serviceName} up -d db"
+            sh "docker-compose -f docker-compose-swarm.yml \
+                -p ${serviceName} rm -f app-${color}"
             sh "docker-compose -f docker-compose-swarm.yml \
                 -p ${serviceName} scale app-${color}=${instances}"
     }
@@ -157,6 +160,21 @@ def sendHttpRequest(url) {
     def response = get.getResponseBody()
     get.releaseConnection()
     return new String(response)
+}
+
+def updateChecks(serviceName, swarmNode) {
+    stage "Update checks"
+    stash includes: 'consul_check.ctmpl', name: 'consul-check'
+    node(swarmNode) {
+        unstash 'consul-check'
+        sh "sudo consul-template -consul localhost:8500 \
+            -template 'consul_check.ctmpl:/data/consul/config/${serviceName}.json:killall -HUP consul' \
+            -once"
+    }
+}
+
+def getInstances(serviceName, swarmIp) {
+    return sendHttpRequest("http://${swarmIp}:8500/v1/kv/${serviceName}/instances?raw")
 }
 
 return this;

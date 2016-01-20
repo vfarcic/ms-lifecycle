@@ -15,9 +15,9 @@
         <hudson.model.ParametersDefinitionProperty>
             <parameterDefinitions>
                 <hudson.model.StringParameterDefinition>
-                    <name>service</name>
+                    <name>serviceName</name>
                     <description></description>
-                    <defaultValue>{{ item.service_name }}</defaultValue>
+                    <defaultValue></defaultValue>
                 </hudson.model.StringParameterDefinition>
             </parameterDefinitions>
         </hudson.model.ParametersDefinitionProperty>

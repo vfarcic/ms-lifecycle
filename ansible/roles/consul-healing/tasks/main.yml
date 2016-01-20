@@ -25,7 +25,6 @@
 
 - name: Is running
   shell: "nohup consul agent {{ consul_extra }} \
-    -ui-dir /data/consul/ui \
     -data-dir {{ data_dir }} \
     -config-dir {{ config_dir }} \
     -node={{ ansible_hostname }} \

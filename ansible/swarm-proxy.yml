@@ -3,6 +3,5 @@
   serial: 1
   sudo: yes
   roles:
-    - consul
     - consul-template
     - nginx

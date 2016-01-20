@@ -1,5 +1,5 @@
 home: /data/jenkins
-swarm_playbook: swarm-healing.yml
+main_job_src: service-workflow-config.xml
 
 configs: [
   { src: "credentials.xml", dir: "/data/jenkins", file: "credentials.xml", mode: "0777" },
@@ -19,7 +19,7 @@ jobs: [
   }, {
     name: "books-ms",
     service_name: "books-ms",
-    src: "service-workflow-config.xml"
+    src: "{{ main_job_src }}"
   }, {
     name: "books-ms-multibranch",
     service_name: "books-ms",
@@ -33,7 +33,7 @@ jobs: [
     service_name: "books-ms",
     src: "service-swarm-config.xml"
   }, {
-    name: "books-ms-redeploy",
+    name: "service-redeploy",
     service_name: "books-ms",
     src: "service-redeploy-config.xml"
   }, {
