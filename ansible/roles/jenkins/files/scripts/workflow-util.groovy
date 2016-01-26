@@ -56,19 +56,19 @@ def deployBG(serviceName, prodIp, color) {
 def deploySwarm(serviceName, swarmIp, color, instances) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${swarmIp}:2375"]) {
-        sh "docker-compose pull app-${color}"
+        sh "docker-compose -f docker-compose-swarm.yml \
+            pull app-${color}"
         try {
             sh "docker network create ${serviceName}"
         } catch (e) {}
-            sh "docker-compose -f docker-compose-swarm.yml \
-                -p ${serviceName} up -d db"
-            sh "docker-compose -f docker-compose-swarm.yml \
-                -p ${serviceName} rm -f app-${color}"
-            sh "docker-compose -f docker-compose-swarm.yml \
-                -p ${serviceName} scale app-${color}=${instances}"
+        sh "docker-compose -f docker-compose-swarm.yml \
+            -p ${serviceName} up -d db"
+        sh "docker-compose -f docker-compose-swarm.yml \
+            -p ${serviceName} rm -f app-${color}"
+        sh "docker-compose -f docker-compose-swarm.yml \
+            -p ${serviceName} scale app-${color}=${instances}"
     }
-    sh "curl -X PUT -d ${instances} \
-        ${swarmIp}:8500/v1/kv/${serviceName}/instances"
+    putInstances(serviceName, swarmIp, instances)
 }
 
 def updateProxy(serviceName, proxyNode) {
@@ -175,6 +175,11 @@ def updateChecks(serviceName, swarmNode) {
 
 def getInstances(serviceName, swarmIp) {
     return sendHttpRequest("http://${swarmIp}:8500/v1/kv/${serviceName}/instances?raw")
+}
+
+def putInstances(serviceName, swarmIp, instances) {
+    sh "curl -X PUT -d ${instances} \
+        ${swarmIp}:8500/v1/kv/${serviceName}/instances"
 }
 
 return this;

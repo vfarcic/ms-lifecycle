@@ -37,6 +37,18 @@ jobs: [
     service_name: "books-ms",
     src: "service-redeploy-config.xml"
   }, {
+    name: "books-ms-scale",
+    service_name: "books-ms",
+    src: "service-scale-config.xml",
+    scale: "2",
+    time: "45 23 31 12 *"
+  }, {
+    name: "books-ms-descale",
+    service_name: "books-ms",
+    src: "service-scale-config.xml",
+    scale: "-2",
+    time: "15 0 2 1 *"
+  }, {
      name: "hardware-notification",
      service_name: "books-ms",
      src: "hardware-notification-config.xml"

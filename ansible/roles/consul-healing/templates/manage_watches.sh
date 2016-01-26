@@ -18,8 +18,9 @@ do
     STATUS=${STATUS_ARRAY[$i]}
     SERVICE_ID=${SERVICE_ID_ARRAY[$i]}
     if [[ "$CHECK_ID" == "mem" || "$CHECK_ID" == "disk" ]]; then
-        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/hardware-notification/buildWithParameters?checkId=$CHECK_ID&status=$STATUS${NC}"
-        curl -X POST http://{{ jenkins_ip }}:8080/job/hardware-notification/buildWithParameters?checkId=$CHECK_ID&status=$STATUS
+        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/hardware-notification/build${NC}"
+        curl -X POST http://{{ jenkins_ip }}:8080/job/hardware-notification/build \
+            --data-urlencode json="{\"parameter\": [{\"name\":\"checkId\", \"value\":\"$CHECK_ID\"}, {\"name\":\"status\", \"value\":\"$STATUS\"}]}"
     else
         echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/service-redeploy/buildWithParameters?serviceName=${SERVICE_ID}${NC}"
         curl -X POST http://{{ jenkins_ip }}:8080/job/service-redeploy/buildWithParameters?serviceName=${SERVICE_ID}
