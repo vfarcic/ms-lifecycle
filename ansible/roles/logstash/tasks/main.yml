@@ -1,14 +1,17 @@
 - name: Directory is present
   file:
-    path: /data/logstash/conf
+    path: "{{ item.path }}"
     recurse: yes
     state: directory
+    mode: "{{ item.mode }}"
+  with_items: directories
   tags: [logstash]
 
 - name: File is copied
   copy:
-    src: syslog.conf
-    dest: /data/logstash/conf/syslog.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: files
   tags: [logstash]
 
 - name: Container is running
@@ -17,13 +20,17 @@
     image: logstash
     state: running
     expose:
+      - 5044
       - 25826
     ports:
+      - 5044:5044
+      - 5044:5044/udp
       - 25826:25826
       - 25826:25826/udp
     volumes:
       - /data/logstash/conf:/conf
+      - /data/logstash/logs:/logs
     links:
       - elasticsearch:db
-    command: logstash -f /conf/syslog.conf
+    command: logstash -f /conf/{{ config_file }}
   tags: [logstash]

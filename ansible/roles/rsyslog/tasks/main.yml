@@ -1,3 +1,9 @@
+- name: FileBeat is not running
+  service:
+    name: filebeat
+    status: stopped
+  tags: [rsyslog]
+
 - name: Packages are present
   apt:
     name: "{{ item }}"

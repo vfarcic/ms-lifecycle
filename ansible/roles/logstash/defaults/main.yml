@@ -1,0 +1,15 @@
+config_file: syslog.conf
+
+directories: [
+  { path: "/data/logstash/conf", mode: "0755" },
+  { path: "/data/logstash/logs", mode: "0777" },
+]
+
+files: [
+  { src: "syslog.conf", dest: "/data/logstash/conf/syslog.conf" },
+  { src: "file.conf", dest: "/data/logstash/conf/file.conf" },
+  { src: "file-with-filters.conf", dest: "/data/logstash/conf/file-with-filters.conf" },
+  { src: "beats.conf", dest: "/data/logstash/conf/beats.conf" },
+  { src: "apache.log", dest: "/tmp/apache.log" },
+  { src: "apache2.log", dest: "/tmp/apache2.log" }
+]

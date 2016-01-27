@@ -1,0 +1,22 @@
+- name: Download the package
+  get_url:
+    url: https://download.elastic.co/beats/filebeat/filebeat_1.0.1_amd64.deb
+    dest: /tmp/filebeat.deb
+  tags: [filebeat]
+
+- name: Install the package
+  apt:
+    deb: /tmp/filebeat.deb
+  tags: [filebeat]
+
+- name: Configuration is present
+  copy:
+    src: filebeat.yml
+    dest: /etc/filebeat/filebeat.yml
+  tags: [filebeat]
+
+- name: Service is started
+  service:
+    name: filebeat
+    state: started
+  tags: [filebeat]
