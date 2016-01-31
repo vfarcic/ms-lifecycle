@@ -1,4 +1,4 @@
-config_file: syslog.conf
+logstash_config: syslog.conf
 
 directories: [
   { path: "/data/logstash/conf", mode: "0755" },

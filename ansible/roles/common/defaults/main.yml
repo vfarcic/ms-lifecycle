@@ -10,3 +10,7 @@ hosts: [
   { host_ip: "10.100.192.201", host_name: "swarm-node-1"},
   { host_ip: "10.100.192.202", host_name: "swarm-node-2"},
 ]
+
+obsolete_services:
+  - puppet
+  - chef-client

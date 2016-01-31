@@ -1,6 +1,7 @@
 - name: JQ is present
   apt:
     name: jq
+    force: yes
   tags: [common]
 
 - name: Host is present
@@ -9,4 +10,12 @@
     regexp: "^{{ item.host_ip }}"
     line: "{{ item.host_ip }} {{ item.host_name }}"
   with_items: hosts
+  tags: [common]
+
+- name: Services are not running
+  service:
+    name: "{{ item }}"
+    state: stopped
+  ignore_errors: yes
+  with_items: obsolete_services
   tags: [common]

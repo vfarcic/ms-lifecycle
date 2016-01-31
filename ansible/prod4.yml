@@ -1,7 +1,8 @@
 - hosts: prod
   remote_user: vagrant
   serial: 1
-  sudo: yes
+  vars:
+    - log_to_syslog: yes
   roles:
     - common
     - docker

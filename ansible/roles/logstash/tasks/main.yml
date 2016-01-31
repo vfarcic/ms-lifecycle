@@ -32,5 +32,5 @@
       - /data/logstash/logs:/logs
     links:
       - elasticsearch:db
-    command: logstash -f /conf/{{ config_file }}
+    command: logstash -f /conf/{{ logstash_config }}
   tags: [logstash]
