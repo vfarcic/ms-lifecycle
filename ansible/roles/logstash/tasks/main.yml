@@ -22,11 +22,16 @@
     expose:
       - 5044
       - 25826
+      - 25826/udp
+      - 25827
+      - 25827/udp
     ports:
       - 5044:5044
       - 5044:5044/udp
       - 25826:25826
       - 25826:25826/udp
+      - 25827:25827
+      - 25827:25827/udp
     volumes:
       - /data/logstash/conf:/conf
       - /data/logstash/logs:/logs
