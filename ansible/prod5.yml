@@ -13,3 +13,4 @@
     - nginx
     - rsyslog
     - collectd
+    - cadvisor
