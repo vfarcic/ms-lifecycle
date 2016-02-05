@@ -35,7 +35,7 @@
   when: restore_backup is defined and backup_result|changed
   tags: [kibana]
 
-- name: Backup is restored
+- name: Backup container is removed
   docker:
     name: backup
     image: vfarcic/elastic-dump

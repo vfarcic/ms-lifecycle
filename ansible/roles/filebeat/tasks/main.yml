@@ -10,7 +10,7 @@
   tags: [filebeat]
 
 - name: Configuration is present
-  copy:
+  template:
     src: filebeat.yml
     dest: /etc/filebeat/filebeat.yml
   tags: [filebeat]

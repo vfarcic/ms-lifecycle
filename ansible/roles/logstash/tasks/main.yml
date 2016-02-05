@@ -19,6 +19,7 @@
     name: logstash
     image: logstash
     state: running
+    hostname: "{{ ansible_hostname }}"
     expose:
       - 5044
       - 25826
