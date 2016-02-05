@@ -19,18 +19,24 @@
     name: logstash
     image: logstash
     state: running
+    hostname: "{{ ansible_hostname }}"
     expose:
       - 5044
       - 25826
+      - 25826/udp
+      - 25827
+      - 25827/udp
     ports:
       - 5044:5044
       - 5044:5044/udp
       - 25826:25826
       - 25826:25826/udp
+      - 25827:25827
+      - 25827:25827/udp
     volumes:
       - /data/logstash/conf:/conf
       - /data/logstash/logs:/logs
     links:
       - elasticsearch:db
-    command: logstash -f /conf/{{ config_file }}
+    command: logstash -f /conf/{{ logstash_config }}
   tags: [logstash]

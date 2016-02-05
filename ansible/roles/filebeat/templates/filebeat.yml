@@ -2,8 +2,8 @@ filebeat:
   prospectors:
     -
       paths:
-        - "/var/log/*.log"
+        - "/var/log/**/*.log"
 
 output:
   logstash:
-      hosts: ["10.100.198.202:5044"]
+      hosts: ["{{ elk_ip }}:5044"]

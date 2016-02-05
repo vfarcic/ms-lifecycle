@@ -1,6 +1,5 @@
 - hosts: flocker-client
   remote_user: vagrant
   serial: 1
-  sudo: yes
   roles:
     - flocker-client

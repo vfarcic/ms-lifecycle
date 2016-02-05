@@ -1,7 +1,6 @@
 - hosts: swarm
   remote_user: vagrant
   serial: 1
-  sudo: yes
   vars:
     - debian_version: vivid
     - docker_cfg_dest: /lib/systemd/system/docker.service

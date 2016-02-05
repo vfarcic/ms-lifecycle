@@ -7,3 +7,38 @@
     ports:
       - 5601:5601
   tags: [kibana]
+
+- name: Backup directory is created
+  file:
+    path: "{{ backups_dir }}"
+    state: directory
+    recurse: yes
+  when: restore_backup is defined
+  tags: [kibana]
+
+- name: Backup is present
+  copy:
+    src: dashboards.json
+    dest: "{{ backups_dir }}/dashboards.json"
+  register: backup_result
+  when: restore_backup is defined
+  tags: [kibana]
+
+- name: Backup is restored
+  docker:
+    name: backup
+    detach: no
+    volumes:
+      - "{{ backups_dir }}:/data"
+    image: vfarcic/elastic-dump
+    command: --input=/data/dashboards.json --output=http://{{ elk_ip }}:9200/.kibana --type=data
+  when: restore_backup is defined and backup_result|changed
+  tags: [kibana]
+
+- name: Backup container is removed
+  docker:
+    name: backup
+    image: vfarcic/elastic-dump
+    state: absent
+  when: restore_backup is defined and backup_result|changed
+  tags: [kibana]

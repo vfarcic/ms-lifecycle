@@ -1,0 +1,19 @@
+- name: Packages are installed
+  apt:
+    name: "{{ item }}"
+  with_items: packages
+  tags: ["collectd"]
+
+- name: Configuration is copied
+  template:
+    src: collectd.conf
+    dest: /etc/collectd/collectd.conf
+  register: config_result
+  tags: ["collectd"]
+
+- name: Service is restarted
+  service:
+    name: collectd
+    state: restarted
+  when: config_result|changed
+  tags: ["collectd"]

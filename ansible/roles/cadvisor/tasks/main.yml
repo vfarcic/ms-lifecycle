@@ -1,0 +1,13 @@
+- name: Container is running
+  docker:
+    image: google/cadvisor
+    name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8081:8080
+  tags: [cadvisor]
+

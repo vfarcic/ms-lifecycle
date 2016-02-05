@@ -13,6 +13,20 @@
     state: running
     ports: "{{ ports }}"
     volumes: "{{ volumes }}"
+  when: not log_to_syslog is defined
+  tags: [nginx]
+
+- name: Container is running
+  docker:
+    image: nginx
+    name: nginx
+    state: running
+    ports: "{{ ports }}"
+    volumes: "{{ volumes }}"
+    log_driver: syslog
+    log_opt:
+      syslog-tag: nginx
+  when: log_to_syslog is defined
   tags: [nginx]
 
 - name: Files are present
