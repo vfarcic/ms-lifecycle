@@ -7,5 +7,4 @@ jenkins_ip: 10.100.198.200
 debian_version: trusty
 docker_cfg: docker.cfg
 docker_cfg_dest: /etc/default/docker
-jenkins_node_hosts: jenkins-node
 elk_ip: 10.100.198.202
