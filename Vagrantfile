@@ -52,7 +52,7 @@ Vagrant.configure(2) do |config|
     end
   end
   config.vm.define "swarm-master" do |d|
-    d.vm.box = "ubuntu/vivid64"
+    d.vm.box = "ubuntu/wily64"
     d.vm.hostname = "swarm-master"
     d.vm.network "private_network", ip: "10.100.192.200"
     d.vm.provider "virtualbox" do |v|
@@ -61,7 +61,7 @@ Vagrant.configure(2) do |config|
   end
   (1..2).each do |i|
     config.vm.define "swarm-node-#{i}" do |d|
-      d.vm.box = "ubuntu/vivid64"
+      d.vm.box = "ubuntu/wily64"
       d.vm.hostname = "swarm-node-#{i}"
       d.vm.network "private_network", ip: "10.100.192.20#{i}"
       d.vm.provider "virtualbox" do |v|

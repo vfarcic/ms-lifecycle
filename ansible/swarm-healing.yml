@@ -2,7 +2,7 @@
   remote_user: vagrant
   serial: 1
   vars:
-    - debian_version: vivid
+    - debian_version: wily
     - docker_cfg_dest: /lib/systemd/system/docker.service
     - is_systemd: true
     - skip_ui: true
