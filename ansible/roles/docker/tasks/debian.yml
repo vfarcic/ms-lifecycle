@@ -51,7 +51,7 @@
 
 - name: DockerUI is running
   docker:
-    image: dockerui/dockerui
+    image: abh1nav/dockerui
     name: dockerui
     ports: 9000:9000
     privileged: yes
