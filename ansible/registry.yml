@@ -1,0 +1,7 @@
+- hosts: registry
+  remote_user: vagrant
+  serial: 1
+  roles:
+    - common
+    - docker
+    - registry
