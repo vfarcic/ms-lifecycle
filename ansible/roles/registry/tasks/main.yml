@@ -19,7 +19,7 @@
     image: registry:2
     ports: 5000:5000
     volumes:
-      - /vagrant/registry:/var/lib/registry/docker/registry
+      - "{{ registry_host_dir }}:/var/lib/registry/docker/registry"
       - /data/registry/conf:/conf
   tags: [registry]
 
@@ -29,7 +29,7 @@
     image: registry:2
     ports: 5001:5000
     volumes:
-      - /vagrant/registry-mirror:/var/lib/registry/docker/registry
+      - "{{ registry_host_dir }}-mirror:/var/lib/registry/docker/registry"
       - /data/registry-mirror/conf:/conf
     command: /conf/config.yml
   tags: [registry]

@@ -10,3 +10,4 @@ docker_cfg: docker.cfg
 docker_cfg_dest: /etc/default/docker
 elk_ip: 10.100.198.202
 jenkins_version: 1.642.4
+registry_host_dir: /vagrant/registry
