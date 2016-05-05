@@ -31,5 +31,5 @@
     volumes:
       - "{{ registry_host_dir }}-mirror:/var/lib/registry/docker/registry"
       - /data/registry-mirror/conf:/conf
-    command: /conf/config.yml
+    command: serve /conf/config.yml
   tags: [registry]
