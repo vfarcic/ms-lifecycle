@@ -1,5 +1,6 @@
 home: /data/jenkins
 main_job_src: service-workflow-config.xml
+service_redeploy_src: service-redeploy-config.xml
 
 configs: [
   { src: "credentials.xml", dir: "/data/jenkins", file: "credentials.xml", mode: "0777" },
@@ -35,7 +36,7 @@ jobs: [
   }, {
     name: "service-redeploy",
     service_name: "books-ms",
-    src: "service-redeploy-config.xml"
+    src: "{{ service_redeploy_src }}"
   }, {
     name: "books-ms-scale",
     service_name: "books-ms",

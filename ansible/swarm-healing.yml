@@ -10,5 +10,6 @@
     - common
     - docker
     - consul-healing
+    - consul-template
     - swarm
     - registrator
