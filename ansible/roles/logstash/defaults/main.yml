@@ -11,6 +11,7 @@ files: [
   { src: "file-with-filters.conf", dest: "/data/logstash/conf/file-with-filters.conf" },
   { src: "beats.conf", dest: "/data/logstash/conf/beats.conf" },
   { src: "syslog-collectd.conf", dest: "/data/logstash/conf/syslog-collectd.conf" },
+  { src: "haproxy.conf", dest: "/data/logstash/conf/haproxy.conf" },
   { src: "apache.log", dest: "/tmp/apache.log" },
   { src: "apache2.log", dest: "/tmp/apache2.log" }
 ]
