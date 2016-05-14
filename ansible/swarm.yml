@@ -11,5 +11,6 @@
     - rsyslog
     - docker
     - consul
+    - consul-template
     - swarm
     - registrator
