@@ -53,6 +53,18 @@ jobs: [
      name: "hardware-notification",
      service_name: "books-ms",
      src: "hardware-notification-config.xml"
+  }, {
+    name: "go-demo-scale",
+    service_name: "go-demo",
+    src: "service-scale-df-config.xml",
+    scale: "+2",
+    time: "45 23 31 12 *"
+  }, {
+    name: "go-demo-descale",
+    service_name: "go-demo",
+    src: "service-scale-df-config.xml",
+    scale: "-2",
+    time: "15 0 2 1 *"
    }
 ]
 
