@@ -19,5 +19,6 @@ files: [
 templates: [
   { src: 'watches.json', dest: '{{ config_dir }}/watches.json', mode: '0644'},
   { src: 'manage_watches.sh', dest: '{{ scripts_dir }}/manage_watches.sh', mode: '0755' },
-  { src: 'rtime.sh', dest: '{{ scripts_dir }}/rtime.sh', mode: '0755' }
+  { src: 'rtime_up.sh', dest: '{{ scripts_dir }}/rtime_up.sh', mode: '0755' },
+  { src: 'rtime_down.sh', dest: '{{ scripts_dir }}/rtime_down.sh', mode: '0755' }
 ]

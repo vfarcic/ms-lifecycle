@@ -21,6 +21,12 @@ do
         echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/hardware-notification/build${NC}"
         curl -X POST http://{{ jenkins_ip }}:8080/job/hardware-notification/build \
             --data-urlencode json="{\"parameter\": [{\"name\":\"checkId\", \"value\":\"$CHECK_ID\"}, {\"name\":\"status\", \"value\":\"$STATUS\"}]}"
+    elif [[ "$CHECK_ID" == "rtime_up" ]]; then
+        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/service-scale/buildWithParameters?serviceName=${SERVICE_ID}${NC}"
+        curl -X POST http://{{ jenkins_ip }}:8080/job/service-scale/buildWithParameters?serviceName=${SERVICE_ID}
+    elif [[ "$CHECK_ID" == "rtime_down" ]]; then
+        echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/service-descale/buildWithParameters?serviceName=${SERVICE_ID}${NC}"
+        curl -X POST http://{{ jenkins_ip }}:8080/job/service-descale/buildWithParameters?serviceName=${SERVICE_ID}
     else
         echo -e "${RED}Triggering Jenkins job http://{{ jenkins_ip }}:8080/job/service-redeploy/buildWithParameters?serviceName=${SERVICE_ID}${NC}"
         curl -X POST http://{{ jenkins_ip }}:8080/job/service-redeploy/buildWithParameters?serviceName=${SERVICE_ID}
