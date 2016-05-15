@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1.13">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>serviceName</name>
+          <description></description>
+          <defaultValue>{{ item.service_name }}</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>scale</name>
+          <description></description>
+          <defaultValue>{{ item.scale }}</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@1.13">
+    <script>{% include "service-scale-df.groovy" %}</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers />
+</flow-definition>

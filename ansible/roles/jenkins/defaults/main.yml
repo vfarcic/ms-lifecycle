@@ -60,6 +60,11 @@ jobs: [
     scale: "+2",
     time: "45 23 31 12 *"
   }, {
+    name: "service-scale",
+    service_name: "my-service",
+    src: "service-scale-health-config.xml",
+    scale: "+1",
+  }, {
     name: "go-demo-descale",
     service_name: "go-demo",
     src: "service-scale-df-config.xml",
