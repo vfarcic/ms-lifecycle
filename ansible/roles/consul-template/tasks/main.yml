@@ -13,7 +13,10 @@
 
 - name: Example template is copied
   copy:
-    src: example.ctmpl
-    dest: /data/consul-template/example.ctmpl
+    src: "{{ item }}"
+    dest: "/data/consul-template/{{ item }}"
     mode: 0644
+  with_items:
+    - example.ctmpl
+    - example2.ctmpl
   tags: [consul-template]
