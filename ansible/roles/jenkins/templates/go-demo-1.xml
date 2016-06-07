@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1.13">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties></properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@1.13">
+    <script>{% include "go-demo-1.groovy" %}</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers></triggers>
+</flow-definition>

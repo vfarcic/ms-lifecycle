@@ -70,7 +70,23 @@ jobs: [
     src: "service-scale-df-config.xml",
     scale: "-2",
     time: "15 0 2 1 *"
-   }
+  }, {
+    name: "go-demo-1",
+    service_name: "go-demo",
+    src: "go-demo-1.xml"
+  }, {
+    name: "go-demo-2",
+    service_name: "go-demo",
+    src: "go-demo-2.xml"
+  }, {
+    name: "go-demo-3",
+    service_name: "go-demo",
+    src: "go-demo-3.xml"
+  }, {
+    name: "go-demo-4",
+    service_name: "go-demo",
+    src: "go-demo-4.xml"
+  }
 ]
 
 plugins:
