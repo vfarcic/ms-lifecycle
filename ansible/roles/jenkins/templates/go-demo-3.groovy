@@ -22,9 +22,10 @@ node("cd") {
     sh "docker build -t vfarcic/go-demo ."
     // sh "docker push vfarcic/go-demo"
 
+    // This is new!!!
     stage "deploy"
     withEnv(envs) {
-        sh "docker-flow -p go-demo --flow=deploy --scale=3"
+        sh "docker-flow -p go-demo --flow=deploy --scale=\"${SCALE}\""
     }
 
     // This is new!!!
