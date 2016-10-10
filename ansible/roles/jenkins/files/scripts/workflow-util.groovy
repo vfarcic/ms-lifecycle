@@ -56,16 +56,16 @@ def deployBG(serviceName, prodIp, color) {
 def deploySwarm(serviceName, swarmIp, color, instances) {
     stage "Deploy"
     withEnv(["DOCKER_HOST=tcp://${swarmIp}:2375"]) {
-        sh "docker-compose -f docker-compose-swarm.yml \
+        sh "docker-compose -f docker-compose-swarm-v2.yml \
             pull app-${color}"
         try {
             sh "docker network create ${serviceName}"
         } catch (e) {}
-        sh "docker-compose -f docker-compose-swarm.yml \
+        sh "docker-compose -f docker-compose-swarm-v2.yml \
             -p ${serviceName} up -d db"
-        sh "docker-compose -f docker-compose-swarm.yml \
+        sh "docker-compose -f docker-compose-swarm-v2.yml \
             -p ${serviceName} rm -f app-${color}"
-        sh "docker-compose -f docker-compose-swarm.yml \
+        sh "docker-compose -f docker-compose-swarm-v2.yml \
             -p ${serviceName} scale app-${color}=${instances}"
     }
     putInstances(serviceName, swarmIp, instances)
