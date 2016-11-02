@@ -6,5 +6,5 @@ directories:
   - "{{ logs_dir }}"
 
 files: [
-  { src: 'consul', dest: '/usr/local/bin/consul', mode: '0755' }
+  { src: "consul", dest: "/usr/local/bin/consul", mode: "0755" }
 ]

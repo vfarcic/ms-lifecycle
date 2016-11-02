@@ -10,7 +10,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
-  with_items: files
+  with_items: "{{ files }}"
   register: files
   tags: [consul]
 
@@ -19,7 +19,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
-  with_items: templates
+  with_items: "{{ templates }}"
   register: templates
   tags: [consul]
 
