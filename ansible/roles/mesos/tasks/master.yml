@@ -2,7 +2,7 @@
   yum:
     pkg: "{{ item }}"
     state: present
-  with_items: master_packages
+  with_items: "{{ master_packages }}"
   tags: [mesos]
 
 - name: Master Zookeeper is configured
@@ -16,7 +16,7 @@
   service:
     name: "{{ item }}"
     state: started
-  with_items: master_services
+  with_items: "{{ master_services }}"
   tags: [mesos]
 
 - name: Mesos DNS script is present
@@ -36,7 +36,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: master_templates
+  with_items: "{{ master_templates }}"
   tags: [mesos]
 
 - name: Directory is present
@@ -49,10 +49,10 @@
   copy:
     src: "{{ item }}"
     dest: /data/mesos/{{ item }}
-  with_items: mesos_apps
+  with_items: "{{ mesos_apps }}"
   tags: [mesos]
 
 #- name: Apps are deployed
 #  shell: 'curl -X POST "http://{{ mesos_master_ip }}:8080/v2/apps" -d @"/data/mesos/{{ item }}" -H "Content-type: application/json"'
-#  with_items: mesos_apps
+#  with_items: "{{ mesos_apps }}"
 #  tags: [mesos]

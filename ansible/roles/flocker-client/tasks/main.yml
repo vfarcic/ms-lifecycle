@@ -10,7 +10,7 @@
     name: "{{ item }}"
     state: present
     force: yes
-  with_items: packages
+  with_items: "{{ packages }}"
   tags: [flocker]
 
 - name: Flocker authority directory is present

@@ -1,7 +1,7 @@
 - name: Packages are installed
   apt:
     name: "{{ item }}"
-  with_items: packages
+  with_items: "{{ packages }}"
   tags: ["collectd"]
 
 - name: Configuration is copied

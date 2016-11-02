@@ -9,7 +9,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: files
+  with_items: "{{ files }}"
   tags: [service]
 
 - name: Containers are pulled

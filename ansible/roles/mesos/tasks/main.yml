@@ -8,14 +8,14 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items: repos
+  with_items: "{{ repos }}"
   tags: [mesos]
 
 - name: Packages are installed
   yum:
     pkg: "{{ item }}"
     state: present
-  with_items: packages
+  with_items: "{{ packages }}"
   tags: [mesos]
 
 - include: master.yml

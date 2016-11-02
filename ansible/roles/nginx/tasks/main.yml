@@ -3,7 +3,7 @@
     dest: "{{ item }}"
     state: directory
     owner: vagrant
-  with_items: directories
+  with_items: "{{ directories }}"
   tags: [nginx]
 
 - name: Container is running
@@ -33,7 +33,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: files
+  with_items: "{{ files }}"
   register: result
   tags: [nginx]
 

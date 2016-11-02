@@ -2,7 +2,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: centos_files
+  with_items: "{{ centos_files }}"
   tags: [docker]
 
 - name: CentOS package is installed

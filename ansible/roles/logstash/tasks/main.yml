@@ -4,14 +4,14 @@
     recurse: yes
     state: directory
     mode: "{{ item.mode }}"
-  with_items: directories
+  with_items: "{{ directories }}"
   tags: [logstash]
 
 - name: Files are copied
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: files
+  with_items: "{{ files }}"
   tags: [logstash]
 
 - name: Container is running

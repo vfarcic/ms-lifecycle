@@ -9,5 +9,5 @@
     name: "{{ item }}"
     enabled: no
     state: stopped
-  with_items: master_services
+  with_items: "{{ master_services }}"
   tags: [mesos]

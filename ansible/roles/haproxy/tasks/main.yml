@@ -3,14 +3,14 @@
     dest: "{{ item }}"
     state: directory
     owner: vagrant
-  with_items: directories
+  with_items: "{{ directories }}"
   tags: [haproxy]
 
 - name: Files are present
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-  with_items: files
+  with_items: "{{ files }}"
   register: result
   tags: [haproxy]
 
