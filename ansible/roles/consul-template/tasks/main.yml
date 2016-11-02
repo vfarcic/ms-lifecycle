@@ -17,6 +17,6 @@
     dest: "/data/consul-template/{{ item }}"
     mode: 0644
   with_items:
-    - example.ctmpl
-    - example2.ctmpl
+    - "{{ example.ctmpl }}"
+    - "{{ example2.ctmpl }}"
   tags: [consul-template]
