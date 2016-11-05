@@ -3,7 +3,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: 0755
-  with_items: files
+  with_items: "{{ files }}"
   tags: [etcd]
 
 - name: Is running
