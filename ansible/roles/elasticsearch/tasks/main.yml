@@ -1,7 +1,7 @@
 - name: Container is running
   docker:
     name: elasticsearch
-    image: elasticsearch
+    image: elasticsearch:2
     state: running
     ports:
       - 9200:9200

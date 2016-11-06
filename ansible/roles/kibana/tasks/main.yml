@@ -1,6 +1,6 @@
 - name: Container is running
   docker:
-    image: kibana
+    image: kibana:4
     name: kibana
     links:
       - elasticsearch:elasticsearch
