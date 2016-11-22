@@ -91,5 +91,6 @@ plugins:
   - copyartifact
   - workflow-aggregator
   - workflow-multibranch
+  - workflow-scm-step
   - docker-workflow
   - template-project
