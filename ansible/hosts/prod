@@ -35,8 +35,9 @@ mesos_master_ip=10.100.197.201
 10.100.198.200
 
 [swarm]
-10.100.192.200 swarm_master=true consul_extra="-server -bootstrap -ui" docker_cfg=docker-swarm-master.service
-10.100.192.20[1:2] swarm_master_ip=10.100.192.200 consul_extra="-join 10.100.192.200" consul_server_ip=10.100.192.200 docker_cfg=docker-swarm-node.service
+10.100.192.200 swarm_master=true consul_extra="-server -bootstrap -ui" docker_cfg=docker-swarm-master.service ip=10.100.192.200
+10.100.192.201 swarm_master_ip=10.100.192.200 consul_extra="-join 10.100.192.200" consul_server_ip=10.100.192.200 docker_cfg=docker-swarm-node.service ip=10.100.192.201
+10.100.192.202 swarm_master_ip=10.100.192.200 consul_extra="-join 10.100.192.200" consul_server_ip=10.100.192.200 docker_cfg=docker-swarm-node.service ip=10.100.192.202
 
 [swarm-master]
 10.100.192.200

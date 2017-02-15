@@ -1,5 +1,5 @@
 - hosts: swarm
-  remote_user: vagrant
+  remote_user: ubuntu
   serial: 1
   vars:
     - debian_version: wily

@@ -52,18 +52,21 @@ Vagrant.configure(2) do |config|
     end
   end
   config.vm.define "swarm-master" do |d|
-    d.vm.box = "ubuntu/wily64"
+    d.vm.box = "ubuntu/xenial-cloud"
+    d.vm.box_url = "http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
     d.vm.hostname = "swarm-master"
     d.vm.network "private_network", ip: "10.100.192.200"
+    d.vm.provision :shell, inline: "sudo apt-get install -y python"
     d.vm.provider "virtualbox" do |v|
       v.memory = 1024
     end
   end
   (1..2).each do |i|
     config.vm.define "swarm-node-#{i}" do |d|
-      d.vm.box = "ubuntu/wily64"
-      d.vm.hostname = "swarm-node-#{i}"
+    d.vm.box = "ubuntu/xenial-cloud"
+    d.vm.box_url = "http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
       d.vm.network "private_network", ip: "10.100.192.20#{i}"
+      d.vm.provision :shell, inline: "sudo apt-get install -y python"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1536
       end
