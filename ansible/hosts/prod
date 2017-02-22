@@ -8,8 +8,10 @@
 10.100.198.200
 10.100.198.201
 
-[jenkins-node-swarm]
+[jenkins-node-cd]
 10.100.198.200
+
+[jenkins-node-swarm]
 10.100.192.200
 
 [kube]

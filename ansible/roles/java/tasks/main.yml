@@ -1,5 +1,11 @@
+- name: Repository is present
+  apt_repository:
+    repo: ppa:openjdk-r/ppa
+  tags: [java]
+
 - name: Package is present
   apt:
-    name=openjdk-7-jdk
-    state=present
+    name: openjdk-7-jdk
+    state: present
+    update_cache: yes
   tags: [java]
