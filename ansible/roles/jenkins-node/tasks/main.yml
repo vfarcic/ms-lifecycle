@@ -5,5 +5,5 @@
     recurse: yes
     state: directory
   with_items:
-    - { path: '/data/jenkins_slaves', owner: 'vagrant' }
+    - { path: '/data/jenkins_slaves', owner: "{{ agent_user }}" }
   tags: [jenkins]

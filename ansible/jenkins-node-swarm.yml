@@ -8,6 +8,8 @@
 - hosts: jenkins-node-swarm
   remote_user: ubuntu
   serial: 1
+  vars:
+    - agent_user: ubuntu
   roles:
     - java
     - jenkins-node

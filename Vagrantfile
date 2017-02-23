@@ -70,6 +70,7 @@ Vagrant.configure(2) do |config|
       d.vm.provision :shell, inline: "sudo apt-get install -y python"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1536
+        v.cpus = 1
       end
     end
   end
@@ -80,6 +81,7 @@ Vagrant.configure(2) do |config|
       d.vm.network "private_network", ip: "10.100.197.20#{i}"
       d.vm.provider "virtualbox" do |v|
         v.memory = 1536
+        v.cpus = 1
       end
     end
   end
