@@ -64,7 +64,7 @@ def deploySwarm(serviceName, swarmIp, color, instances) {
         sh "docker-compose -f docker-compose-swarm-v2.yml \
             -p ${serviceName} up -d db"
         sh "docker-compose -f docker-compose-swarm-v2.yml \
-            -p ${serviceName} rm -f app-${color}"
+            -p ${serviceName} up -d app-${color}"
         sh "docker-compose -f docker-compose-swarm-v2.yml \
             -p ${serviceName} scale app-${color}=${instances}"
     }
