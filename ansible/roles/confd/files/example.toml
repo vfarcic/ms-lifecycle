@@ -2,5 +2,5 @@
 src = "example.conf.tmpl"
 dest = "/tmp/example.conf"
 keys = [
-    "/nginx-80/nginx"
+    "/nginx/nginx"
 ]
