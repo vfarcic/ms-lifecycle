@@ -14,6 +14,7 @@ Vagrant.configure(2) do |config|
     d.vm.provision :shell, path: "scripts/bootstrap_ansible.sh"
     d.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/cd.yml -c local"
     d.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]            
       v.memory = 2048
     end
   end
@@ -22,6 +23,7 @@ Vagrant.configure(2) do |config|
     d.vm.hostname = "prod"
     d.vm.network "private_network", ip: "10.100.198.201"
     d.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]     
       v.memory = 1024
     end
   end
@@ -30,6 +32,7 @@ Vagrant.configure(2) do |config|
     d.vm.hostname = "logging"
     d.vm.network "private_network", ip: "10.100.198.202"
     d.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]     
       v.memory = 1536
     end
   end
@@ -39,6 +42,7 @@ Vagrant.configure(2) do |config|
       d.vm.hostname = "serv-disc-0#{i}"
       d.vm.network "private_network", ip: "10.100.194.20#{i}"
       d.vm.provider "virtualbox" do |v|
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]     
         v.memory = 1024
       end
     end
@@ -48,6 +52,7 @@ Vagrant.configure(2) do |config|
     d.vm.hostname = "proxy"
     d.vm.network "private_network", ip: "10.100.193.200"
     d.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.memory = 1024
     end
   end
