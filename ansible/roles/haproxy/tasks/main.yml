@@ -21,4 +21,5 @@
     state: running
     ports: "{{ ports }}"
     volumes: /data/haproxy/config/:/etc/haproxy/
+    cap_add: NET_ADMIN
   tags: [haproxy]
