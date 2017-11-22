@@ -94,3 +94,4 @@ plugins:
   - workflow-scm-step
   - docker-workflow
   - template-project
+  - ssh-slaves

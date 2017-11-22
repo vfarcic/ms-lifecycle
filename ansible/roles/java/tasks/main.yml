@@ -5,7 +5,7 @@
 
 - name: Package is present
   apt:
-    name: openjdk-7-jdk
+    name: openjdk-8-jdk
     state: present
     update_cache: yes
   tags: [java]
