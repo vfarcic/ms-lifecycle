@@ -35,6 +35,11 @@
   docker:
     image: portainer/portainer
     name: portainer
+    ports: 9000:9000
+    volumes:
+      - "{{ portainer_cfg_dest }}:/endpoints"
+      - "{{ portainer_data_dest }}:/data"
+    command: "--no-auth --external-endpoints /endpoints/endpoints.json"
     state: restarted
   when: configs_result|changed and not container_result|changed
   tags: [portainer]
