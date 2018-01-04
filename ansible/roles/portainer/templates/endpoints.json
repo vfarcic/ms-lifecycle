@@ -1,0 +1,8 @@
+[
+  {% for endpoint in endpoints %}
+  {
+    "Name": "{{ endpoint.name }}",
+    "URL": "tcp://{{ endpoint.ip }}:2375"
+  }{% if not loop.last %},{% endif %}
+  {% endfor %}
+]

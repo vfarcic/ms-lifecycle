@@ -1,0 +1,40 @@
+- name: Configuration directories are created
+  file:
+    path: "{{ portainer_cfg_dest }}"
+    state: directory
+    mode: 0755
+  tags: [portainer]
+
+- name: Data directories are created
+  file:
+    path: "{{ portainer_data_dest }}"
+    state: directory
+    mode: 0755
+  tags: [portainer]
+
+- name: Portainer files are present
+  template:
+    src: "{{ portainer_cfg }}"
+    dest: "{{ portainer_cfg_dest }}/{{ portainer_cfg }}"
+  register: configs_result
+  tags: [portainer]
+
+- name: Portainer is running
+  docker:
+    image: portainer/portainer
+    name: portainer
+    ports: 9000:9000
+    volumes:
+      - "{{ portainer_cfg_dest }}:/endpoints"
+      - "{{ portainer_data_dest }}:/data"
+    command: "--no-auth --external-endpoints /endpoints/endpoints.json"
+  register: container_result
+  tags: [portainer]
+
+- name: Portainer is restarted
+  docker:
+    image: portainer/portainer
+    name: portainer
+    state: restarted
+  when: configs_result|changed and not container_result|changed
+  tags: [portainer]
