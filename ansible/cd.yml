@@ -6,5 +6,6 @@
     - docker
     - docker-compose
     - docker-flow
+    - portainer
     - consul-template
     - registry
