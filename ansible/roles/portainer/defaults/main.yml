@@ -1,0 +1,29 @@
+portainer_cfg: endpoints.json
+portainer_cfg_dest: /data/portainer/config
+portainer_data_dest: /data/portainer/data
+
+endpoints:
+  - 
+    name: cd
+    ip: 10.100.198.200
+  - 
+    name: prod
+    ip: 10.100.198.201
+  - 
+    name: logging
+    ip: 10.100.198.202
+  - 
+    name: serv-disc-01
+    ip: 10.100.194.201
+  - 
+    name: serv-disc-02
+    ip: 10.100.194.202
+  - 
+    name: serv-disc-03
+    ip: 10.100.194.203
+  - 
+    name: proxy
+    ip: 10.100.193.200
+  - 
+    name: swam
+    ip: 10.100.192.200

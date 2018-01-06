@@ -3,3 +3,5 @@
 .vagrant
 /registry
 /registry-mirror
+*.log
+*.retry
