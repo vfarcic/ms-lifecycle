@@ -8,7 +8,7 @@
   tags: [jenkins]
 
 - name: Container is running
-  docker:
+  docker_container:
     name: jenkins
     image: "vfarcic/jenkins"
     ports: 8080:8080
@@ -50,7 +50,7 @@
 # Workaround to fix the bug in restarting containers from Ansible 2
 
 - name: Container is stopped
-  docker:
+  docker_container:
     name: jenkins
     image: "vfarcic/jenkins"
     state: stopped
@@ -58,7 +58,7 @@
   tags: [jenkins]
 
 - name: Container is running
-  docker:
+  docker_container:
     name: jenkins
     image: "vfarcic/jenkins"
     ports: 8080:8080

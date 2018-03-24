@@ -1,5 +1,5 @@
 - name: Container is running
-  docker:
+  docker_container:
     name: "{{ registrator_name }}"
     image: gliderlabs/registrator
     volumes:

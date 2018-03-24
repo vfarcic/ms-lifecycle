@@ -14,7 +14,7 @@
   tags: [registry]
 
 - name: Registry container is running
-  docker:
+  docker_container:
     name: registry
     image: registry:2
     ports: 5000:5000
@@ -24,7 +24,7 @@
   tags: [registry]
 
 - name: Mirror container is running
-  docker:
+  docker_container:
     name: registry-mirror
     image: registry:2
     ports: 5001:5000

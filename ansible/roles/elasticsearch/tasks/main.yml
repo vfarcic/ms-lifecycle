@@ -1,5 +1,5 @@
 - name: Container is running
-  docker:
+  docker_container:
     name: elasticsearch
     image: elasticsearch:2
     state: running

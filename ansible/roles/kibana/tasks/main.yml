@@ -1,5 +1,5 @@
 - name: Container is running
-  docker:
+  docker_container:
     image: kibana:4
     name: kibana
     links:
@@ -25,7 +25,7 @@
   tags: [kibana]
 
 - name: Backup is restored
-  docker:
+  docker_container:
     name: backup
     detach: no
     volumes:
@@ -36,7 +36,7 @@
   tags: [kibana]
 
 - name: Backup container is removed
-  docker:
+  docker_container:
     name: backup
     image: vfarcic/elastic-dump
     state: absent

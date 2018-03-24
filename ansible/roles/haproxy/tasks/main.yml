@@ -15,7 +15,7 @@
   tags: [haproxy]
 
 - name: Container is running
-  docker:
+  docker_container:
     image: million12/haproxy
     name: haproxy
     state: running

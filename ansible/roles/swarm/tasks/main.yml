@@ -1,5 +1,5 @@
 - name: Swarm node is running
-  docker:
+  docker_container:
     name: swarm-node
     image: swarm
     command: join --advertise={{ ip }}:2375 consul://{{ ip }}:8500/swarm
@@ -9,7 +9,7 @@
   tags: [swarm]
 
 - name: Swarm master is running
-  docker:
+  docker_container:
     name: swarm-master
     image: swarm
     ports: 2375:2375

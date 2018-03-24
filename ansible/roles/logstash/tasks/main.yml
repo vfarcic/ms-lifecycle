@@ -15,7 +15,7 @@
   tags: [logstash]
 
 - name: Container is running
-  docker:
+  docker_container:
     name: logstash
     image: logstash:2
     state: running

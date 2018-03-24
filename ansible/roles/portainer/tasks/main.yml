@@ -20,7 +20,7 @@
   tags: [portainer]
 
 - name: Portainer is running
-  docker:
+  docker_container:
     image: portainer/portainer
     name: portainer
     ports: 9000:9000
@@ -32,7 +32,7 @@
   tags: [portainer]
 
 - name: Portainer is restarted
-  docker:
+  docker_container:
     image: portainer/portainer
     name: portainer
     ports: 9000:9000
