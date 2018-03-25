@@ -2,7 +2,7 @@
   docker_container:
     name: elasticsearch
     image: elasticsearch:2
-    state: running
+    state: started
     ports:
       - 9200:9200
     volumes:

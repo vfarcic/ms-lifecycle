@@ -18,6 +18,6 @@
 - name: CentOS service is running
   service:
     name: docker
-    state: running
+    state: started
   tags: [docker]
 

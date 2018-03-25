@@ -10,7 +10,7 @@
   docker_container:
     image: nginx:alpine
     name: nginx
-    state: running
+    state: started
     ports: "{{ ports }}"
     volumes: "{{ volumes }}"
   when: not log_to_syslog is defined
@@ -20,7 +20,7 @@
   docker_container:
     image: nginx:alpine
     name: nginx
-    state: running
+    state: started
     ports: "{{ ports }}"
     volumes: "{{ volumes }}"
     log_driver: syslog

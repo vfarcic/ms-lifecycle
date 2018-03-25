@@ -18,7 +18,7 @@
   docker_container:
     name: logstash
     image: logstash:2
-    state: running
+    state: started
     hostname: "{{ ansible_hostname }}"
     expose:
       - 5044
