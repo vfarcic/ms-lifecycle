@@ -18,7 +18,7 @@
   docker_container:
     image: million12/haproxy
     name: haproxy
-    state: running
+    state: started
     ports: "{{ ports }}"
     volumes: /data/haproxy/config/:/etc/haproxy/
     cap_add: NET_ADMIN
