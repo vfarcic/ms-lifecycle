@@ -6,7 +6,7 @@
     - jenkins-node
 
 - hosts: jenkins-node-swarm
-  remote_user: ubuntu
+  remote_user: vagrant
   serial: 1
   vars:
     - agent_user: ubuntu

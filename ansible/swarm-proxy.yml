@@ -1,5 +1,5 @@
 - hosts: swarm-master
-  remote_user: ubuntu
+  remote_user: vagrant
   serial: 1
   roles:
     - consul-template
